@@ -128,6 +128,12 @@ Slackスキャン時（「Slackスキャンして」で全て実行）:
   - 新規アイテム（Slackに新しく投稿されたもの）のみ追加する
   - 既存アイテムのステータス変更（スタンプ変更）のみ反映する
   - URLや価格を更新したい場合はユーザーに確認してから行う
+- [ ] **重複チェック（重要）**:
+  - 候補追加前に、そのURLが既にhardwareCatalog or candidatesDataに存在しないか確認する
+  - product_urlの一部（ドメイン+パス）で照合する（クエリパラメータは無視）
+  - 既に採用済み(hardwareCatalog)のURLは候補に追加しない
+  - 既に候補(candidatesData)にあるURLは重複追加しない
+  - 既に却下(status:"dismissed")されたURLも再追加しない
 - [ ] 各プロジェクトページに正しいデータを振り分け（CLAUDE.mdのチャンネル対応表に従う）
 - [ ] ポータル(index.html)のstatsを更新
 - [ ] git push
