@@ -1824,7 +1824,14 @@ function exportEstimateJSON() {
 //  KNOWLEDGE DATA & RENDER
 // ═══════════════════════════════════════════
 
-const knowledgeData = [];
+const knowledgeData = [
+  {id:"K001",type:"howto",title:"レースウェイの反り止めは一定の効果あり",content:"レースウェイの反り止めは一定の効果あり。出面は揃えることに成功。",posted_by:"金子俊耶",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-19",slack_url:""},
+  {id:"K002",type:"trouble",title:"一箇所根元が割れてしまった",content:"一箇所根元が割れてしまっていたところは、ビスを通した新規パーツを作成して4箇所取っ手は全て交換済み。",posted_by:"金子俊耶",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-19",slack_url:""},
+  {id:"K003",type:"progress",title:"ドームパネルパーツも問題無し",content:"ドームパネルパーツも問題無し。",posted_by:"金子俊耶",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-19",slack_url:""},
+  {id:"K004",type:"progress",title:"ごみ箱は新規モデルに変更、6,7階に設置済み",content:"ごみ箱は新規のモデルに変更して、6,7階に設置済み。",posted_by:"金子俊耶",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-19",slack_url:""},
+  {id:"K005",type:"howto",title:"スツール加工メモ",content:"天板裏側の干渉していた部分は約6mmの掘り込み。締め込みボルトの長さも設計再確認。\n曲げパーツに差し込むジョイントは、センターの凹みから約30mmの直線で入る長さにカット。都度直線部分の長さ確認。\n垂直にパイプを施工するのが少し難易度高め。\n曲げパーツの量産方法は検討余地あり。",posted_by:"向田 涼哉",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-17",slack_url:""},
+  {id:"K006",type:"spec",title:"スツール試作: 座って体重かけたら大丈夫",content:"スツール試作。干渉あったところ追加加工。不陸調整できるパイプの先端考えたい。\n→座って体重かけたら大丈夫。",posted_by:"金子俊耶",channel:"#1125_pan",channel_id:"C09455EDRJN",message_ts:"",date:"2026-03-17",slack_url:""}
+];
 
 const KNOWLEDGE_TYPES = {
   progress: { label: "経過メモ", icon: "📝", class: "progress" },

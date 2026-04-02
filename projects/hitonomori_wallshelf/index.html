@@ -1818,7 +1818,13 @@ function exportEstimateJSON() {
 //  KNOWLEDGE DATA & RENDER
 // ═══════════════════════════════════════════
 
-const knowledgeData = [];
+const knowledgeData = [
+  {id:"K001",type:"spec",title:"曲面壁面什器の方針",content:"画像の部分を作る材料はカウントしてない。シナの曲げベニヤで曲面は作って、下地の部材を追加する方針。",posted_by:"金子俊耶",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-04-01",slack_url:""},
+  {id:"K002",type:"progress",title:"華厳工場搬入ルート確認",content:"華厳工場搬入ルート。トラックも入れるが、私有地なので要確認。",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-25",slack_url:""},
+  {id:"K003",type:"spec",title:"6月19日に納品完了、16日あたりに現場開始",content:"6月19日に納品完了。16日あたりに現場開始。連休前に契約できるように見積もり。",posted_by:"金子俊耶",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-26",slack_url:""},
+  {id:"K004",type:"spec",title:"Bach様からの棚仕様要望",content:"カーブをもう少しゆるやかに調整可能か。中板仕切りのピッチが狭い→最低350〜380mmあると書籍やディスプレイ使いやすい。華厳工場の上段奥行き250mmだと単行本サイズ程度まで。",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-12",slack_url:""},
+  {id:"K005",type:"progress",title:"シナ合板のウォルナット塗装サンプル依頼",content:"シナ合板のウォルナットの塗装サンプル欲しいと言われていて、海老名にあまりの塗料あるかな？",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-04-02",slack_url:""}
+];
 
 const KNOWLEDGE_TYPES = {
   progress: { label: "経過メモ", icon: "📝", class: "progress" },

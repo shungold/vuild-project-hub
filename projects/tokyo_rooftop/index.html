@@ -1823,7 +1823,13 @@ function exportEstimateJSON() {
 //  KNOWLEDGE DATA & RENDER
 // ═══════════════════════════════════════════
 
-const knowledgeData = [];
+const knowledgeData = [
+  {id:"K001",type:"trouble",title:"ルビオ塗料の色落ち問題",content:"ルビオの塗料、布で拭き取った際に色落ちしてしまう。土埃をふいたぞうきんにとにかく色がつく。ワックス追加とかなのかなと素人考え。",posted_by:"黒部駿人",channel:"#1127_東京建物",channel_id:"C09D1N2CEM8",message_ts:"",date:"2026-03-11",slack_url:""},
+  {id:"K002",type:"trouble",title:"角の割れ指摘を受けている",content:"角の割れについては、Lアングルを検討中。業者関係、金額、納期を出したい。お客さんにもLアングルの方針を伝えて意匠的な面で伺ってほしい。",posted_by:"杉山 真道",channel:"#1127_東京建物",channel_id:"C09D1N2CEM8",message_ts:"",date:"2026-03-30",slack_url:""},
+  {id:"K003",type:"spec",title:"色落ち対策方針",content:"色落ちについては1什器塗りなおし、1.5週間程度経過を観察後に、問題なければ他什器も塗りなおし作業を行う。",posted_by:"杉山 真道",channel:"#1127_東京建物",channel_id:"C09D1N2CEM8",message_ts:"",date:"2026-03-30",slack_url:""},
+  {id:"K004",type:"progress",title:"設置後の気になる点4つ",content:"設置後2か月様子を見て気になる点:\n①塗装剤の色移り\n②角が鋭いと指摘を受けている\n③日常清掃で座面のふき取りを検討したい\n④備品の収納方法について",posted_by:"黒部駿人",channel:"#1127_東京建物",channel_id:"C09D1N2CEM8",message_ts:"",date:"2026-03-11",slack_url:""},
+  {id:"K005",type:"progress",title:"屋外什器のフィルム・備品収納検討",content:"屋外什器のフィルム探す。備品の収納ボックス。箒と塵取り、ジョウロ。コンポスト的な感じでパカっと。サイズ感は社内で相談してもらう。",posted_by:"黒部駿人",channel:"#1127_東京建物",channel_id:"C09D1N2CEM8",message_ts:"",date:"2026-03-19",slack_url:""}
+];
 
 const KNOWLEDGE_TYPES = {
   progress: { label: "経過メモ", icon: "📝", class: "progress" },
