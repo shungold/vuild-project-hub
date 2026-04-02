@@ -924,9 +924,173 @@
 //  DATA
 // ═══════════════════════════════════════════
 
-const hardwareCatalog = [];
+const hardwareCatalog = [
+  {
+    id:"HW_BAUM_001", name:"丁番", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"http://monotaro.com/p/6111/1094/",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"発注済み", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (向田)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"向田",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用 💰発注済み"}]
+  },
+  {
+    id:"HW_BAUM_002", name:"丸棒用Lアングル", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"https://www.monotaro.com/p/8619/3774/",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"発注済み", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (向田)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"向田",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用 💰発注済み"}]
+  },
+  {
+    id:"HW_BAUM_003", name:"ステンレスCツマミ HL（引き戸用）", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"https://www.monotaro.com/p/7601/2745/",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"引き戸用", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (金子)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"金子",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  },
+  {
+    id:"HW_BAUM_004", name:"引き戸レール アルミ仕様", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"https://www.monotaro.com/p/0942/3477/",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"富山と同じアルミ仕様", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (金子)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"金子",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  },
+  {
+    id:"HW_BAUM_005", name:"鍵 面付錠（引き戸用）", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"https://www.monotaro.com/p/0229/1582/",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"扉厚20mm以上必要", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (金子)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"金子",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  },
+  {
+    id:"HW_BAUM_006", name:"AGRスライドローラー ミニ3号", product_code:"", maker:"Atom Living Tech",
+    price:0, product_url:"https://direct.atomlt.com/other/hikido/hikido_1872.html",
+    thumbnail_url:"", category:"金物・金具",
+    specs:"", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (黒部)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"黒部",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  },
+  {
+    id:"HW_BAUM_007", name:"BAUMグリーン塗料 ウルトララスト エッグシェル", product_code:"", maker:"paintcolor",
+    price:0, product_url:"https://paintcolor.thebase.in/items/90817132",
+    thumbnail_url:"", category:"塗装・仕上げ",
+    specs:"", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (黒部)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"黒部",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  },
+  {
+    id:"HW_BAUM_008", name:"水性サンディングシーラー", product_code:"", maker:"MonotaRO",
+    price:0, product_url:"https://www.monotaro.com/g/06145049/",
+    thumbnail_url:"", category:"塗装・仕上げ",
+    specs:"", rhino_block:"", source:"slack", verified:true,
+    created_at:"2026-04-02T14:43:00", created_by:"Slack (向田)",
+    updated_at:null, updated_by:null,
+    history:[{date:"2026-04-02T14:43:00",by:"向田",action:"Slack投稿"},{date:"2026-04-02T15:00:00",by:"金子",action:"✅本採用"}]
+  }
+];
 
-const candidatesData = [];
+const candidatesData = [
+  {
+    id:"CAND_BAUM_001", name:"看板スタンド BIGボードスタンド",
+    product_url:"https://www.kanbansousyoku.com/shopdetail/000000003533/",
+    product_code:"", maker:"Decoma", price:null, thumbnail_url:"",
+    category:"その他", specs:"",
+    source:"slack", slack_channel:"#3040_baum移動式什器",
+    posted_by:"黒部", posted_at:"2026-04-02",
+    context:"看板スタンド", status:"pending"
+  },
+  {
+    id:"CAND_1127_001", name:"重量用 低床キャスター（ブラック）",
+    product_url:"https://www.monotaro.com/p/3956/1977/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"キャスター", specs:"車輪径小さい、ブラック",
+    source:"slack", slack_channel:"#1127_東京建物_屋上庭園pj",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"重量用の低床キャスター", status:"pending"
+  },
+  {
+    id:"CAND_1127_002", name:"タープ用フック",
+    product_url:"https://www.monotaro.com/p/6304/7198/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"デッキの鉄下地にビス打ち",
+    source:"slack", slack_channel:"#1127_東京建物_屋上庭園pj",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"タープ固定用フック", status:"pending"
+  },
+  {
+    id:"CAND_1127_003", name:"スナップフック",
+    product_url:"https://www.monotaro.com/p/4969/6667/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"タープロープ先端、簡単に取り外し",
+    source:"slack", slack_channel:"#1127_東京建物_屋上庭園pj",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"タープロープ先端用", status:"pending"
+  },
+  {
+    id:"CAND_1127_004", name:"培養土",
+    product_url:"https://www.monotaro.com/g/04580660/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"その他", specs:"",
+    source:"slack", slack_channel:"#1127_東京建物_屋上庭園pj",
+    posted_by:"杉山", posted_at:"2026-04-02",
+    context:"培養土", status:"pending"
+  },
+  {
+    id:"CAND_1125_001", name:"ジョイントパーツ（中のパーツ）",
+    product_url:"https://www.monotaro.com/p/2146/4006/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"",
+    source:"slack", slack_channel:"#1125_pan_セルフビルドキッチン",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"中のジョイントパーツ", status:"pending"
+  },
+  {
+    id:"CAND_1125_002", name:"ジョイントパーツ（真ん中のパーツ）",
+    product_url:"https://www.monotaro.com/p/5557/0926/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"",
+    source:"slack", slack_channel:"#1125_pan_セルフビルドキッチン",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"真ん中のジョイントパーツ", status:"pending"
+  },
+  {
+    id:"CAND_1125_003", name:"サドル",
+    product_url:"https://www.monotaro.com/p/3506/1266/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"",
+    source:"slack", slack_channel:"#1125_pan_セルフビルドキッチン",
+    posted_by:"向田", posted_at:"2026-04-02",
+    context:"サドル", status:"pending"
+  },
+  {
+    id:"CAND_1125_004", name:"天板用コーナービット 20R",
+    product_url:"https://www.daigenshokai.co.jp/item/dainichi-router-b20r/",
+    product_code:"", maker:"大源商会", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"軸中央から刃物始まりまで9.5mm",
+    source:"slack", slack_channel:"#1125_pan_セルフビルドキッチン",
+    posted_by:"向田", posted_at:"2026-04-02",
+    context:"天板用コーナービット", status:"pending"
+  },
+  {
+    id:"CAND_1125_005", name:"ドームパネルパーツ",
+    product_url:"https://www.monotaro.com/p/6818/5398/",
+    product_code:"", maker:"MonotaRO", price:null, thumbnail_url:"",
+    category:"金物・金具", specs:"",
+    source:"slack", slack_channel:"#1125_pan_セルフビルドキッチン",
+    posted_by:"金子", posted_at:"2026-04-02",
+    context:"ドームパネルパーツ", status:"pending"
+  }
+];
 
 const drawingMeta = {
   project:"人の森_曲面壁面什器", model_file:"260402_壁面什器.3dm",
