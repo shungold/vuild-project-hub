@@ -924,149 +924,9 @@
 //  DATA
 // ═══════════════════════════════════════════
 
-const hardwareCatalog = [
-  {
-    id:"HW_CASTER_L", name:"自在キャスター 100mm", product_code:"420FOS-L100",
-    maker:"ハンマーキャスター", price:850,
-    product_url:"https://www.monotaro.com/p/3586/2965/",
-    thumbnail_url:"https://images.monotaro.com/Monotaro3/pi/full/mono35862965-190314-02.jpg",
-    category:"キャスター", specs:"耐荷重120kg / ストッパー付き / ステンレス",
-    rhino_block:"HW_CASTER_L", source:"auto", verified:true,
-    created_at:"2026-03-28T10:15:00", created_by:"AI (hardware_search)",
-    updated_at:"2026-03-30T14:20:00", updated_by:"金子",
-    history:[
-      {date:"2026-03-28T10:15:00",by:"AI (hardware_search)",action:"自動取得"},
-      {date:"2026-03-30T14:20:00",by:"金子",action:"価格・スペック修正"}
-    ]
-  },
-  {
-    id:"HW_HINGE_A", name:"スライド丁番 26mm カップ 全かぶせ", product_code:"360-D26-19T",
-    maker:"スガツネ工業", price:420,
-    product_url:"https://www.sugatsune.co.jp/",
-    thumbnail_url:"https://images.monotaro.com/Monotaro3/pi/full/mono00296024-160210-02.jpg",
-    category:"丁番", specs:"開き角度110° / ワンタッチ着脱 / ネジ付き",
-    rhino_block:"HW_HINGE_A", source:"auto", verified:true,
-    created_at:"2026-03-28T10:15:00", created_by:"AI (hardware_search)",
-    updated_at:null, updated_by:null,
-    history:[{date:"2026-03-28T10:15:00",by:"AI (hardware_search)",action:"自動取得"}]
-  },
-  {
-    id:"HW_SHELF_PIN", name:"棚ダボ 差込式 5mm", product_code:"AP-20N",
-    maker:"スガツネ工業", price:35,
-    product_url:"https://www.sugatsune.co.jp/",
-    thumbnail_url:"",
-    category:"棚受け", specs:"ニッケルめっき / 穴径5mm",
-    rhino_block:"HW_SHELF_PIN", source:"manual", verified:true,
-    created_at:"2026-03-29T09:00:00", created_by:"金子",
-    updated_at:null, updated_by:null,
-    history:[{date:"2026-03-29T09:00:00",by:"金子",action:"手動登録"}]
-  },
-  {
-    id:"HW_SLIDE_350", name:"スライドレール 350mm", product_code:"C2431-350",
-    maker:"日本アキュライド", price:1280,
-    product_url:"https://www.monotaro.com/",
-    thumbnail_url:"",
-    category:"スライドレール", specs:"3段引き / 耐荷重35kg / 完全スライド",
-    rhino_block:"HW_SLIDE_350", source:"ai_search", verified:false,
-    created_at:"2026-03-31T16:45:00", created_by:"AI (hardware_search)",
-    updated_at:null, updated_by:null,
-    history:[{date:"2026-03-31T16:45:00",by:"AI (hardware_search)",action:"AIサーチで候補提案"}]
-  },
-  {
-    id:"HW_NEW_01", name:"不明金物", product_code:"", maker:"", price:0,
-    product_url:"", thumbnail_url:"",
-    category:"その他", specs:"", rhino_block:"HW_NEW_01",
-    source:"auto", verified:false, in_catalog:false,
-    created_at:"2026-04-02T14:30:00", created_by:"GH (自動検出)",
-    updated_at:null, updated_by:null,
-    history:[{date:"2026-04-02T14:30:00",by:"GH (自動検出)",action:"モデルから未登録ブロック検出"}]
-  }
-];
+const hardwareCatalog = [];
 
-const candidatesData = [
-  {
-    id:"CAND_001", name:"見切り金物 2m",
-    product_url:"https://www.monotaro.com/p/5510/3695/",
-    product_code:"", maker:"", price:null, thumbnail_url:"",
-    category:"金物・金具", specs:"見切り金物 外壁11.5m相当、2m材6本",
-    source:"slack", slack_channel:"#200-40_ユタカ産業_panpuriポップアップ",
-    slack_channel_id:"C0AFSB3DZD4", posted_by:"戸倉 一", posted_at:"2026-04-02",
-    context:"パンチ床の制作検討と発注依頼。見切り金物 外壁11.5m相当、2m材6本",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_002", name:"排水金具",
-    product_url:"https://www.monotaro.com/g/00439894/",
-    product_code:"", maker:"カクダイ", price:null, thumbnail_url:"",
-    category:"設備・水回り", specs:"排水金具",
-    source:"slack", slack_channel:"#200-40_ユタカ産業_panpuriポップアップ",
-    slack_channel_id:"C0AFSB3DZD4", posted_by:"宇都宮 淳", posted_at:"2026-03-28",
-    context:"配管用の排水金具",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_003", name:"ポリタンク コック付き 10L",
-    product_url:"https://www.monotaro.com/p/6292/1453/",
-    product_code:"", maker:"TS(ティーエス)", price:null, thumbnail_url:"",
-    category:"設備・水回り", specs:"MDタンク10L コック付き ポリタンク H:237mm",
-    source:"slack", slack_channel:"#200-40_ユタカ産業_panpuriポップアップ",
-    slack_channel_id:"C0AFSB3DZD4", posted_by:"宇都宮 淳", posted_at:"2026-03-28",
-    context:"タンクこれだとH:237だから入らないかな？",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_004", name:"エッジモール / コーナーガード",
-    product_url:"https://www.monotaro.com/g/00282111/",
-    product_code:"", maker:"", price:null, thumbnail_url:"",
-    category:"金物・金具", specs:"サイン部分の背面保護用エッジモール",
-    source:"slack", slack_channel:"#200-40_ユタカ産業_panpuriポップアップ",
-    slack_channel_id:"C0AFSB3DZD4", posted_by:"加賀谷 樹", posted_at:"2026-03-25",
-    context:"サイン部分の背面、角を丸めたとしても剥き出しだとちょっと危ないかも",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_005", name:"丁番",
-    product_url:"http://monotaro.com/p/6111/1094/",
-    product_code:"", maker:"", price:null, thumbnail_url:"",
-    category:"金物・金具", specs:"丁番",
-    source:"slack", slack_channel:"#3040_baum移動式什器",
-    slack_channel_id:"", posted_by:"向田 涼哉", posted_at:"2026-03-18",
-    context:"発注済み",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_006", name:"丸棒用Lアングル",
-    product_url:"https://www.monotaro.com/p/8619/3774/",
-    product_code:"", maker:"", price:null, thumbnail_url:"",
-    category:"金物・金具", specs:"丸棒用Lアングル金具",
-    source:"slack", slack_channel:"#3040_baum移動式什器",
-    slack_channel_id:"", posted_by:"向田 涼哉", posted_at:"2026-03-18",
-    context:"発注済み",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_007", name:"D. ROEMHELD 空圧スイングクランプ",
-    product_url:"https://ws.roemheld.de/en/products/swing-clamps~pcZoNbbWoNwE",
-    product_code:"J7.201 / J7.202 / J7.203", maker:"D. ROEMHELD", price:null, thumbnail_url:"",
-    category:"金物・金具",
-    specs:"テーブル埋め込み型、アームが90\u00b0スイングで退避、磁気ピストン標準搭載（位置検出→IO制御可）、5サイズ展開、CW/CCW選択可",
-    source:"slack", slack_channel:"#3001_robotarm",
-    slack_channel_id:"C09B6447BQC", posted_by:"金子俊耶", posted_at:"2026-04-01",
-    context:"KUKA連携クランプ調査。150mm角の角材を固定/KUKA X11経由のIO制御/空圧/木材の反り矯正にも対応",
-    status:"pending", adopted_at:null, adopted_by:null
-  },
-  {
-    id:"CAND_008", name:"シュマルツ モジュラーグリッパーシステム PXT",
-    product_url:"https://www.schmalz.com/en-us/vacuum-technology-for-automation/vacuum-gripping-systems/layer-gripping-systems/pxt",
-    product_code:"PXT", maker:"Schmalz", price:null, thumbnail_url:"",
-    category:"金物・金具",
-    specs:"KUKA専用セット(iiwa 7/14対応)、割れがあっても吸着できる、PLC無しで空気回路含めセットで買える",
-    source:"slack", slack_channel:"#3001_robotarm",
-    slack_channel_id:"C09B6447BQC", posted_by:"金子俊耶", posted_at:"2026-04-01",
-    context:"KUKA連携グリッパー調査。KUKAのX11ケーブルで繋いでIO設定のデプロイすれば自社インテグレートも可能",
-    status:"pending", adopted_at:null, adopted_by:null
-  }
-];
+const candidatesData = [];
 
 const drawingMeta = {
   project:"人の森_曲面壁面什器", model_file:"260402_壁面什器.3dm",
@@ -1077,13 +937,7 @@ const drawingMeta = {
     {id:"plan",direction:"平面図",w:320,h:120},
     {id:"sectionA",direction:"断面図 A-A'",w:120,h:240}
   ],
-  hardware_instances:[
-    {block_id:"HW_CASTER_L",count:4,positions:[{view:"front",x:60,y:225},{view:"front",x:260,y:225}]},
-    {block_id:"HW_HINGE_A",count:6,positions:[{view:"front",x:180,y:80},{view:"front",x:180,y:160}]},
-    {block_id:"HW_SHELF_PIN",count:12,positions:[{view:"sectionA",x:30,y:80},{view:"sectionA",x:30,y:140}]},
-    {block_id:"HW_SLIDE_350",count:2,positions:[{view:"right",x:60,y:120}]},
-    {block_id:"HW_NEW_01",count:2,positions:[{view:"front",x:290,y:40}]}
-  ]
+  hardware_instances:[]
 };
 
 const PAPER_SIZES = {A1:{w:841,h:594},A2:{w:594,h:420},A3:{w:420,h:297}};
@@ -1593,64 +1447,18 @@ document.getElementById('catalogSearch').addEventListener('input', renderCatalog
 // ═══════════════════════════════════════════
 
 const bomData = [
-  { cat:"家具", items:[
-    {name:"天板　檜集成材", cost:0, qty:2, unit:"枚", price:0, url:"", ordered:false},
-    {name:"側面　シナ合板ファルカタ t18mm (3x6)", cost:7700, qty:3, unit:"枚", price:23100, url:"", ordered:false},
-    {name:"側面　シナ合板ファルカタ t21mm (4x8)", cost:16800, qty:2, unit:"枚", price:33600, url:"", ordered:false},
-    {name:"側面　シナ合板ファルカタ t24mm (4x8)", cost:17400, qty:3, unit:"枚", price:52200, url:"", ordered:false},
-    {name:"柱　檜集成材", cost:0, qty:0, unit:"枚", price:0, url:"", ordered:false},
-    {name:"ディスプレイ　檜集成材", cost:0, qty:0, unit:"枚", price:0, url:"", ordered:false},
-  ]},
+  { cat:"家具", items:[]},
   { cat:"金物", items:[] }, // auto-filled from hardwareCatalog
-  { cat:"シンク・ポンプ系", items:[
-    {name:"シンク　陶器の手洗い器 角240 ホワイト", cost:39600, qty:1, unit:"台", price:39600, url:"https://www.r-toolbox.jp/", ordered:false},
-    {name:"配管用　洗面他パーツ 排水金物 S32-6", cost:17200, qty:1, unit:"式", price:17200, url:"https://www.r-toolbox.jp/", ordered:false},
-    {name:"配管用　Reich 水中ポンプ12L", cost:10494, qty:1, unit:"台", price:10494, url:"", ordered:false},
-    {name:"配管用　ノンリターンバルブ（逆止弁）'533'", cost:2180, qty:1, unit:"個", price:2180, url:"https://www.niy.co.jp/", ordered:false},
-    {name:"配管用　ブレードホース 10x16mm 1m", cost:891, qty:1, unit:"m", price:891, url:"", ordered:false},
-    {name:"配管用　継手異径ホースニップル 10mm用", cost:1080, qty:1, unit:"個", price:1080, url:"", ordered:false},
-    {name:"配管用　エルボ+ホースニップル", cost:300, qty:3, unit:"個", price:900, url:"", ordered:false},
-    {name:"水栓　TREND-A 混合フォーセット（ロング）", cost:15400, qty:1, unit:"台", price:15400, url:"https://www.campingcar-partscenter.jp/", ordered:false},
-    {name:"水タンク　ポリタンク コック付き", cost:979, qty:4, unit:"個", price:3916, url:"", ordered:false},
-  ]},
-  { cat:"電源系", items:[
-    {name:"電源　ポータブル電源 EcoFlow / ZMR600-JP", cost:29980, qty:1, unit:"台", price:29980, url:"", ordered:false},
-    {name:"電源ケーブル　USB-C PDトリガーケーブル", cost:598, qty:1, unit:"式", price:598, url:"https://www.amazon.co.jp/", ordered:false},
-    {name:"電源ケーブル　Kabenjea DCコネクタ 10セット", cost:999, qty:1, unit:"式", price:999, url:"https://www.amazon.co.jp/", ordered:false},
-  ]},
-  { cat:"塗料", items:[
-    {name:"Rubio モノコートオイルプラスA", cost:2630, qty:2, unit:"個", price:5260, url:"", ordered:false},
-    {name:"ウルトララスト エッグシェル 0.95L/5平米 3点送料込み", cost:23925, qty:1, unit:"式", price:23925, url:"", ordered:false},
-    {name:"ウルトララスト エッグシェル 0.95L/5平米 1点送料込み", cost:7920, qty:1, unit:"個", price:7920, url:"", ordered:false},
-    {name:"はさいや アクリル", cost:2486, qty:1, unit:"個", price:2486, url:"", ordered:false},
-  ]},
-  { cat:"外注費", items:[
-    {name:"仲子さん電代", cost:20000, qty:1, unit:"式", price:20000, url:"", ordered:false},
-  ]},
-  { cat:"社内工数 — 一般人件費", items:[
-    {name:"仕上組立費", cost:17000, qty:0, unit:"人工", price:0, url:"", ordered:false},
-    {name:"交通費", cost:17000, qty:0, unit:"人工", price:0, url:"", ordered:false},
-  ]},
-  { cat:"社内工数 — 特殊業務委託費", items:[
-    {name:"切削加工費（shopbotオペレーター人件費込）", cost:2500, qty:0, unit:"時間", price:0, url:"", ordered:false},
-    {name:"加工データ作成費（共通）", cost:25000, qty:0, unit:"人工", price:0, url:"", ordered:false},
-  ]},
-  { cat:"製作及び施工管理費", items:[
-    {name:"現場管理費", cost:20000, qty:0, unit:"式", price:0, url:"", ordered:false},
-    {name:"現場設置費", cost:20000, qty:0, unit:"人工", price:0, url:"", ordered:false},
-    {name:"WS人件費", cost:20000, qty:0, unit:"人工", price:0, url:"", ordered:false},
-    {name:"現場交通費", cost:30000, qty:0, unit:"式", price:0, url:"", ordered:false},
-    {name:"現場宿泊費", cost:10000, qty:0, unit:"式", price:0, url:"", ordered:false},
-  ]},
-  { cat:"製作管理費", items:[
-    {name:"製作管理費", cost:300000, qty:1, unit:"式", price:300000, url:"", ordered:false},
-  ]},
-  { cat:"輸送費", items:[
-    {name:"輸送費", cost:95000, qty:1, unit:"式", price:95000, url:"", ordered:false},
-  ]},
-  { cat:"消耗品費", items:[
-    {name:"消耗品費", cost:10000, qty:0, unit:"式", price:0, url:"", ordered:false},
-  ]},
+  { cat:"シンク・ポンプ系", items:[]},
+  { cat:"電源系", items:[]},
+  { cat:"塗料", items:[]},
+  { cat:"外注費", items:[]},
+  { cat:"社内工数 — 一般人件費", items:[]},
+  { cat:"社内工数 — 特殊業務委託費", items:[]},
+  { cat:"製作及び施工管理費", items:[]},
+  { cat:"製作管理費", items:[]},
+  { cat:"輸送費", items:[]},
+  { cat:"消耗品費", items:[]},
 ];
 
 // ═══════════════════════════════════════════
@@ -2010,128 +1818,7 @@ function exportEstimateJSON() {
 //  KNOWLEDGE DATA & RENDER
 // ═══════════════════════════════════════════
 
-const knowledgeData = [
-  {
-    id: "K001",
-    type: "trouble",
-    title: "排水金具のクリアランス不足",
-    content: "排水金具からのアダプタがタンクに直接刺さってしまう状態。排水を捨てるなどのオペレーションが不可。\nタンク上面からのクリアランスは最低でも小節2個以上必要。\n\n上水タンクから水中ポンプへの経路もタンク上面からホースを出すと無理があるかも。脚部のボリュームなどに少しでもタンクを落とし込めたらいいけど、それは無理ですよね？",
-    posted_by: "風祭あゆみ",
-    channel: "#200-40_panpuri",
-    channel_id: "C0AFSB3DZD4",
-    message_ts: "1774864322.826359",
-    date: "2026-03-30",
-    slack_url: "https://vuild.slack.com/archives/C0AFSB3DZD4/p1774864322826359"
-  },
-  {
-    id: "K002",
-    type: "howto",
-    title: "塗装工程の手順（BAUM什器）",
-    content: "シーラー×1 → BAUMグリーン×2（小口）。塗装前研磨あり。\nサイト購入の方がコスト安（杉山さん情報 3/24）。\n市川屋は¥6,000/本・納期1週間。",
-    posted_by: "黒部駿人",
-    channel: "#3040_baum",
-    channel_id: "",
-    message_ts: "",
-    date: "2026-03-24",
-    slack_url: ""
-  },
-  {
-    id: "K003",
-    type: "spec",
-    title: "シンク開口テスト完了",
-    content: "研磨調整で隙間テープ不要。開口テストバッチリ。",
-    posted_by: "黒部駿人",
-    channel: "#3040_baum",
-    channel_id: "",
-    message_ts: "",
-    date: "2026-03-19",
-    slack_url: ""
-  },
-  {
-    id: "K004",
-    type: "progress",
-    title: "華厳工場の本棚プラン確認",
-    content: "画像の部分を作る材料はカウントしてない。\nシナの曲げベニヤで曲面は作って、下地の部材を追加する方針。",
-    posted_by: "金子俊耶",
-    channel: "#1141_人の森",
-    channel_id: "C0AFAFBC8AH",
-    message_ts: "",
-    date: "2026-04-01",
-    slack_url: ""
-  },
-  {
-    id: "K005",
-    type: "spec",
-    title: "エレミック設備取り付け日程",
-    content: "エレミックの設備取り付けは4/14希望。\n壁はBF-4だけでも4/10着でほしい。",
-    posted_by: "宇都宮 淳",
-    channel: "#200-40_panpuri",
-    channel_id: "C0AFSB3DZD4",
-    message_ts: "",
-    date: "2026-03-31",
-    slack_url: ""
-  },
-  {
-    id: "K006",
-    type: "trouble",
-    title: "タンク高さがネック",
-    content: "入るは入るのですが、排水金物から伸びるアダプタがタンクに直接刺さってしまう状態で、排水を捨てるなどのオペレーションが不可です。",
-    posted_by: "風祭あゆみ",
-    channel: "#200-40_panpuri",
-    channel_id: "C0AFSB3DZD4",
-    message_ts: "",
-    date: "2026-03-30",
-    slack_url: ""
-  },
-  {
-    id: "K007",
-    type: "howto",
-    title: "ホースがS字に上下しても大丈夫",
-    content: "もしホースがS字に上下して良いのなら（トイレとか洗面台の配管みたいに）大丈夫そう。",
-    posted_by: "風祭あゆみ",
-    channel: "#200-40_panpuri",
-    channel_id: "C0AFSB3DZD4",
-    message_ts: "",
-    date: "2026-03-30",
-    slack_url: ""
-  },
-  {
-    id: "K008",
-    type: "progress",
-    title: "KUKAデモ用サンプルデータ更新",
-    content: "新しいサンプルデータ（GH/3dm）を共有。",
-    posted_by: "Pzo",
-    channel: "#3001_robotarm",
-    channel_id: "C09B6447BQC",
-    message_ts: "",
-    date: "2026-03-31",
-    slack_url: ""
-  },
-  {
-    id: "K009",
-    type: "progress",
-    title: "Gコード動作確認完了",
-    content: "ジーコードで動くようになりました！！",
-    posted_by: "水野祐紀",
-    channel: "#3001_robotarm",
-    channel_id: "C09B6447BQC",
-    message_ts: "",
-    date: "2026-03-27",
-    slack_url: ""
-  },
-  {
-    id: "K010",
-    type: "progress",
-    title: "シュマルツグリッパー調査",
-    content: "割れがあっても吸着できる。PLC無しで空気回路もセットで買える。\nKUKAのX11ケーブルも含みなので、繋いでIO設定のデプロイすれば自社インテグレートも可能そうな範囲だった。\nとにかく吸着力と精度高い。何個かピッチ開けてグリッパーつければ全体につけられるのでそれで押して矯正しながら上下クランプが良さそう。",
-    posted_by: "水野祐紀",
-    channel: "#3001_robotarm",
-    channel_id: "C09B6447BQC",
-    message_ts: "",
-    date: "2026-03-27",
-    slack_url: ""
-  }
-];
+const knowledgeData = [];
 
 const KNOWLEDGE_TYPES = {
   progress: { label: "経過メモ", icon: "📝", class: "progress" },
