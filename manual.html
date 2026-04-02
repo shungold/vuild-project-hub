@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUILD Project Hub — 操作マニュアル</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --bg: #fafaf8; --surface: #ffffff; --surface-2: #f5f4f0;
+    --text: #111; --text2: #666; --text3: #999;
+    --border: #e8e6e1; --green: #2d5a27; --green-light: #e8f2e6;
+    --radius: 8px; --radius-lg: 16px;
+  }
+  body {
+    font-family: 'Inter','Noto Sans JP',-apple-system,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    border-bottom: 1px solid #f0eee9; padding: 0 48px; height: 64px;
+    display: flex; align-items: center; gap: 16px;
+    max-width: 100%;
+  }
+  .header .logo { font-size: 11px; letter-spacing: 4px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
+  .header .divider { width: 1px; height: 20px; background: var(--border); }
+  .header .title { font-size: 15px; font-weight: 600; }
+
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  h1 + .subtitle { font-size: 14px; color: var(--text3); margin-bottom: 40px; }
+
+  h2 {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.3px;
+    margin: 48px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--text);
+  }
+  h3 { font-size: 14px; font-weight: 700; margin: 24px 0 10px; color: var(--text2); }
+
+  p { margin-bottom: 12px; font-size: 14px; }
+
+  .url-box {
+    display: inline-block; padding: 8px 20px; background: var(--green-light);
+    border-radius: var(--radius); font-size: 14px; font-weight: 600;
+    color: var(--green); margin-bottom: 24px;
+  }
+  .url-box a { color: var(--green); text-decoration: none; }
+  .url-box a:hover { text-decoration: underline; }
+
+  .file-tree {
+    background: #1e1e2e; color: #cdd6f4; padding: 20px 24px;
+    border-radius: var(--radius-lg); font-family: 'Consolas','SF Mono',monospace;
+    font-size: 12px; line-height: 2; margin-bottom: 24px; overflow-x: auto;
+  }
+  .file-tree .comment { color: #6c7086; }
+
+  table {
+    width: 100%; border-collapse: collapse; margin-bottom: 20px;
+    font-size: 13px; background: var(--surface);
+    border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  th {
+    background: var(--text); color: #fff; padding: 10px 16px;
+    text-align: left; font-weight: 500; font-size: 12px;
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid #f0eee9; }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { font-weight: 600; }
+
+  .cmd {
+    display: inline-block; padding: 2px 10px; background: var(--surface-2);
+    border-radius: 4px; font-size: 12px; font-family: 'Consolas',monospace;
+    color: var(--green); font-weight: 600;
+  }
+
+  .tabs-preview {
+    display: flex; gap: 0; background: var(--surface); border-radius: var(--radius) var(--radius) 0 0;
+    border: 1px solid var(--border); border-bottom: 2px solid var(--text);
+    overflow: hidden; margin-bottom: 0;
+  }
+  .tab-p {
+    padding: 10px 16px; font-size: 12px; font-weight: 500;
+    color: var(--text3); border-bottom: 2px solid transparent; margin-bottom: -2px;
+  }
+  .tab-p.active { color: var(--text); border-bottom-color: var(--text); }
+  .tab-content {
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 var(--radius) var(--radius);
+    padding: 16px 20px; margin-bottom: 24px; background: var(--surface);
+    font-size: 13px; color: var(--text2); line-height: 1.8;
+  }
+
+  .stamp-table td:first-child { font-size: 20px; text-align: center; width: 60px; }
+
+  .flow-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px;
+    font-family: 'Consolas',monospace; font-size: 13px; line-height: 2.2;
+    margin-bottom: 24px; color: var(--text2);
+  }
+  .flow-box strong { color: var(--text); }
+  .flow-box .arrow { color: var(--green); }
+
+  .tip {
+    background: var(--green-light); border-radius: var(--radius);
+    padding: 14px 20px; font-size: 13px; color: var(--green);
+    margin: 16px 0; line-height: 1.7;
+  }
+
+  ul { padding-left: 20px; margin-bottom: 12px; }
+  li { font-size: 13px; margin-bottom: 4px; }
+
+  .section-icon { font-size: 20px; margin-right: 8px; }
+
+  @media (max-width: 768px) {
+    .header, .container { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="logo">VUILD</span>
+  <div class="divider"></div>
+  <span class="title">Project Hub — 操作マニュアル</span>
+</div>
+
+<div class="container">
+
+<h1>操作マニュアル</h1>
+<div class="subtitle">VUILD Project Hub の使い方ガイド</div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">🌐</span>公開URL</h2>
+<div class="url-box"><a href="https://shungold.github.io/vuild-project-hub/" target="_blank">https://shungold.github.io/vuild-project-hub/</a></div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">📁</span>ファイルの場所</h2>
+<div class="file-tree">
+G:\マイドライブ\Claude_Projects\fixture-drawing-previewer\<br>
+├── index.html <span class="comment">← ポータル（案件リスト + 全金物）</span><br>
+├── candidates.json <span class="comment">← Slack候補データ</span><br>
+├── manual.html <span class="comment">← このマニュアル</span><br>
+└── projects\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── hitonomori_wallshelf\<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── index.html <span class="comment">← 案件詳細ページ</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── candidates.json
+</div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">💬</span>Claudeへの指示コマンド</h2>
+
+<h3>サイト更新</h3>
+<table>
+  <tr><th>言うこと</th><th>何が起きるか</th></tr>
+  <tr><td><span class="cmd">GitHubにpushして</span></td><td>ファイルの変更を公開サイトに反映（1-2分）</td></tr>
+</table>
+
+<h3>Slack連携</h3>
+<table>
+  <tr><th>言うこと</th><th>何が起きるか</th></tr>
+  <tr><td><span class="cmd">Slackスキャンして</span></td><td>Slackから金物候補+ナレッジを収集 → JSON更新</td></tr>
+  <tr><td><span class="cmd">金物スレ立てて #チャンネル名</span></td><td>チャンネルに🔩金物選定 + 📚ナレッジルールを投稿</td></tr>
+</table>
+
+<h3>UI・機能の変更</h3>
+<table>
+  <tr><th>言うこと（例）</th><th>何が起きるか</th></tr>
+  <tr><td><span class="cmd">BOMにカテゴリ追加して</span></td><td>HTMLを編集してカテゴリ追加</td></tr>
+  <tr><td><span class="cmd">ナレッジのデザイン変えて</span></td><td>CSSを編集</td></tr>
+  <tr><td><span class="cmd">案件ページを追加して</span></td><td>新しいプロジェクトフォルダ+ページを作成</td></tr>
+  <tr><td><span class="cmd">マニュアル更新して</span></td><td>このマニュアルを最新の状態に更新</td></tr>
+</table>
+
+<h3>日常タスク</h3>
+<table>
+  <tr><th>言うこと</th><th>何が起きるか</th></tr>
+  <tr><td><span class="cmd">今日のタスク教えて</span></td><td>Googleカレンダー + Slack + 前回の作業から整理</td></tr>
+</table>
+
+<div class="tip">基本は<strong>Claudeに日本語で指示するだけ</strong>です。コードを触る必要はありません。</div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">🖥️</span>WEBの画面構成</h2>
+
+<h3>ポータルページ</h3>
+<div class="tabs-preview">
+  <div class="tab-p active">案件リスト</div>
+  <div class="tab-p">全案件の金物</div>
+</div>
+<div class="tab-content">
+  <strong>案件リスト</strong>: 案件カードをクリック → 案件詳細ページへ遷移<br>
+  <strong>全案件の金物</strong>: 全プロジェクトの金物を横断検索。過去案件の金物を再利用するときに便利。
+</div>
+
+<h3>案件詳細ページ</h3>
+<div class="tabs-preview">
+  <div class="tab-p active">アクソメ</div>
+  <div class="tab-p">図面</div>
+  <div class="tab-p">金物カタログ</div>
+  <div class="tab-p">BOM</div>
+  <div class="tab-p">ナレッジ</div>
+</div>
+<div class="tab-content">
+  <strong>アクソメビュー</strong> — 什器のアクソメ図にピン配置。クリックでサイドバーに金物詳細。黄色ピン=未登録。<br><br>
+  <strong>図面プレビュー</strong> — 用紙(A1/A2/A3)、縮尺(1:1〜1:50)切替。ビューをドラッグでレイアウト。レイヤトグル。PDF出力。<br><br>
+  <strong>金物カタログ</strong> — Slackからの候補（黄色枠）+ 登録済み金物。検索・フィルタ・重複検知・AIサーチ。編集モーダルで品名/品番/メーカー/価格/サムネ/履歴を管理。<br><br>
+  <strong>BOM</strong> — 概算見積もり。全カテゴリの原価・数量を直接編集。製作予算→粗利率リアルタイム計算。AUTOESTIMATORのJSONインポート/エクスポート。CSVエクスポート。<br><br>
+  <strong>ナレッジ</strong> — Slackのスタンプ付き投稿を自動収集。📝経過/⚠️トラブル/💡ハウツー/🚩仕様のフィルタ。横断検索。
+</div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">🏷️</span>Slackスタンプルール</h2>
+
+<h3>金物用（🔩金物選定スレッド内）</h3>
+<table class="stamp-table">
+  <tr><th>スタンプ</th><th>意味</th><th>WEB動作</th></tr>
+  <tr><td>✅</td><td>本採用</td><td>カタログに正式登録</td></tr>
+  <tr><td>🔍</td><td>検討中</td><td>候補として黄色枠表示</td></tr>
+  <tr><td>❌</td><td>却下</td><td>候補から除外</td></tr>
+  <tr><td>💰</td><td>発注済み</td><td>BOMで発注チェックON</td></tr>
+</table>
+
+<h3>ナレッジ用（チャンネル内どこでも）</h3>
+<table class="stamp-table">
+  <tr><th>スタンプ</th><th>意味</th><th>例</th></tr>
+  <tr><td>📝</td><td>経過メモ</td><td>「車輪位置はシンク側で確定」</td></tr>
+  <tr><td>⚠️</td><td>トラブル</td><td>「開口サイズ合わず再加工」</td></tr>
+  <tr><td>💡</td><td>ハウツー</td><td>「シーラー→グリーン×2で小口OK」</td></tr>
+  <tr><td>🚩</td><td>仕様決定</td><td>「天板厚24mm、シナ合板に確定」</td></tr>
+</table>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">🤖</span>AUTOESTIMATOR連携</h2>
+<table>
+  <tr><th>手順</th><th>操作</th></tr>
+  <tr><td>1</td><td><a href="https://aiestimate-production.up.railway.app/" target="_blank">AUTOESTIMATOR</a> で説明+画像を入力して見積もり生成</td></tr>
+  <tr><td>2</td><td>JSONをエクスポート（ダウンロード）</td></tr>
+  <tr><td>3</td><td>WEBのBOMタブにJSONファイルをドラッグ&ドロップ</td></tr>
+  <tr><td>4</td><td>材料費/加工費/人工が自動でBOMカテゴリに振り分け</td></tr>
+  <tr><td>5</td><td>金物はカタログと照合 → 概算 vs 実価格の差分が表示される</td></tr>
+</table>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">🔄</span>データの流れ</h2>
+<div class="flow-box">
+<strong>Slackで商品リンク投稿</strong><br>
+&nbsp;&nbsp;<span class="arrow">↓</span> <span class="cmd">Slackスキャンして</span><br>
+<strong>candidates.json に候補追加</strong><br>
+&nbsp;&nbsp;<span class="arrow">↓</span> WEBで「採用する」ボタン<br>
+<strong>hardware.json に正式登録</strong><br>
+&nbsp;&nbsp;<span class="arrow">↓</span><br>
+<strong>BOM・図面に自動反映</strong><br>
+&nbsp;&nbsp;<span class="arrow">↓</span> <span class="cmd">GitHubにpushして</span><br>
+<strong>公開サイトに反映</strong>
+</div>
+
+<!-- ═══════════════════════════ -->
+<h2><span class="section-icon">❓</span>困ったら</h2>
+<ul>
+  <li>Claudeに「〇〇のやり方教えて」と聞く</li>
+  <li>「マニュアル更新して」と言えばClaudeがこのページを更新します</li>
+  <li>サイトが反映されない → 「GitHubにpushして」と言い忘れてないか確認</li>
+</ul>
+
+</div>
+</body>
+</html>
