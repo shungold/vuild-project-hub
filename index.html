@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUILD — Project Hub</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --surface-2: #f5f4f0;
+    --text-primary: #111111;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+    --border: #e8e6e1;
+    --border-light: #f0eee9;
+    --accent-green: #2d5a27;
+    --accent-green-light: #e8f2e6;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
+    --radius: 8px;
+    --radius-lg: 16px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text-primary);
+    line-height: 1.7; -webkit-font-smoothing: antialiased;
+  }
+
+  .global-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-light);
+  }
+  .header-inner {
+    max-width: 1440px; margin: 0 auto; padding: 0 48px;
+    height: 64px; display: flex; align-items: center;
+  }
+  .brand { display: flex; align-items: center; gap: 16px; }
+  .brand-logo { font-size: 11px; letter-spacing: 4px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; }
+  .brand-divider { width: 1px; height: 20px; background: var(--border); }
+  .brand-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+
+  .nav-bar { background: var(--surface); border-bottom: 1px solid var(--border-light); }
+  .nav-inner { max-width: 1440px; margin: 0 auto; padding: 0 48px; display: flex; }
+  .nav-tab {
+    padding: 16px 20px; font-size: 13px; font-weight: 500; color: var(--text-tertiary);
+    cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition);
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--text-secondary); }
+  .nav-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+  .nav-tab .count {
+    display: inline-block; background: var(--surface-2); font-size: 10px;
+    padding: 1px 6px; border-radius: 10px; margin-left: 6px; color: var(--text-tertiary);
+  }
+
+  .content-area { max-width: 1440px; margin: 0 auto; padding: 32px 48px 80px; }
+  .view { display: none; }
+  .view.active { display: block; }
+  .section-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 28px; }
+
+  /* ═══ PROJECT CARDS ═══ */
+  .project-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;
+  }
+  .project-card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+    overflow: hidden; transition: var(--transition);
+    cursor: pointer; text-decoration: none; color: inherit; display: block;
+  }
+  .project-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .project-card.disabled { opacity: 0.55; cursor: default; }
+  .project-card.disabled:hover { box-shadow: var(--shadow-sm); transform: none; }
+
+  .project-visual {
+    height: 180px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-visual svg { width: 100%; height: 100%; }
+  .project-badge {
+    position: absolute; top: 14px; left: 14px;
+    font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px;
+  }
+  .project-badge.active { background: var(--accent-green-light); color: var(--accent-green); }
+  .project-badge.completed { background: var(--surface-2); color: var(--text-tertiary); }
+  .project-badge.planning { background: #e3f2fd; color: #1565c0; }
+
+  .project-body { padding: 20px 24px; }
+  .project-body h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .project-body .pid { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
+  .project-stats { display: flex; gap: 20px; }
+  .pstat .pval { font-size: 18px; font-weight: 700; }
+  .pstat .plabel { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
+
+  .project-footer {
+    padding: 12px 24px; border-top: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; color: var(--text-tertiary);
+  }
+  .avatars { display: flex; }
+  .avatar {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--surface-2); border: 2px solid var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: var(--text-secondary);
+    margin-left: -6px;
+  }
+  .avatar:first-child { margin-left: 0; }
+
+  /* ═══ GLOBAL HARDWARE ═══ */
+  .hw-search {
+    width: 100%; padding: 10px 18px; border: 1px solid var(--border);
+    border-radius: var(--radius); font-size: 13px; background: var(--surface);
+    font-family: inherit; margin-bottom: 16px;
+  }
+  .hw-search:focus { outline: none; border-color: var(--text-secondary); }
+  .filter-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .filter-chip {
+    padding: 7px 18px; border-radius: 100px; border: 1px solid var(--border);
+    background: var(--surface); font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: var(--transition); font-family: inherit; color: var(--text-secondary);
+  }
+  .filter-chip:hover { border-color: var(--text-secondary); color: var(--text-primary); }
+  .filter-chip.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+
+  .hw-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
+  }
+  .hw-card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+    overflow: hidden; transition: var(--transition);
+  }
+  .hw-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .hw-card-visual {
+    height: 140px; background: var(--surface-2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hw-card-visual img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
+  .hw-card-visual .hw-ptag {
+    position: absolute; bottom: 8px; right: 8px;
+    font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+    background: rgba(0,0,0,0.6); color: #fff;
+  }
+  .hw-card-body { padding: 14px 18px; }
+  .hw-card-body h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .hw-card-body .hw-meta { font-size: 11px; color: var(--text-tertiary); line-height: 1.6; }
+
+  @media (max-width: 768px) {
+    .header-inner, .nav-inner, .content-area { padding-left: 20px; padding-right: 20px; }
+    .project-grid, .hw-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="global-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-logo">VUILD</span>
+      <div class="brand-divider"></div>
+      <span class="brand-title">Project Hub</span>
+    </div>
+  </div>
+</div>
+
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-tab active" data-view="projects">案件リスト <span class="count" id="projectCount">0</span></div>
+    <div class="nav-tab" data-view="hardware">全案件の金物 <span class="count" id="globalHwCount">0</span></div>
+  </div>
+</div>
+
+<div class="content-area">
+
+<div class="view active" id="view-projects">
+  <div class="section-title">案件リスト</div>
+  <div class="section-desc">案件をクリックすると、図面プレビュー・金物カタログ・BOM・ナレッジを確認できます</div>
+  <div class="project-grid" id="projectGrid"></div>
+</div>
+
+<div class="view" id="view-hardware">
+  <div class="section-title">全案件の金物</div>
+  <div class="section-desc">全プロジェクトの金物を横断検索 — 過去に使った金物を別案件でも再利用</div>
+  <input type="text" class="hw-search" id="globalHwSearch" placeholder="金物を検索（品名・品番・メーカー・案件名）..." oninput="renderGlobalHw()">
+  <div class="filter-row" id="globalFilterRow"></div>
+  <div class="hw-grid" id="globalHwGrid"></div>
+</div>
+
+</div>
+
+<script>
+const projects = [
+  {
+    id:"hitonomori_wallshelf", name:"曲面壁面什器", pid:"#1141",
+    client:"人の森 ライブラリースペース", status:"active",
+    path:"projects/hitonomori_wallshelf/index.html",
+    color:"#e8e5de", members:["金子","黒部"],
+    stats:{hardware:5, knowledge:10, bom:"¥762K"}, updated:"2026-04-02"
+  },
+  {
+    id:"baum_mobile", name:"BAUM 移動式什器", pid:"#3040",
+    client:"資生堂 BAUM", status:"active", path:"",
+    color:"#d8e0d4", members:["金子","黒部","向田"],
+    stats:{hardware:23, knowledge:8, bom:"¥762K"}, updated:"2026-03-31"
+  },
+  {
+    id:"panpuri_popup", name:"panpuri ポップアップ", pid:"#200-40",
+    client:"ユタカ産業", status:"active", path:"",
+    color:"#e0dbd2", members:["戸倉","宇都宮","風祭","金子"],
+    stats:{hardware:12, knowledge:15, bom:"¥838K"}, updated:"2026-04-02"
+  },
+  {
+    id:"kuka_robotarm", name:"ロボットアーム連携", pid:"#3001",
+    client:"VUILD Fab", status:"planning", path:"",
+    color:"#d4d8dc", members:["金子","水野","Pzo"],
+    stats:{hardware:3, knowledge:5, bom:"-"}, updated:"2026-04-01"
+  }
+];
+
+const globalHardware = [
+  {name:"自在キャスター 100mm",code:"420FOS-L100",maker:"ハンマーキャスター",price:850,cat:"キャスター",project:"曲面壁面什器",pid:"#1141",img:"https://images.monotaro.com/Monotaro3/pi/full/mono35862965-190314-02.jpg"},
+  {name:"スライド丁番 26mm",code:"360-D26-19T",maker:"スガツネ工業",price:420,cat:"丁番",project:"曲面壁面什器",pid:"#1141",img:"https://images.monotaro.com/Monotaro3/pi/full/mono00296024-160210-02.jpg"},
+  {name:"棚ダボ 差込式 5mm",code:"AP-20N",maker:"スガツネ工業",price:35,cat:"棚受け",project:"曲面壁面什器",pid:"#1141",img:""},
+  {name:"スライドレール 350mm",code:"C2431-350",maker:"日本アキュライド",price:1280,cat:"スライドレール",project:"曲面壁面什器",pid:"#1141",img:""},
+  {name:"AGRスライドローラー ミニ3号",code:"",maker:"Atom Living Tech",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://direct.atomlt.com/upload/save_image/10122118_50780a9472257.jpg"},
+  {name:"ステンレスCツマミ",code:"",maker:"Atom Living Tech",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono76012745-200423-02.jpg"},
+  {name:"鍵（引き戸用）",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono02291582-221006-02.jpg"},
+  {name:"混合栓フォーセット",code:"",maker:"キャンピングカーパーツセンター",price:0,cat:"設備・水回り",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"EcoFlow RIVER 3",code:"",maker:"EcoFlow",price:0,cat:"電源",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"排水金具",code:"4526",maker:"カクダイ",price:0,cat:"設備・水回り",project:"panpuriポップアップ",pid:"#200-40",img:""},
+  {name:"ポリタンク 10L",code:"",maker:"TS",price:0,cat:"設備・水回り",project:"panpuriポップアップ",pid:"#200-40",img:""},
+  {name:"ROEMHELD スイングクランプ",code:"J7.201",maker:"D. ROEMHELD",price:0,cat:"金物・金具",project:"ロボットアーム連携",pid:"#3001",img:""},
+  {name:"シュマルツ グリッパー PXT",code:"PXT",maker:"Schmalz",price:0,cat:"金物・金具",project:"ロボットアーム連携",pid:"#3001",img:""},
+];
+
+// Tab switching
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + tab.dataset.view).classList.add('active');
+  });
+});
+
+// Projects
+function renderProjects() {
+  document.getElementById('projectGrid').innerHTML = projects.map(p => {
+    const label = {active:'設計中',completed:'完了',planning:'計画中'}[p.status];
+    const tag = p.path ? `<a href="${p.path}" class="project-card">` : `<div class="project-card disabled">`;
+    const endTag = p.path ? '</a>' : '</div>';
+    return `${tag}
+      <div class="project-visual" style="background:${p.color}">
+        <svg viewBox="0 0 400 200" style="opacity:0.25">
+          <rect x="80" y="30" width="240" height="140" rx="4" fill="none" stroke="#333" stroke-width="1.5"/>
+          <line x1="80" y1="80" x2="320" y2="80" stroke="#333" stroke-width="1"/>
+          <line x1="80" y1="120" x2="320" y2="120" stroke="#333" stroke-width="1"/>
+          <line x1="200" y1="80" x2="200" y2="170" stroke="#333" stroke-width="1"/>
+          <circle cx="110" cy="175" r="8" fill="none" stroke="#333" stroke-width="1.5"/>
+          <circle cx="290" cy="175" r="8" fill="none" stroke="#333" stroke-width="1.5"/>
+        </svg>
+        <span class="project-badge ${p.status}">${label}</span>
+      </div>
+      <div class="project-body">
+        <h3>${p.name}</h3>
+        <div class="pid">${p.pid} ・ ${p.client}</div>
+        <div class="project-stats">
+          <div class="pstat"><div class="pval">${p.stats.hardware}</div><div class="plabel">金物</div></div>
+          <div class="pstat"><div class="pval">${p.stats.knowledge}</div><div class="plabel">ナレッジ</div></div>
+          <div class="pstat"><div class="pval">${p.stats.bom}</div><div class="plabel">原価</div></div>
+        </div>
+      </div>
+      <div class="project-footer">
+        <div class="avatars">${p.members.map(m=>`<div class="avatar">${m[0]}</div>`).join('')}</div>
+        <span>更新: ${p.updated}</span>
+      </div>
+    ${endTag}`;
+  }).join('');
+  document.getElementById('projectCount').textContent = projects.length;
+}
+
+// Global Hardware
+let gwFilter = 'すべて';
+function renderGlobalHw() {
+  const search = document.getElementById('globalHwSearch').value.toLowerCase();
+  const cats = ['すべて', ...new Set(globalHardware.map(h=>h.cat))];
+  const pids = ['全案件', ...new Set(globalHardware.map(h=>h.pid))];
+
+  document.getElementById('globalFilterRow').innerHTML =
+    cats.map(c=>`<button class="filter-chip ${c===gwFilter?'active':''}" onclick="gwFilter='${c}';renderGlobalHw()">${c}</button>`).join('') +
+    '<span style="width:1px;height:24px;background:var(--border);margin:0 4px"></span>' +
+    pids.map(p=>`<button class="filter-chip ${p===gwFilter?'active':''}" onclick="gwFilter='${p}';renderGlobalHw()">${p}</button>`).join('');
+
+  const filtered = globalHardware.filter(h=>{
+    if(gwFilter!=='すべて' && gwFilter!=='全案件' && h.cat!==gwFilter && h.pid!==gwFilter) return false;
+    if(search && !(h.name+h.code+h.maker+h.project+h.cat).toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  document.getElementById('globalHwCount').textContent = globalHardware.length;
+  document.getElementById('globalHwGrid').innerHTML = filtered.map(h=>`
+    <div class="hw-card">
+      <div class="hw-card-visual">
+        ${h.img?`<img src="${h.img}" onerror="this.style.display='none'">`:'<span style="font-size:32px;color:var(--text-tertiary)">&#9881;</span>'}
+        <span class="hw-ptag">${h.pid} ${h.project}</span>
+      </div>
+      <div class="hw-card-body">
+        <h4>${h.name}</h4>
+        <div class="hw-meta">${h.code||'-'} / ${h.maker||'-'}${h.price?' / ¥'+h.price.toLocaleString():''}</div>
+      </div>
+    </div>
+  `).join('') || '<div style="text-align:center;color:var(--text-tertiary);padding:40px">該当なし</div>';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderProjects();
+  renderGlobalHw();
+});
+</script>
+</body>
+</html>
