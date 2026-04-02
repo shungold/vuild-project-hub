@@ -118,10 +118,16 @@ Slackスキャン時（「Slackスキャンして」で全て実行）:
 - [ ] 各チャンネルの🔩スレッドを読む
 - [ ] スタンプに基づいてデータを分類（✅→採用、🔍→候補、❌→却下、💰→発注済み）
 - [ ] チャンネル本文からナレッジを自動判別（progress/trouble/howto/spec）
-- [ ] 商品画像を自動取得:
-  - MonotaRO: 品番からURL推測 (mono+品番+日付+02.jpg)、BAUMカタログの既知URLも参照
-  - その他ECサイト: WebFetchでOGP画像/商品画像URLを取得
+- [ ] 商品情報を自動取得（Pythonスクレイパー tools/monotaro_scraper.py を使用）:
+  - MonotaRO: スクレイパーで商品名・品番・メーカー・価格(税込)・画像URLを取得
+  - その他ECサイト: WebFetchでOGP/JSON-LDから商品情報を取得
   - Slack添付画像: ファイル名は検知可能だがURL取得不可（手動DL必要）
+- [ ] **既存データの保護（重要）**:
+  - 既にhardwareCatalogに登録済みのアイテムは、WEB上で手動修正された可能性がある
+  - スキャン時に既存アイテムのproduct_url、price、product_code、thumbnail_url、specsを上書きしない
+  - 新規アイテム（Slackに新しく投稿されたもの）のみ追加する
+  - 既存アイテムのステータス変更（スタンプ変更）のみ反映する
+  - URLや価格を更新したい場合はユーザーに確認してから行う
 - [ ] 各プロジェクトページに正しいデータを振り分け（CLAUDE.mdのチャンネル対応表に従う）
 - [ ] ポータル(index.html)のstatsを更新
 - [ ] git push
