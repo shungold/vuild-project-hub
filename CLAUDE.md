@@ -116,6 +116,7 @@ fixture-drawing-previewer/
 
 Slackスキャン時（「Slackスキャンして」で全て実行）:
 - [ ] 各チャンネルの🔩スレッドを読む
+- [ ] スレッド返信内のECリンクも必ずチェックする（チャンネル本文だけでなく）
 - [ ] スタンプに基づいてデータを分類（✅→採用、🔍→候補、❌→却下、💰→発注済み）
 - [ ] チャンネル本文からナレッジを自動判別（progress/trouble/howto/spec）
 - [ ] 商品情報を自動取得（Pythonスクレイパー tools/monotaro_scraper.py を使用）:
