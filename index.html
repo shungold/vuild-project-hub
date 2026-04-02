@@ -207,42 +207,40 @@ const projects = [
     client:"人の森 ライブラリースペース", status:"active",
     path:"projects/hitonomori_wallshelf/index.html",
     color:"#e8e5de", members:["金子","黒部"],
-    stats:{hardware:5, knowledge:10, bom:"¥762K"}, updated:"2026-04-02"
+    stats:{hardware:0, knowledge:0, bom:"-"}, updated:"2026-04-02"
   },
   {
     id:"baum_mobile", name:"BAUM 移動式什器", pid:"#3040",
-    client:"資生堂 BAUM", status:"active", path:"",
+    client:"資生堂 BAUM", status:"active",
+    path:"projects/baum_mobile/index.html",
     color:"#d8e0d4", members:["金子","黒部","向田"],
-    stats:{hardware:23, knowledge:8, bom:"¥762K"}, updated:"2026-03-31"
+    stats:{hardware:8, knowledge:0, bom:"-"}, updated:"2026-04-02"
   },
   {
-    id:"panpuri_popup", name:"panpuri ポップアップ", pid:"#200-40",
-    client:"ユタカ産業", status:"active", path:"",
-    color:"#e0dbd2", members:["戸倉","宇都宮","風祭","金子"],
-    stats:{hardware:12, knowledge:15, bom:"¥838K"}, updated:"2026-04-02"
+    id:"tokyo_rooftop", name:"屋上庭園PJ", pid:"#1127",
+    client:"東京建物", status:"active",
+    path:"projects/tokyo_rooftop/index.html",
+    color:"#d4d8dc", members:["金子","黒部","杉山"],
+    stats:{hardware:0, knowledge:0, bom:"-"}, updated:"2026-04-02"
   },
   {
-    id:"kuka_robotarm", name:"ロボットアーム連携", pid:"#3001",
-    client:"VUILD Fab", status:"planning", path:"",
-    color:"#d4d8dc", members:["金子","水野","Pzo"],
-    stats:{hardware:3, knowledge:5, bom:"-"}, updated:"2026-04-01"
+    id:"pan_kitchen", name:"セルフビルドキッチン", pid:"#1125",
+    client:"Panasonic 門真新棟", status:"completed",
+    path:"projects/pan_kitchen/index.html",
+    color:"#e0dbd2", members:["金子","黒部","向田","杉山"],
+    stats:{hardware:0, knowledge:0, bom:"-"}, updated:"2026-04-02"
   }
 ];
 
 const globalHardware = [
-  {name:"自在キャスター 100mm",code:"420FOS-L100",maker:"ハンマーキャスター",price:850,cat:"キャスター",project:"曲面壁面什器",pid:"#1141",img:"https://images.monotaro.com/Monotaro3/pi/full/mono35862965-190314-02.jpg"},
-  {name:"スライド丁番 26mm",code:"360-D26-19T",maker:"スガツネ工業",price:420,cat:"丁番",project:"曲面壁面什器",pid:"#1141",img:"https://images.monotaro.com/Monotaro3/pi/full/mono00296024-160210-02.jpg"},
-  {name:"棚ダボ 差込式 5mm",code:"AP-20N",maker:"スガツネ工業",price:35,cat:"棚受け",project:"曲面壁面什器",pid:"#1141",img:""},
-  {name:"スライドレール 350mm",code:"C2431-350",maker:"日本アキュライド",price:1280,cat:"スライドレール",project:"曲面壁面什器",pid:"#1141",img:""},
-  {name:"AGRスライドローラー ミニ3号",code:"",maker:"Atom Living Tech",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://direct.atomlt.com/upload/save_image/10122118_50780a9472257.jpg"},
-  {name:"ステンレスCツマミ",code:"",maker:"Atom Living Tech",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono76012745-200423-02.jpg"},
-  {name:"鍵（引き戸用）",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono02291582-221006-02.jpg"},
-  {name:"混合栓フォーセット",code:"",maker:"キャンピングカーパーツセンター",price:0,cat:"設備・水回り",project:"BAUM移動式什器",pid:"#3040",img:""},
-  {name:"EcoFlow RIVER 3",code:"",maker:"EcoFlow",price:0,cat:"電源",project:"BAUM移動式什器",pid:"#3040",img:""},
-  {name:"排水金具",code:"4526",maker:"カクダイ",price:0,cat:"設備・水回り",project:"panpuriポップアップ",pid:"#200-40",img:""},
-  {name:"ポリタンク 10L",code:"",maker:"TS",price:0,cat:"設備・水回り",project:"panpuriポップアップ",pid:"#200-40",img:""},
-  {name:"ROEMHELD スイングクランプ",code:"J7.201",maker:"D. ROEMHELD",price:0,cat:"金物・金具",project:"ロボットアーム連携",pid:"#3001",img:""},
-  {name:"シュマルツ グリッパー PXT",code:"PXT",maker:"Schmalz",price:0,cat:"金物・金具",project:"ロボットアーム連携",pid:"#3001",img:""},
+  {name:"丁番",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"丸棒用Lアングル",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"ステンレスCツマミ HL",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"引き戸レール アルミ仕様",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"鍵 面付錠（引き戸用）",code:"",maker:"MonotaRO",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"AGRスライドローラー ミニ3号",code:"",maker:"Atom Living Tech",price:0,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"BAUMグリーン塗料",code:"",maker:"paintcolor",price:0,cat:"塗装・仕上げ",project:"BAUM移動式什器",pid:"#3040",img:""},
+  {name:"水性サンディングシーラー",code:"",maker:"MonotaRO",price:0,cat:"塗装・仕上げ",project:"BAUM移動式什器",pid:"#3040",img:""},
 ];
 
 // Tab switching

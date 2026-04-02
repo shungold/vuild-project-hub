@@ -621,11 +621,11 @@
         <span class="brand-logo">VUILD</span>
       </a>
       <div class="brand-divider"></div>
-      <span class="brand-project">曲面壁面什器</span>
+      <span class="brand-project">セルフビルドキッチン</span>
     </div>
     <div class="header-right">
-      <span class="header-badge">設計中</span>
-      <span class="header-meta">#1141 ・ 人の森 ライブラリースペース</span>
+      <span class="header-badge">完了</span>
+      <span class="header-meta">#1125 ・ Panasonic 門真新棟</span>
     </div>
   </div>
 </div>
@@ -767,8 +767,8 @@
     <div class="paper" id="paper">
       <div class="paper-inner" id="paperInner"></div>
       <div class="title-block">
-        <span class="tb-label">Project</span><span class="tb-val">人の森</span>
-        <span class="tb-label">Title</span><span class="tb-val">曲面壁面什器</span>
+        <span class="tb-label">Project</span><span class="tb-val">Panasonic 門真新棟</span>
+        <span class="tb-label">Title</span><span class="tb-val">セルフビルドキッチン</span>
         <span class="tb-label">Scale</span><span class="tb-val" id="tb-scale">1:10</span>
         <span class="tb-label">Paper</span><span class="tb-val" id="tb-paper">A2</span>
         <span class="tb-label">Date</span><span class="tb-val">2026-04-02</span>
@@ -803,7 +803,7 @@
 <!-- ━━━ BOM VIEW ━━━ -->
 <div class="view" id="view-bom">
   <div class="section-title">概算見積もり</div>
-  <div class="section-desc">人の森_曲面壁面什器 — 原価管理</div>
+  <div class="section-desc">pan_セルフビルドキッチン — 原価管理</div>
 
   <div class="bom-import-area" id="bomImportArea"
     ondragover="event.preventDefault();this.classList.add('dragover')"
@@ -926,10 +926,16 @@
 
 const hardwareCatalog = [];
 
-const candidatesData = [];
+const candidatesData = [
+  {id:"CAND_001",name:"ジョイントパーツ（中のパーツ）",product_url:"https://www.monotaro.com/p/2146/4006/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"",source:"slack",slack_channel:"#1125_pan_セルフビルドキッチン",posted_by:"金子",posted_at:"2026-04-02",context:"中のジョイントパーツ",status:"pending"},
+  {id:"CAND_002",name:"ジョイントパーツ（真ん中のパーツ）",product_url:"https://www.monotaro.com/p/5557/0926/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"",source:"slack",slack_channel:"#1125_pan_セルフビルドキッチン",posted_by:"金子",posted_at:"2026-04-02",context:"真ん中のジョイントパーツ",status:"pending"},
+  {id:"CAND_003",name:"サドル",product_url:"https://www.monotaro.com/p/3506/1266/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"",source:"slack",slack_channel:"#1125_pan_セルフビルドキッチン",posted_by:"向田",posted_at:"2026-04-02",context:"サドル",status:"pending"},
+  {id:"CAND_004",name:"天板用コーナービット 20R",product_url:"https://www.daigenshokai.co.jp/item/dainichi-router-b20r/",product_code:"",maker:"大源商会",price:null,thumbnail_url:"",category:"金物・金具",specs:"軸中央から刃物始まりまで9.5mm",source:"slack",slack_channel:"#1125_pan_セルフビルドキッチン",posted_by:"向田",posted_at:"2026-04-02",context:"天板用コーナービット",status:"pending"},
+  {id:"CAND_005",name:"ドームパネルパーツ",product_url:"https://www.monotaro.com/p/6818/5398/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"",source:"slack",slack_channel:"#1125_pan_セルフビルドキッチン",posted_by:"金子",posted_at:"2026-04-02",context:"ドームパネルパーツ",status:"pending"}
+];
 
 const drawingMeta = {
-  project:"人の森_曲面壁面什器", model_file:"260402_壁面什器.3dm",
+  project:"pan_セルフビルドキッチン", model_file:"260402_壁面什器.3dm",
   overall_dimensions:{width:3200,height:2400,depth:450},
   views:[
     {id:"front",direction:"正面図",w:320,h:240},

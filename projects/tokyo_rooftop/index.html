@@ -621,11 +621,11 @@
         <span class="brand-logo">VUILD</span>
       </a>
       <div class="brand-divider"></div>
-      <span class="brand-project">曲面壁面什器</span>
+      <span class="brand-project">屋上庭園PJ</span>
     </div>
     <div class="header-right">
-      <span class="header-badge">設計中</span>
-      <span class="header-meta">#1141 ・ 人の森 ライブラリースペース</span>
+      <span class="header-badge">施工中</span>
+      <span class="header-meta">#1127 ・ 東京建物</span>
     </div>
   </div>
 </div>
@@ -767,8 +767,8 @@
     <div class="paper" id="paper">
       <div class="paper-inner" id="paperInner"></div>
       <div class="title-block">
-        <span class="tb-label">Project</span><span class="tb-val">人の森</span>
-        <span class="tb-label">Title</span><span class="tb-val">曲面壁面什器</span>
+        <span class="tb-label">Project</span><span class="tb-val">東京建物</span>
+        <span class="tb-label">Title</span><span class="tb-val">屋上庭園</span>
         <span class="tb-label">Scale</span><span class="tb-val" id="tb-scale">1:10</span>
         <span class="tb-label">Paper</span><span class="tb-val" id="tb-paper">A2</span>
         <span class="tb-label">Date</span><span class="tb-val">2026-04-02</span>
@@ -803,7 +803,7 @@
 <!-- ━━━ BOM VIEW ━━━ -->
 <div class="view" id="view-bom">
   <div class="section-title">概算見積もり</div>
-  <div class="section-desc">人の森_曲面壁面什器 — 原価管理</div>
+  <div class="section-desc">東京建物_屋上庭園 — 原価管理</div>
 
   <div class="bom-import-area" id="bomImportArea"
     ondragover="event.preventDefault();this.classList.add('dragover')"
@@ -926,10 +926,15 @@
 
 const hardwareCatalog = [];
 
-const candidatesData = [];
+const candidatesData = [
+  {id:"CAND_001",name:"重量用 低床キャスター（ブラック）",product_url:"https://www.monotaro.com/p/3956/1977/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"キャスター",specs:"車輪径小さい、ブラック",source:"slack",slack_channel:"#1127_東京建物_屋上庭園pj",posted_by:"金子",posted_at:"2026-04-02",context:"重量用の低床キャスター",status:"pending"},
+  {id:"CAND_002",name:"タープ用フック",product_url:"https://www.monotaro.com/p/6304/7198/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"デッキの鉄下地にビス打ち",source:"slack",slack_channel:"#1127_東京建物_屋上庭園pj",posted_by:"金子",posted_at:"2026-04-02",context:"タープ固定用フック",status:"pending"},
+  {id:"CAND_003",name:"スナップフック",product_url:"https://www.monotaro.com/p/4969/6667/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"金物・金具",specs:"タープロープ先端、簡単に取り外し",source:"slack",slack_channel:"#1127_東京建物_屋上庭園pj",posted_by:"金子",posted_at:"2026-04-02",context:"タープロープ先端用",status:"pending"},
+  {id:"CAND_004",name:"培養土",product_url:"https://www.monotaro.com/g/04580660/",product_code:"",maker:"MonotaRO",price:null,thumbnail_url:"",category:"その他",specs:"",source:"slack",slack_channel:"#1127_東京建物_屋上庭園pj",posted_by:"杉山",posted_at:"2026-04-02",context:"培養土",status:"pending"}
+];
 
 const drawingMeta = {
-  project:"人の森_曲面壁面什器", model_file:"260402_壁面什器.3dm",
+  project:"東京建物_屋上庭園", model_file:"260402_壁面什器.3dm",
   overall_dimensions:{width:3200,height:2400,depth:450},
   views:[
     {id:"front",direction:"正面図",w:320,h:240},
