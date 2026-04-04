@@ -170,31 +170,24 @@ async function renderFurniture() {
 
   let html = '';
   for (const [groupName, items] of Object.entries(groups)) {
-    html += `<h2 class="sub-title" style="margin-top:24px;margin-bottom:16px">${esc(groupName)}</h2>`;
-    html += `<div class="card-grid furniture-grid" style="margin-bottom:32px">`;
-    html += items.map(f => {
-      const heroImg = (f.hero_photos && f.hero_photos[0]);
-      const thumbHtml = heroImg
-        ? `<img src="${heroImg}" alt="${esc(f.name)}" loading="lazy">`
-        : `<div class="thumb-placeholder"><span>${esc(f.name_en || f.name)}</span></div>`;
-      return `
-        <a href="furniture/${f.id}/index.html" class="card furniture-card">
-          <div class="card-thumb">${thumbHtml}</div>
-          <div class="card-body">
-            <h3>${esc(f.name)}</h3>
-            <p class="card-sub">${esc(f.description || '')}</p>
-            <div class="card-meta">
-              ${f.dimensions ? esc(f.dimensions) : ''}
-              ${f.weight_kg ? ' / ' + f.weight_kg + 'kg' : ''}
-            </div>
-          </div>
-          <div class="card-footer">
-            <span>${esc(f.specs?.material || '')}</span>
-            <span>${esc(f.specs?.finish || '')}</span>
-          </div>
-        </a>`;
-    }).join('');
-    html += '</div>';
+    html += `<div style="margin-bottom:48px">`;
+    html += `<h2 class="sub-title">${esc(groupName)}</h2>`;
+    html += `<div class="card-grid material-grid">`;
+    html += items.map(f => `
+      <div class="card material-card">
+        <div class="card-thumb-sm">
+          ${(f.hero_photos && f.hero_photos[0])
+            ? `<img src="${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="thumb-placeholder-sm">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`}
+        </div>
+        <div class="card-body">
+          <h3>${esc(f.name)}</h3>
+          <p class="card-meta">${f.dimensions ? esc(f.dimensions) : ''} ${f.weight_kg ? '/ ' + f.weight_kg + 'kg' : ''}</p>
+          <p class="card-meta">${esc(f.specs?.material || '')}</p>
+        </div>
+      </div>
+    `).join('');
+    html += '</div></div>';
   }
 
   document.getElementById('furniture-grid').innerHTML = html
