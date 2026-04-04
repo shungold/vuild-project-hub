@@ -233,8 +233,11 @@ async function renderMaterials() {
 
   // Candidates
   const candFiltered = candidates.filter(c => matchSearch(c));
-  document.getElementById('candidate-grid').innerHTML = candFiltered.map(c => `
-    <div class="card material-card candidate">
+  document.getElementById('candidate-grid').innerHTML = candFiltered.map(c => {
+    const linkHref = c.furniture_id ? 'furniture/' + c.furniture_id + '/index.html'
+      : c.project_id ? 'projects/' + c.project_id + '/index.html' : '#';
+    return `
+    <a href="${linkHref}" class="card material-card candidate" style="text-decoration:none">
       <div class="card-thumb-sm">
         ${c.thumbnail_url ? `<img src="${c.thumbnail_url}" alt="${esc(c.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="thumb-placeholder-sm">?</div>'}
       </div>
@@ -244,16 +247,15 @@ async function renderMaterials() {
         <p class="card-meta">${esc(c.maker || '-')} / ${esc(c.category || '')}</p>
         <p class="card-price">${formatPrice(c.price)}</p>
         <p class="card-meta">${esc(c.posted_by || '')} — ${c.posted_at || ''}</p>
-        ${c.product_url ? `<a href="${c.product_url}" target="_blank" rel="noopener" class="ext-link">商品ページ ↗</a>` : ''}
       </div>
-    </div>
-  `).join('') || '<p class="empty-state">検討中の候補はありません</p>';
+    </a>`;
+  }).join('') || '<p class="empty-state">検討中の候補はありません</p>';
 }
 
 function renderMaterialCardHTML(m) {
   const statusBadge = m.status === 'adopted' ? '<span class="badge badge-adopted">採用</span>' : '';
   return `
-    <div class="card material-card">
+    <a href="materials/${m.id}/index.html" class="card material-card" style="text-decoration:none">
       <div class="card-thumb-sm">
         ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="thumb-placeholder-sm">&#9881;</div>'}
       </div>
@@ -263,9 +265,8 @@ function renderMaterialCardHTML(m) {
         <p class="card-meta">${esc(m.product_code || '-')} / ${esc(m.maker || '-')}</p>
         <p class="card-price">${formatPrice(m.price)}</p>
         <p class="card-meta card-specs">${esc(m.specs || '')}</p>
-        ${m.product_url ? `<a href="${m.product_url}" target="_blank" rel="noopener" class="ext-link">商品ページ ↗</a>` : ''}
       </div>
-    </div>`;
+    </a>`;
 }
 
 // ============ Init ============

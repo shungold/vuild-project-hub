@@ -59,6 +59,7 @@
       <div id="tab-panels">
         <div class="detail-tab-panel" id="panel-furniture"></div>
         <div class="detail-tab-panel" id="panel-materials"></div>
+        <div class="detail-tab-panel" id="panel-drawings"></div>
         <div class="detail-tab-panel" id="panel-knowledge"></div>
       </div>
     </div>
@@ -82,6 +83,8 @@
         <div class="spec-card-header"><h3>Credit</h3></div>
         <div class="team-list" id="detail-team"></div>
       </div>
+
+      <div id="model-section"></div>
 
       <div id="detail-tags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
     </div>
@@ -281,20 +284,20 @@ async function init() {
     const designKnowledge = (knowData.entries || []).filter(k =>
       (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design');
 
+    const hasDrawings = project.drawings && project.drawings.length;
     const tabs = [];
     if (furnitureItems.length) tabs.push({ id: 'furniture', label: 'VUILD Furniture', count: furnitureItems.length });
     if (archMaterials.length) tabs.push({ id: 'materials', label: 'Materials', count: archMaterials.length });
+    tabs.push({ id: 'drawings', label: '図面', count: hasDrawings ? project.drawings.length : 0 });
     if (designKnowledge.length) tabs.push({ id: 'knowledge', label: 'Knowledge', count: designKnowledge.length });
 
-    if (tabs.length) {
-      document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
-        `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
-          ${t.label}<span class="tab-count">${t.count}</span>
-        </button>`
-      ).join('');
-      document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
-      initDetailTabs();
-    }
+    document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
+      `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
+        ${t.label}<span class="tab-count">${t.count}</span>
+      </button>`
+    ).join('');
+    document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
+    initDetailTabs();
 
     // --- Furniture panel ---
     if (furnitureItems.length) {
@@ -357,6 +360,17 @@ async function init() {
           </div>`;
         }).join('') + '</div>';
     }
+
+    // --- Drawings panel ---
+    document.getElementById('panel-drawings').innerHTML = hasDrawings
+      ? '<div class="detail-gallery">' + project.drawings.map(d =>
+          `<div class="detail-gallery-item" onclick="openLightbox('${B}${d.src}')">
+            <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
+          </div>`).join('') + '</div>'
+      : '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
+
+    // --- 3D Model section ---
+    ModelManager.render('model-section', 'project', projectId, project.model_url || null, B);
 
   } catch (e) {
     console.error(e);

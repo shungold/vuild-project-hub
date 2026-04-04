@@ -335,6 +335,90 @@ function renderBackButton() {
 }
 
 /* ============================================================
+   5. 3D Model Upload/Download Manager
+   ============================================================ */
+const ModelManager = {
+  STORAGE_PREFIX: 'vuild_models_',
+
+  /**
+   * 3Dモデルセクションを描画
+   * @param {string} containerId — 描画先のDOM ID
+   * @param {string} entityType — 'project' | 'furniture' | 'material'
+   * @param {string} entityId — エンティティのID
+   * @param {string|null} existingModelUrl — data JSONに登録済みのモデルURL
+   * @param {string} basePath — DataLoader.basePath
+   */
+  render(containerId, entityType, entityId, existingModelUrl, basePath) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const storageKey = this.STORAGE_PREFIX + entityType + '_' + entityId;
+    const savedModel = localStorage.getItem(storageKey);
+    const typeLabels = { project: '建築モデル', furniture: 'プロダクトモデル', material: 'メーカー3Dモデル' };
+    const label = typeLabels[entityType] || '3Dモデル';
+
+    let html = `<div class="spec-card" style="margin-top:8px">
+      <div class="spec-card-header"><h3>${label}</h3></div>
+      <div class="spec-card-body" style="padding:12px">`;
+
+    // Download button (existing model)
+    if (existingModelUrl) {
+      const dlUrl = existingModelUrl.startsWith('http') ? existingModelUrl : basePath + existingModelUrl;
+      html += `<a href="${dlUrl}" download class="model-dl-btn" style="width:100%;justify-content:center;margin-bottom:8px">
+        \u{1F4E5} ダウンロード (.3dm)
+      </a>`;
+    }
+
+    // Saved model info
+    if (savedModel) {
+      html += `<div style="font-size:11px;color:var(--color-accent-green);margin-bottom:8px">
+        \u2705 アップロード済み: ${esc(savedModel)}
+        <button onclick="ModelManager.clear('${storageKey}','${containerId}','${entityType}','${entityId}',${existingModelUrl ? "'" + existingModelUrl + "'" : 'null'},'${basePath}')" style="font-size:10px;color:var(--color-tertiary);background:none;border:none;cursor:pointer;margin-left:4px;text-decoration:underline">削除</button>
+      </div>`;
+    }
+
+    // Upload zone
+    html += `<div class="model-upload-zone" id="model-drop-${entityId}" onclick="document.getElementById('model-file-${entityId}').click()">
+      .3dm / .obj / .step をドラッグ&ドロップ またはクリック
+      <input type="file" id="model-file-${entityId}" accept=".3dm,.obj,.step,.stp,.stl,.fbx" style="display:none">
+    </div>`;
+
+    html += '</div></div>';
+    container.innerHTML = html;
+
+    // Event listeners
+    const dropzone = document.getElementById('model-drop-' + entityId);
+    const fileInput = document.getElementById('model-file-' + entityId);
+    if (dropzone && fileInput) {
+      ['dragover','dragenter'].forEach(ev => {
+        dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.style.borderColor = 'var(--color-text)'; });
+      });
+      ['dragleave','drop'].forEach(ev => {
+        dropzone.addEventListener(ev, () => { dropzone.style.borderColor = ''; });
+      });
+      dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        const file = e.dataTransfer.files[0];
+        if (file) this.saveFile(storageKey, file.name, containerId, entityType, entityId, existingModelUrl, basePath);
+      });
+      fileInput.addEventListener('change', e => {
+        if (e.target.files[0]) this.saveFile(storageKey, e.target.files[0].name, containerId, entityType, entityId, existingModelUrl, basePath);
+      });
+    }
+  },
+
+  saveFile(storageKey, fileName, containerId, entityType, entityId, existingModelUrl, basePath) {
+    localStorage.setItem(storageKey, fileName);
+    this.render(containerId, entityType, entityId, existingModelUrl, basePath);
+  },
+
+  clear(storageKey, containerId, entityType, entityId, existingModelUrl, basePath) {
+    localStorage.removeItem(storageKey);
+    this.render(containerId, entityType, entityId, existingModelUrl, basePath);
+  }
+};
+
+/* ============================================================
    初期化: ページ読み込み時にバッジを更新
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {

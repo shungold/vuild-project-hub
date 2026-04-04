@@ -221,13 +221,9 @@ async function init() {
       badge.style.display = '';
     }
 
-    // --- 3D Model download ---
-    if (item.model_url) {
-      document.getElementById('furn-tags').insertAdjacentHTML('beforebegin',
-        `<a href="${B}${item.model_url}" download class="model-dl-btn" style="margin-bottom:8px;width:100%;justify-content:center">
-          \u{1F4E6} 3Dモデル (.3dm) をダウンロード
-        </a>`);
-    }
+    // --- 3D Model section ---
+    document.getElementById('furn-tags').insertAdjacentHTML('beforebegin', '<div id="model-section"></div>');
+    ModelManager.render('model-section', 'furniture', furnitureId, item.model_url || null, B);
 
     // --- Tags ---
     document.getElementById('furn-tags').innerHTML = (item.tags || []).map(t =>
