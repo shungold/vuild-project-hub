@@ -1915,9 +1915,12 @@ ul, ol { list-style: none; }
 /* --- Pin Side Panel (tecture-style: photo + detail side by side) --- */
 .pin-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr 280px;
   gap: var(--sp-8);
   margin-bottom: var(--sp-16);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .pin-layout .pin-photo-container {
@@ -1933,6 +1936,9 @@ ul, ol { list-style: none; }
   align-self: start;
   max-height: 500px;
   overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .pin-side-panel .psp-label {
@@ -1960,9 +1966,11 @@ ul, ol { list-style: none; }
 }
 
 .pin-side-panel h3 {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pin-side-panel .psp-meta {

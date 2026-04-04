@@ -68,6 +68,7 @@
         <div class="detail-tab-panel" id="panel-materials"></div>
         <div class="detail-tab-panel" id="panel-drawings"></div>
         <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-documents"></div>
       </div>
     </div>
 
@@ -291,15 +292,22 @@ async function init() {
       (project.furniture_ids || []).includes(f.id));
     const archMaterials = (matData.materials || []).filter(m =>
       (project.material_ids || []).includes(m.id) && m.type === 'architectural');
-    const designKnowledge = (knowData.entries || []).filter(k =>
-      (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design');
+    // 案件ページ: project_idが一致する全ナレッジを表示（scope不問）
+    const projectKnowledge = (knowData.entries || []).filter(k =>
+      k.project_id === projectId || k.linked_id === projectId);
+    // 参考資料: 紐づくfurnitureのdocumentsを集約
+    const allDocuments = [];
+    furnitureItems.forEach(f => {
+      (f.documents || []).forEach(d => allDocuments.push({ ...d, from: f.name }));
+    });
 
     const hasDrawings = project.drawings && project.drawings.length;
     const tabs = [];
     if (furnitureItems.length) tabs.push({ id: 'furniture', label: 'VUILD Furniture', count: furnitureItems.length });
     if (archMaterials.length) tabs.push({ id: 'materials', label: 'Materials', count: archMaterials.length });
     tabs.push({ id: 'drawings', label: '図面', count: hasDrawings ? project.drawings.length : 0 });
-    if (designKnowledge.length) tabs.push({ id: 'knowledge', label: 'Knowledge', count: designKnowledge.length });
+    if (projectKnowledge.length) tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
+    if (allDocuments.length) tabs.push({ id: 'documents', label: '参考資料', count: allDocuments.length });
 
     document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
       `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
@@ -343,31 +351,40 @@ async function init() {
         `).join('') + '</div>';
     }
 
-    // --- Knowledge panel (カード化 + 画像 + Slackリンク) ---
-    if (designKnowledge.length) {
+    // --- Knowledge panel (案件に紐づく全ナレッジ、クリックでモーダル) ---
+    if (projectKnowledge.length) {
+      window._knowledgeData = projectKnowledge;
       document.getElementById('panel-knowledge').innerHTML =
-        '<div class="hw-card-grid">' + designKnowledge.map(k => {
+        '<div class="hw-card-grid">' + projectKnowledge.map((k, idx) => {
           const info = getKnowledgeTypeInfo(k.type);
           const imgs = k.images || [];
-          const imgHtml = imgs.length
-            ? `<div class="know-images">${imgs.map(img => {
-                const src = img.startsWith('photos/') ? B + img : img;
-                return `<div class="know-img-thumb" onclick="openLightbox('${src}')"><img src="${src}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--color-tertiary)\\'>DL待</div>'"></div>`;
-              }).join('')}</div>`
-            : '';
-          const slackHtml = k.slack_url
-            ? `<a href="${k.slack_url}" target="_blank" class="know-slack-link">\u{1F4AC} Slackで見る</a>`
-            : '';
-          return `<div class="know-card">
+          return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
             <div class="know-card-header">
               <span class="badge badge--${k.type}">${info.label}</span>
               <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
             </div>
             <h4>${esc(k.title)}</h4>
             <p>${esc(k.content || '')}</p>
-            ${imgHtml}
-            <div class="know-author">${esc(k.posted_by || '')} ${slackHtml}</div>
+            ${imgs.length ? '<div style="font-size:10px;color:var(--color-edit-blue);margin-top:4px">\u{1F4F7} ' + imgs.length + '枚の画像</div>' : ''}
+            <div class="know-author">${esc(k.posted_by || '')}</div>
           </div>`;
+        }).join('') + '</div>';
+    }
+
+    // --- Documents panel (参考資料: furnitureのdocumentsを集約) ---
+    if (allDocuments.length) {
+      const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+      document.getElementById('panel-documents').innerHTML =
+        '<div class="doc-list">' + allDocuments.map(d => {
+          const url = d.url || '#';
+          return `<a href="${url}" target="_blank" class="doc-item" style="text-decoration:none">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div>
+              <div class="doc-label">${esc(d.label)}</div>
+              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
+              <div class="doc-note" style="color:var(--color-edit-blue)">${esc(d.from)}</div>
+            </div>
+          </a>`;
         }).join('') + '</div>';
     }
 
@@ -379,19 +396,28 @@ async function init() {
     ];
     if (pinLinkOptions.length) {
       PinEditor.init('project', projectId, _photoPins, pinLinkOptions);
-      // Reload pins from localStorage (includes user edits)
       _photoPins = PinEditor.loadPins(_photoPins);
       if (photos.length) setMainPhoto(B + photos[0], 0);
       document.getElementById('pin-editor-bar').style.display = '';
     }
 
-    // --- Drawings panel ---
-    document.getElementById('panel-drawings').innerHTML = hasDrawings
-      ? '<div class="detail-gallery">' + project.drawings.map(d =>
-          `<div class="detail-gallery-item" onclick="openLightbox('${B}${d.src}')">
+    // --- Drawings panel (図面 + 追加/削除UI) ---
+    {
+      let drawHtml = '';
+      if (hasDrawings) {
+        drawHtml += '<div class="detail-gallery">' + project.drawings.map((d, i) =>
+          `<div class="detail-gallery-item" style="position:relative" onclick="openLightbox('${B}${d.src}')">
             <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
-          </div>`).join('') + '</div>'
-      : '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
+            <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('project_drawing','${projectId}','${d.src}');this.parentElement.remove();">&times;</div>
+          </div>`).join('') + '</div>';
+      } else {
+        drawHtml += '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
+      }
+      drawHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addImageUI('project_drawing','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 図面を追加</button>
+      </div>`;
+      document.getElementById('panel-drawings').innerHTML = drawHtml;
+    }
 
     // --- 3D Model section ---
     ModelManager.render('model-section', 'project', projectId, project.model_url || null, B);
@@ -415,6 +441,33 @@ function refreshCurrentPhoto() {
   }
 }
 
+// --- Knowledge Modal ---
+function openKnowledgeModal(idx) {
+  const k = window._knowledgeData[idx];
+  if (!k) return;
+  const info = getKnowledgeTypeInfo(k.type);
+  const imgs = k.images || [];
+  const imgsHtml = imgs.length ? `<div class="know-modal-images">${imgs.map(img => {
+    const src = img.startsWith('photos/') ? B + img : img;
+    return `<img src="${src}" alt="" onclick="openLightbox('${src}')" loading="lazy">`;
+  }).join('')}</div>` : '';
+  const modal = document.createElement('div');
+  modal.className = 'know-modal-overlay is-open';
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `<div class="know-modal">
+    <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+    <span class="badge badge--${k.type}">${info.label}</span>
+    <h2>${esc(k.title)}</h2>
+    <div class="know-modal-content">${esc(k.content || '')}</div>
+    ${imgsHtml}
+    <div class="know-modal-footer">
+      <span>${esc(k.posted_by || '')} — ${formatDate(k.date)}</span>
+      ${k.slack_url ? '<a href="' + k.slack_url + '" target="_blank" style="color:var(--color-edit-blue)">\u{1F4AC} Slackで見る</a>' : ''}
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
 function openLightbox(src) {
   if (!src) return;
   document.getElementById('lightbox-img').src = src;
@@ -423,7 +476,12 @@ function openLightbox(src) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('is-open');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+    document.querySelectorAll('.know-modal-overlay').forEach(m => m.remove());
+  }
+});
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
