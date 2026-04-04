@@ -215,12 +215,12 @@
         "輸送・施工": 98100
       },
       "documents": [
-        {"label": "概算見積もり — 博報堂宛（3/19最新）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "¥3,582,700 / 天板檜集成材・シナ合板"},
-        {"label": "概算見積もり — ラワン合板版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "ラワン合板使用パターン"},
-        {"label": "概算見積もり — 檜集成材版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "愛媛県産材檜集成材 ※シンク水栓有"},
-        {"label": "見積書 — 市川屋（檜角材+穴あけ）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774247444311079", "note": "118,778円(税込)"},
-        {"label": "請求書 — 光伸（天蓋）", "type": "invoice", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774945723198239", "note": "天蓋請求書"},
-        {"label": "AUTOESTIMATOR概算", "type": "estimate", "url": "https://aiestimate-production.up.railway.app/", "note": "AI概算見積ツール"}
+        {"label": "概算見積もり — 博報堂宛（3/19最新）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "¥3,582,700 / 天板檜集成材・シナ合板", "status": "請求済み"},
+        {"label": "概算見積もり — ラワン合板版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "ラワン合板使用パターン", "status": "検討中"},
+        {"label": "概算見積もり — 檜集成材版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "愛媛県産材檜集成材 ※シンク水栓有", "status": "検討中"},
+        {"label": "見積書 — 市川屋（檜角材+穴あけ）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774247444311079", "note": "118,778円(税込)", "status": "請求済み"},
+        {"label": "請求書 — 光伸（天蓋）", "type": "invoice", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774945723198239", "note": "天蓋請求書", "status": "請求済み"},
+        {"label": "AUTOESTIMATOR概算", "type": "estimate", "url": "https://aiestimate-production.up.railway.app/", "note": "AI概算見積ツール", "status": "検討中"}
       ],
       "tags": ["屋台","移動式","ポップアップ","BAUM"],
       "edited": false

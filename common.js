@@ -604,6 +604,84 @@ const WebEditor = {
   /** ピン削除を記録 */
   removePin(entityType, entityId, photoIndex, pinIndex) {
     this.addChange('remove_pin', { entityType, entityId, photoIndex, pinIndex });
+  },
+
+  /** 参考資料追加UI（モーダルフォーム） */
+  addDocumentUI(entityType, entityId, callback) {
+    const modal = document.createElement('div');
+    modal.className = 'know-modal-overlay is-open';
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+    modal.innerHTML = `<div class="know-modal" style="max-width:420px">
+      <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+      <h2 style="font-size:16px;margin-bottom:12px">参考資料を追加</h2>
+      <div class="doc-form">
+        <label>ラベル<input type="text" id="doc-label" placeholder="概算見積もり — ○○宛" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>URL<input type="url" id="doc-url" placeholder="https://..." style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>メモ<input type="text" id="doc-note" placeholder="金額や補足など" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <div style="display:flex;gap:8px;margin-bottom:8px">
+          <label style="flex:1">種類<select id="doc-type" style="width:100%;padding:6px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin-top:4px">
+            <option value="estimate">見積書</option><option value="invoice">請求書</option><option value="memo">メモ</option><option value="drawing">図面</option><option value="model">モデル</option>
+          </select></label>
+          <label style="flex:1">ステータス<select id="doc-status" style="width:100%;padding:6px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin-top:4px">
+            <option value="検討中">検討中</option><option value="請求済み">請求済み</option><option value="支払済み">支払済み</option>
+          </select></label>
+        </div>
+        <button onclick="WebEditor._submitDocument('${entityType}','${entityId}')" style="width:100%;padding:8px;font-size:13px;background:var(--color-text);color:#fff;border:none;border-radius:4px;cursor:pointer">追加</button>
+      </div>
+    </div>`;
+    modal.dataset.callback = callback ? 'yes' : '';
+    document.body.appendChild(modal);
+    window._docAddCallback = callback;
+  },
+
+  /** 参考資料追加の送信処理 */
+  _submitDocument(entityType, entityId) {
+    const label = document.getElementById('doc-label').value.trim();
+    const url = document.getElementById('doc-url').value.trim();
+    const note = document.getElementById('doc-note').value.trim();
+    const type = document.getElementById('doc-type').value;
+    const status = document.getElementById('doc-status').value;
+    if (!label || !url) { alert('ラベルとURLは必須です'); return; }
+    this.addChange('add_document', { entityType, entityId, label, url, note, type, status });
+    document.querySelector('.know-modal-overlay')?.remove();
+    if (window._docAddCallback) window._docAddCallback({ label, url, note, type, status });
+  },
+
+  /** コスト項目追加UI（モーダルフォーム） */
+  addCostItemUI(entityType, entityId, callback) {
+    const modal = document.createElement('div');
+    modal.className = 'know-modal-overlay is-open';
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+    modal.innerHTML = `<div class="know-modal" style="max-width:380px">
+      <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+      <h2 style="font-size:16px;margin-bottom:12px">コスト項目を追加</h2>
+      <div class="doc-form">
+        <label>項目名<input type="text" id="cost-item-name" placeholder="外注加工費、塗装委託など" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>金額（円）<input type="number" id="cost-item-amount" placeholder="100000" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>カテゴリ<select id="cost-item-cat" style="width:100%;padding:6px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px">
+          <option value="外注費">外注費</option><option value="社内人工">社内人工</option><option value="材料費">材料費</option><option value="その他">その他</option>
+        </select></label>
+        <button onclick="WebEditor._submitCostItem('${entityType}','${entityId}')" style="width:100%;padding:8px;font-size:13px;background:var(--color-text);color:#fff;border:none;border-radius:4px;cursor:pointer">追加</button>
+      </div>
+    </div>`;
+    document.body.appendChild(modal);
+    window._costAddCallback = callback;
+  },
+
+  /** コスト項目追加の送信処理 */
+  _submitCostItem(entityType, entityId) {
+    const name = document.getElementById('cost-item-name').value.trim();
+    const amount = parseInt(document.getElementById('cost-item-amount').value) || 0;
+    const category = document.getElementById('cost-item-cat').value;
+    if (!name || !amount) { alert('項目名と金額は必須です'); return; }
+    this.addChange('add_cost_item', { entityType, entityId, name, amount, category });
+    // Save to localStorage for immediate display
+    const key = `vuild_cost_items_${entityType}_${entityId}`;
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    items.push({ name, amount, category });
+    localStorage.setItem(key, JSON.stringify(items));
+    document.querySelector('.know-modal-overlay')?.remove();
+    if (window._costAddCallback) window._costAddCallback();
   }
 };
 

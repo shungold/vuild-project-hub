@@ -280,52 +280,128 @@ async function init() {
     document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
     initDetailTabs();
 
-    // --- 図面 panel (空でも表示) ---
-    document.getElementById('panel-drawings').innerHTML = hasDrawings
-      ? '<div class="detail-gallery">' + item.drawings.map(d =>
-          `<div class="detail-gallery-item" onclick="openLightbox('${B}${d.src}')">
-            <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
-          </div>`).join('') + '</div>'
-      : '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
-
-    // --- 見積 panel (AUTOESTIMATOR D&D) ---
-    document.getElementById('panel-estimate').innerHTML = `
-      <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
-        AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
-        <input type="file" id="bom-file" accept=".json">
-      </div>
-      <div id="bom-result"></div>`;
-    initBomImport(hwItems);
-
-    // --- 実績 panel (手入力原価 + 参考資料) ---
+    // --- 図面 panel (追加/削除UI付き) ---
     {
-      let actualHtml = '';
-      if (hasCost) {
-        actualHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px"><div class="spec-card-header"><h3>Production Cost</h3></div><div class="spec-card-body">';
-        actualHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
-        if (item.cost_breakdown) {
-          for (const [k, v] of Object.entries(item.cost_breakdown)) {
-            actualHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
-          }
-        }
-        actualHtml += '</div></div>';
+      let drawHtml = '';
+      if (hasDrawings) {
+        drawHtml += '<div class="detail-gallery">' + item.drawings.map((d, i) =>
+          `<div class="detail-gallery-item" style="position:relative" onclick="openLightbox('${B}${d.src}')">
+            <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
+            <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('furniture_drawing','${furnitureId}','${d.src}');this.parentElement.remove();">&times;</div>
+          </div>`).join('') + '</div>';
+      } else {
+        drawHtml += '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
       }
-      if (hasDocs) {
-        actualHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin:16px 0 8px">参考資料</h3><div class="doc-list">';
-        const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
-        actualHtml += item.documents.map(d => {
-          const url = d.url || '#';
-          return `<a href="${url}" target="_blank" class="doc-item" style="text-decoration:none">
+      drawHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addImageUI('furniture_drawing','${furnitureId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 図面を追加</button>
+      </div>`;
+      document.getElementById('panel-drawings').innerHTML = drawHtml;
+    }
+
+    // --- 見積 panel (AUTOESTIMATOR + 見積/請求書 + 参考資料追加) ---
+    {
+      const estimateDocs = (item.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
+      const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+      const statusClass = { '検討中': 'pending', '請求済み': 'invoiced', '支払済み': 'paid' };
+
+      let estHtml = `
+        <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
+          AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
+          <input type="file" id="bom-file" accept=".json">
+        </div>
+        <div id="bom-result"></div>`;
+
+      if (estimateDocs.length) {
+        estHtml += '<h3 class="sub-title" style="margin-top:20px">見積・請求書</h3><div class="doc-list">';
+        estHtml += estimateDocs.map(d => `
+          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div style="flex:1">
+              <div class="doc-label">${esc(d.label)}</div>
+              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
+            </div>
+            <span class="badge badge-doc-${statusClass[d.status] || 'pending'}">${esc(d.status || '検討中')}</span>
+          </a>`).join('');
+        estHtml += '</div>';
+      }
+
+      estHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addDocumentUI('furniture','${furnitureId}',function(doc){location.reload()})" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 参考資料を追加</button>
+      </div>`;
+      document.getElementById('panel-estimate').innerHTML = estHtml;
+      initBomImport(hwItems);
+    }
+
+    // --- 実績 panel (金物積み上げ + 手動コスト + 参考資料) ---
+    {
+      let actHtml = '';
+
+      // 金物コスト積み上げ
+      if (hwItems.length) {
+        let hwTotal = 0;
+        actHtml += '<h3 class="sub-title">金物コスト</h3>';
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        hwItems.forEach(m => {
+          const qty = m.quantity || 1;
+          const cost = (m.price || 0) * qty;
+          hwTotal += cost;
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(m.name)}${qty > 1 ? ' ×' + qty : ''}</span><span class="spec-value">${formatPrice(cost)}</span></div>`;
+        });
+        actHtml += `<div class="spec-row" style="border-top:1px solid var(--color-border);margin-top:4px;padding-top:4px;font-weight:700"><span class="spec-label">金物小計</span><span class="spec-value">${formatPrice(hwTotal)}</span></div>`;
+        actHtml += '</div></div>';
+      }
+
+      // 手動追加コスト項目 (localStorageから)
+      const costKey = `vuild_cost_items_furniture_${furnitureId}`;
+      const manualItems = JSON.parse(localStorage.getItem(costKey) || '[]');
+      // 既存のcost_breakdownも表示
+      const existingBreakdown = item.cost_breakdown || {};
+      const hasManual = manualItems.length || Object.keys(existingBreakdown).length;
+
+      if (hasManual) {
+        actHtml += '<h3 class="sub-title">その他コスト</h3>';
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        for (const [k, v] of Object.entries(existingBreakdown)) {
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+        }
+        manualItems.forEach(ci => {
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span style="font-size:10px;color:var(--color-tertiary)">${esc(ci.category)}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
+        });
+        actHtml += '</div></div>';
+      }
+
+      // 原価合計
+      const hwTotal = hwItems.reduce((s, m) => s + (m.price || 0) * (m.quantity || 1), 0);
+      const breakdownTotal = Object.values(existingBreakdown).reduce((s, v) => s + (v || 0), 0);
+      const manualTotal = manualItems.reduce((s, ci) => s + (ci.amount || 0), 0);
+      const grandTotal = hwTotal + breakdownTotal + manualTotal;
+      if (grandTotal) {
+        actHtml += `<div class="spec-card" style="max-width:500px;margin-bottom:16px;background:var(--color-bg)"><div class="spec-card-body">
+          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">原価合計</span><span class="spec-value">${formatPrice(grandTotal)}</span></div>
+        </div></div>`;
+      }
+
+      // 参考資料（見積/請求以外）
+      const refDocs = (item.documents || []).filter(d => d.type !== 'estimate' && d.type !== 'invoice');
+      if (refDocs.length) {
+        const typeIcons = { drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+        actHtml += '<h3 class="sub-title">参考資料</h3><div class="doc-list">';
+        actHtml += refDocs.map(d => `
+          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
             <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
             <div><div class="doc-label">${esc(d.label)}</div>${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}</div>
-          </a>`;
-        }).join('');
-        actualHtml += '</div>';
+          </a>`).join('');
+        actHtml += '</div>';
       }
-      if (!hasCost && !hasDocs) {
-        actualHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>';
+
+      actHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addCostItemUI('furniture','${furnitureId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ コスト項目を追加</button>
+      </div>`;
+
+      if (!actHtml.includes('sub-title') && !grandTotal) {
+        actHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>' + actHtml;
       }
-      document.getElementById('panel-actual').innerHTML = actualHtml;
+      document.getElementById('panel-actual').innerHTML = actHtml;
     }
 
     // --- Hardware panel (カテゴリ分類 + カード) ---

@@ -1661,8 +1661,19 @@ ul, ol { list-style: none; }
   font-size: 14px;
 }
 
-.doc-label { font-weight: 500; flex: 1; }
+.doc-label { font-weight: 500; }
 .doc-note { font-size: 10px; color: var(--color-tertiary); }
+
+/* Document status badges */
+.badge-doc-pending { background: rgba(212,136,15,0.1); color: #8b6914; font-size: 10px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+.badge-doc-invoiced { background: rgba(74,144,217,0.1); color: #4A90D9; font-size: 10px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+.badge-doc-paid { background: rgba(45,90,39,0.1); color: #2d5a27; font-size: 10px; padding: 2px 6px; border-radius: 3px; white-space: nowrap; }
+
+/* Doc form in modal */
+.doc-form label { display: block; font-size: 12px; font-weight: 500; color: var(--color-secondary); }
+
+/* Sub title for sections */
+.sub-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--color-tertiary); margin: 16px 0 8px; }
 
 /* --- BOM Import (AUTOESTIMATOR JSON D&D) --- */
 .bom-dropzone {
