@@ -200,9 +200,10 @@ async function init() {
     const hasDrawings = item.drawings && item.drawings.length;
     const hasCost = item.production_cost;
 
+    const hasDocs = item.documents && item.documents.length;
     const tabs = [];
     if (hasDrawings) tabs.push({ id: 'drawings', label: '図面', count: item.drawings.length });
-    if (hasCost) tabs.push({ id: 'cost', label: 'コスト', count: null });
+    if (hasCost || hasDocs) tabs.push({ id: 'cost', label: 'コスト', count: null });
     if (hwItems.length) tabs.push({ id: 'hardware', label: '金物・パーツ', count: hwItems.length });
     if (prodKnowledge.length) tabs.push({ id: 'knowledge', label: 'ナレッジ', count: prodKnowledge.length });
 
@@ -226,45 +227,68 @@ async function init() {
         ).join('') + '</div>';
     }
 
-    // --- Cost panel ---
-    if (hasCost) {
-      let costHtml = '<div class="spec-card" style="max-width:400px"><div class="spec-card-body">';
-      costHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
-      if (item.cost_breakdown) {
-        for (const [k, v] of Object.entries(item.cost_breakdown)) {
-          costHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+    // --- Cost panel (原価 + 内訳 + 参考資料リンク) ---
+    if (hasCost || hasDocs) {
+      let costHtml = '';
+      if (hasCost) {
+        costHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px"><div class="spec-card-header"><h3>Production Cost</h3></div><div class="spec-card-body">';
+        costHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
+        if (item.cost_breakdown) {
+          for (const [k, v] of Object.entries(item.cost_breakdown)) {
+            costHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+          }
         }
+        costHtml += '</div></div>';
       }
-      costHtml += '</div></div>';
+      if (hasDocs) {
+        costHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin-bottom:8px">参考資料</h3>';
+        costHtml += '<div class="doc-list">';
+        const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+        costHtml += item.documents.map(d => `
+          <div class="doc-item">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div>
+              <div class="doc-label">${esc(d.label)}</div>
+              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
+            </div>
+          </div>`
+        ).join('');
+        costHtml += '</div>';
+      }
       document.getElementById('panel-cost').innerHTML = costHtml;
     }
 
-    // --- Hardware panel ---
+    // --- Hardware panel (サムネ付きカード) ---
     if (hwItems.length) {
       document.getElementById('panel-hardware').innerHTML =
-        '<div style="overflow-x:auto"><table class="material-table"><thead><tr>' +
-        '<th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr></thead><tbody>' +
-        hwItems.map(m => `<tr>
-          <td class="mat-name">${esc(m.name)}</td>
-          <td>${esc(m.product_code || '-')}</td>
-          <td>${esc(m.maker || '-')}</td>
-          <td class="mat-price">${formatPrice(m.price)}</td>
-          <td>${m.product_url ? `<a href="${m.product_url}" target="_blank">詳細 &nearr;</a>` : ''}</td>
-        </tr>`).join('') + '</tbody></table></div>';
+        '<div class="hw-card-grid">' + hwItems.map(m => `
+          <${m.product_url ? 'a href="' + m.product_url + '" target="_blank" rel="noopener"' : 'div'} class="hw-card">
+            <div class="hw-card-thumb">
+              ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
+            </div>
+            <div class="hw-card-body">
+              <h4>${esc(m.name)}</h4>
+              <div class="hw-meta">${esc(m.maker || '')} / ${esc(m.product_code || '')}</div>
+              <div class="hw-price">${formatPrice(m.price)}</div>
+              ${m.specs ? '<div class="hw-meta">' + esc(m.specs) + '</div>' : ''}
+            </div>
+          </${m.product_url ? 'a' : 'div'}>
+        `).join('') + '</div>';
     }
 
-    // --- Knowledge panel ---
+    // --- Knowledge panel (カード化) ---
     if (prodKnowledge.length) {
       document.getElementById('panel-knowledge').innerHTML =
-        '<div class="knowledge-timeline">' + prodKnowledge.map(k => {
+        '<div class="hw-card-grid">' + prodKnowledge.map(k => {
           const info = getKnowledgeTypeInfo(k.type);
-          return `<div class="knowledge-entry">
-            <div class="knowledge-entry__header">
+          return `<div class="know-card">
+            <div class="know-card-header">
               <span class="badge badge--${k.type}">${info.label}</span>
-              <span class="knowledge-entry__date">${formatDate(k.date)}</span>
+              <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
             </div>
-            <h4 style="font-size:13px;margin:4px 0">${esc(k.title)}</h4>
-            <p class="knowledge-entry__body">${esc(k.content || '')}</p>
+            <h4>${esc(k.title)}</h4>
+            <p>${esc(k.content || '')}</p>
+            <div class="know-author">${esc(k.posted_by || '')}</div>
           </div>`;
         }).join('') + '</div>';
     }

@@ -1441,7 +1441,7 @@ ul, ol { list-style: none; }
   color: var(--color-tertiary);
 }
 
-/* --- Material Table --- */
+/* --- Material Table (fallback) --- */
 .material-table {
   width: 100%;
   border-collapse: collapse;
@@ -1467,6 +1467,159 @@ ul, ol { list-style: none; }
 .material-table .mat-name { font-weight: 500; color: var(--color-text); }
 .material-table .mat-price { font-weight: 600; white-space: nowrap; }
 .material-table a { color: var(--color-edit-blue); font-size: 11px; }
+
+/* --- Hardware / Knowledge Card Grid (thumbnail cards) --- */
+.hw-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: var(--sp-8);
+}
+
+.hw-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: transform var(--ease), box-shadow var(--ease);
+}
+
+.hw-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.hw-card-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hw-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.hw-card-thumb .hw-icon {
+  font-size: 32px;
+  color: var(--color-border);
+}
+
+.hw-card-body {
+  padding: 8px 10px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.hw-card-body h4 {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 2px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hw-card-body .hw-meta {
+  font-size: 10px;
+  color: var(--color-tertiary);
+  line-height: 1.4;
+}
+
+.hw-card-body .hw-price {
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.hw-card-body .hw-link {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--color-edit-blue);
+  margin-top: 2px;
+}
+
+/* --- Knowledge Cards --- */
+.know-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  transition: box-shadow var(--ease);
+}
+
+.know-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+.know-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.know-card h4 {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.know-card p {
+  font-size: 12px;
+  color: var(--color-secondary);
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.know-card .know-author {
+  font-size: 10px;
+  color: var(--color-tertiary);
+  margin-top: 6px;
+}
+
+/* --- Documents list --- */
+.doc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  transition: background var(--ease);
+}
+
+.doc-item:hover { background: var(--color-bg); }
+
+.doc-icon {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 4px;
+  background: var(--color-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+.doc-label { font-weight: 500; flex: 1; }
+.doc-note { font-size: 10px; color: var(--color-tertiary); }
 
 /* --- Lightbox --- */
 .lightbox {

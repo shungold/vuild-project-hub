@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <rect width="800" height="500" fill="#f5f4f0"/>
+  <ellipse cx="400" cy="400" rx="250" ry="25" fill="#e8e6e1"/>
+  <!-- Isometric cube -->
+  <path d="M250 180 L400 110 L550 180 L550 340 L400 410 L250 340 Z" fill="#d4c9a8" stroke="#8b6914" stroke-width="1.5"/>
+  <path d="M400 110 L400 270 L250 340 L250 180 Z" fill="#c4b998"/>
+  <path d="M400 110 L400 270 L550 340 L550 180 Z" fill="#e0d5b5"/>
+  <!-- Arch cutouts -->
+  <path d="M290 340 Q290 280 330 280 Q370 280 370 340" fill="#f5f4f0" stroke="#8b6914" stroke-width="1"/>
+  <path d="M430 340 Q430 280 470 280 Q510 280 510 340" fill="#f5f4f0" stroke="#8b6914" stroke-width="1"/>
+  <!-- Top surface lines -->
+  <line x1="300" y1="145" x2="300" y2="148" stroke="#8b6914" stroke-width="0.5" opacity="0.3"/>
+  <text x="400" y="475" font-family="Inter,sans-serif" font-size="11" fill="#999" text-anchor="middle" letter-spacing="2">AXONOMETRIC — PLACEHOLDER</text>
+</svg>

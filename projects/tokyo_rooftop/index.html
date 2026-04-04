@@ -241,32 +241,36 @@ async function init() {
         }).join('') + '</div>';
     }
 
-    // --- Materials panel ---
+    // --- Materials panel (サムネ付きカード) ---
     if (archMaterials.length) {
       document.getElementById('panel-materials').innerHTML =
-        '<div style="overflow-x:auto"><table class="material-table"><thead><tr>' +
-        '<th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr></thead><tbody>' +
-        archMaterials.map(m => `<tr>
-          <td class="mat-name">${esc(m.name)}</td>
-          <td>${esc(m.product_code || '-')}</td>
-          <td>${esc(m.maker || '-')}</td>
-          <td class="mat-price">${formatPrice(m.price)}</td>
-          <td>${m.product_url ? `<a href="${m.product_url}" target="_blank">詳細 &nearr;</a>` : ''}</td>
-        </tr>`).join('') + '</tbody></table></div>';
+        '<div class="hw-card-grid">' + archMaterials.map(m => `
+          <${m.product_url ? 'a href="' + m.product_url + '" target="_blank" rel="noopener"' : 'div'} class="hw-card">
+            <div class="hw-card-thumb">
+              ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
+            </div>
+            <div class="hw-card-body">
+              <h4>${esc(m.name)}</h4>
+              <div class="hw-meta">${esc(m.maker || '')} / ${esc(m.product_code || '')}</div>
+              <div class="hw-price">${formatPrice(m.price)}</div>
+            </div>
+          </${m.product_url ? 'a' : 'div'}>
+        `).join('') + '</div>';
     }
 
-    // --- Knowledge panel ---
+    // --- Knowledge panel (カード化) ---
     if (designKnowledge.length) {
       document.getElementById('panel-knowledge').innerHTML =
-        '<div class="knowledge-timeline">' + designKnowledge.map(k => {
+        '<div class="hw-card-grid">' + designKnowledge.map(k => {
           const info = getKnowledgeTypeInfo(k.type);
-          return `<div class="knowledge-entry">
-            <div class="knowledge-entry__header">
+          return `<div class="know-card">
+            <div class="know-card-header">
               <span class="badge badge--${k.type}">${info.label}</span>
-              <span class="knowledge-entry__date">${formatDate(k.date)}</span>
+              <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
             </div>
-            <h4 style="font-size:13px;margin:4px 0">${esc(k.title)}</h4>
-            <p class="knowledge-entry__body">${esc(k.content || '')}</p>
+            <h4>${esc(k.title)}</h4>
+            <p>${esc(k.content || '')}</p>
+            <div class="know-author">${esc(k.posted_by || '')}</div>
           </div>`;
         }).join('') + '</div>';
     }
