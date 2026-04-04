@@ -385,17 +385,17 @@ ul, ol { list-style: none; }
 
 .card-grid--projects,
 .project-grid {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
 .card-grid--furniture,
 .furniture-grid {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 .card-grid--materials,
 .material-grid {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
 
@@ -483,9 +483,13 @@ ul, ol { list-style: none; }
 .card-thumb {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 3 / 2;
   overflow: hidden;
   background: var(--color-border-light);
+}
+
+.furniture-card .card-thumb {
+  aspect-ratio: 4 / 3;
 }
 
 .card-thumb img {
@@ -532,15 +536,15 @@ ul, ol { list-style: none; }
 }
 
 .card-body {
-  padding: 16px 20px;
+  padding: 12px 14px;
   flex: 1;
 }
 
 .card-body h3 {
-  font-size: var(--font-h3);
-  font-weight: 700;
+  font-size: var(--font-body);
+  font-weight: 600;
   margin-bottom: 2px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.2px;
 }
 
 .card-sub {
@@ -611,12 +615,12 @@ ul, ol { list-style: none; }
 }
 
 .card-footer {
-  padding: 10px 20px;
+  padding: 8px 14px;
   border-top: 1px solid var(--color-border-light);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 11px;
+  font-size: 10px;
   color: var(--color-tertiary);
 }
 
@@ -1102,7 +1106,7 @@ ul, ol { list-style: none; }
   .project-grid,
   .furniture-grid,
   .material-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
   .info-table th {
