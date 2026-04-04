@@ -20,6 +20,8 @@
     --border-light: #f0eee9;
     --accent-green: #2d5a27;
     --accent-green-light: #e8f2e6;
+    --accent-wood: #8b6914;
+    --accent-wood-light: #f5f0e0;
     --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
     --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
     --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
@@ -68,7 +70,7 @@
   .section-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
   .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 28px; }
 
-  /* ═══ PROJECT CARDS ═══ */
+  /* === PROJECT CARDS === */
   .project-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;
   }
@@ -117,7 +119,7 @@
   }
   .avatar:first-child { margin-left: 0; }
 
-  /* ═══ GLOBAL HARDWARE ═══ */
+  /* === GLOBAL HARDWARE === */
   .hw-search {
     width: 100%; padding: 10px 18px; border: 1px solid var(--border);
     border-radius: var(--radius); font-size: 13px; background: var(--surface);
@@ -157,9 +159,94 @@
   .hw-card-body h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
   .hw-card-body .hw-meta { font-size: 11px; color: var(--text-tertiary); line-height: 1.6; }
 
+  /* === FURNITURE === */
+  .furniture-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px;
+  }
+  .furn-card {
+    background: var(--surface); border-radius: var(--radius-lg);
+    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
+    overflow: hidden; transition: var(--transition); cursor: pointer;
+  }
+  .furn-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+  .furn-card-img {
+    height: 220px; background: var(--surface-2); overflow: hidden;
+    position: relative;
+  }
+  .furn-card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .furn-card-img .furn-tag {
+    position: absolute; top: 12px; left: 12px;
+    font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px;
+    background: var(--accent-wood-light); color: var(--accent-wood);
+  }
+  .furn-card-body { padding: 20px 24px; }
+  .furn-card-body h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
+  .furn-card-body .furn-sub { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
+  .furn-variants {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+  }
+  .furn-variant-chip {
+    font-size: 10px; padding: 3px 10px; border-radius: 100px;
+    background: var(--surface-2); color: var(--text-secondary); font-weight: 500;
+  }
+  .furn-card-stats { display: flex; gap: 20px; }
+  .furn-card-footer {
+    padding: 12px 24px; border-top: 1px solid var(--border-light);
+    font-size: 11px; color: var(--text-tertiary);
+    display: flex; justify-content: space-between;
+  }
+
+  /* Furniture detail modal */
+  .furn-modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .furn-modal-overlay.open { display: flex; }
+  .furn-modal {
+    background: var(--surface); border-radius: var(--radius-lg);
+    max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+  }
+  .furn-modal-header {
+    padding: 28px 32px 0; display: flex; justify-content: space-between; align-items: flex-start;
+  }
+  .furn-modal-header h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+  .furn-modal-close {
+    width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+    background: var(--surface); cursor: pointer; font-size: 18px;
+    display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
+    flex-shrink: 0;
+  }
+  .furn-modal-close:hover { background: var(--surface-2); }
+  .furn-modal-body { padding: 20px 32px 32px; }
+  .furn-modal-gallery {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+    margin-bottom: 24px;
+  }
+  .furn-modal-gallery img {
+    width: 100%; height: 160px; object-fit: cover; border-radius: var(--radius);
+    border: 1px solid var(--border-light);
+  }
+  .furn-detail-section { margin-bottom: 20px; }
+  .furn-detail-section h4 {
+    font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
+  }
+  .furn-detail-table {
+    width: 100%; border-collapse: collapse; font-size: 13px;
+  }
+  .furn-detail-table td {
+    padding: 8px 12px; border-bottom: 1px solid var(--border-light);
+  }
+  .furn-detail-table td:first-child {
+    font-weight: 600; color: var(--text-secondary); width: 140px;
+  }
+
   @media (max-width: 768px) {
     .header-inner, .nav-inner, .content-area { padding-left: 20px; padding-right: 20px; }
-    .project-grid, .hw-grid { grid-template-columns: 1fr; }
+    .project-grid, .hw-grid, .furniture-grid { grid-template-columns: 1fr; }
+    .furn-modal { margin: 12px; }
   }
 </style>
 </head>
@@ -178,6 +265,7 @@
 <div class="nav-bar">
   <div class="nav-inner">
     <div class="nav-tab active" data-view="projects">案件リスト <span class="count" id="projectCount">0</span></div>
+    <div class="nav-tab" data-view="furniture">VUILD furniture <span class="count" id="furnitureCount">0</span></div>
     <div class="nav-tab" data-view="hardware">全案件の金物 <span class="count" id="globalHwCount">0</span></div>
   </div>
 </div>
@@ -190,6 +278,12 @@
   <div class="project-grid" id="projectGrid"></div>
 </div>
 
+<div class="view" id="view-furniture">
+  <div class="section-title">VUILD furniture</div>
+  <div class="section-desc">案件横断で導入してきた家具プロダクト — 新案件の提案時にすぐ参照できるカタログ</div>
+  <div class="furniture-grid" id="furnitureGrid"></div>
+</div>
+
 <div class="view" id="view-hardware">
   <div class="section-title">全案件の金物</div>
   <div class="section-desc">全プロジェクトの金物を横断検索 — 過去に使った金物を別案件でも再利用</div>
@@ -198,6 +292,20 @@
   <div class="hw-grid" id="globalHwGrid"></div>
 </div>
 
+</div>
+
+<!-- Furniture detail modal -->
+<div class="furn-modal-overlay" id="furnModal">
+  <div class="furn-modal">
+    <div class="furn-modal-header">
+      <div>
+        <h2 id="furnModalTitle"></h2>
+        <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px" id="furnModalSub"></div>
+      </div>
+      <button class="furn-modal-close" onclick="closeFurnModal()">&times;</button>
+    </div>
+    <div class="furn-modal-body" id="furnModalBody"></div>
+  </div>
 </div>
 
 <script>
@@ -229,6 +337,136 @@ const projects = [
     path:"projects/pan_kitchen/index.html",
     color:"#e0dbd2", members:["金子","黒部","向田","杉山"],
     stats:{hardware:0, knowledge:6, bom:"-"}, updated:"2026-04-02"
+  }
+];
+
+const furnitureProducts = [
+  {
+    id: "town-unit",
+    name: "タウンユニット",
+    sub: "Town Unit — 角型・カーブ型の組合せ屋外ユニット家具",
+    thumbnail: "furniture-photos/town-unit/rakuten.jpg",
+    variants: ["角型 900","角型 1200","角型 1800","カーブ型"],
+    cases: 6,
+    records: [
+      { project: "楽天 Optimism 2023", type: "レンタル", location: "横浜みなとみらい", photo: "furniture-photos/town-unit/rakuten.jpg" },
+      { project: "楽天 Optimism 2024", type: "レンタル", location: "横浜みなとみらい", photo: "furniture-photos/town-unit/rakuten.jpg" },
+      { project: "名古屋 久屋大通", type: "制作+設置", location: "名古屋市", photo: "furniture-photos/town-unit/nagoya.jpg" },
+      { project: "野毛町 まちづくり", type: "制作", location: "横浜市", photo: "furniture-photos/town-unit/yokohama.jpg" },
+      { project: "UR赤羽台", type: "レンタル", location: "東京都北区", photo: "furniture-photos/town-unit/vpl.jpg" },
+      { project: "横浜ネイチャーウィーク 2025", type: "レンタル", location: "横浜", photo: "furniture-photos/yokohama-nw/main.jpg" }
+    ],
+    specs: {
+      material: "構造用合板 24mm",
+      finish: "屋外用ウレタン塗装",
+      weight: "約40-80kg（サイズによる）",
+      note: "組立式・フォークリフト搬入可"
+    },
+    photos: [
+      "furniture-photos/town-unit/rakuten.jpg",
+      "furniture-photos/town-unit/nagoya.jpg",
+      "furniture-photos/town-unit/vpl.jpg",
+      "furniture-photos/town-unit/yokohama.jpg",
+      "furniture-photos/yokohama-nw/main.jpg",
+      "furniture-photos/yokohama-nw/detail.jpg"
+    ]
+  },
+  {
+    id: "shiba-cube",
+    name: "芝キューブ",
+    sub: "Shiba Cube — 天面に人工芝を張ったベンチ/テーブルユニット",
+    thumbnail: "furniture-photos/shiba-cube/main.jpg",
+    variants: ["Type A (600)","Type B (900)","Type C (1200)","Type D (1500)","Type E (L型)","Type F (コーナー)","Type G (ハイ)"],
+    cases: 2,
+    records: [
+      { project: "PAN 門真新棟", type: "制作", location: "大阪府門真市", photo: "furniture-photos/shiba-cube/main.jpg" },
+      { project: "丸の内ストリートパーク", type: "レンタル", location: "東京都千代田区", photo: "furniture-photos/shiba-cube/detail.jpg" }
+    ],
+    specs: {
+      material: "構造用合板 24mm + 人工芝",
+      finish: "屋外用塗装 + 人工芝接着",
+      weight: "約25-50kg（サイズによる）",
+      note: "7種のバリエーションで自由にレイアウト"
+    },
+    photos: [
+      "furniture-photos/shiba-cube/main.jpg",
+      "furniture-photos/shiba-cube/detail.jpg"
+    ]
+  },
+  {
+    id: "namunami-bench",
+    name: "ナミナミベンチ",
+    sub: "Naminami Bench — CNC加工による有機的な曲面ベンチ",
+    thumbnail: "furniture-photos/namunami-bench/onomichi.jpg",
+    variants: ["標準型","ロング型"],
+    cases: 1,
+    records: [
+      { project: "尾道倶楽部 FFE", type: "制作", location: "広島県尾道市", photo: "furniture-photos/namunami-bench/onomichi.jpg" }
+    ],
+    specs: {
+      material: "構造用合板 積層",
+      finish: "ウレタン塗装",
+      weight: "約30kg",
+      note: "5軸CNC加工による曲面形状"
+    },
+    photos: [
+      "furniture-photos/namunami-bench/onomichi.jpg",
+      "furniture-photos/namunami-bench/main.jpg"
+    ]
+  },
+  {
+    id: "seesaw-bench",
+    name: "シーソーベンチ",
+    sub: "Seesaw Bench — シーソー機構付き遊具ベンチ",
+    thumbnail: null,
+    variants: ["標準型"],
+    cases: 1,
+    records: [
+      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
+    ],
+    specs: {
+      material: "構造用合板",
+      finish: "屋外用塗装",
+      weight: "-",
+      note: "遊べるベンチ"
+    },
+    photos: []
+  },
+  {
+    id: "pingpong-table",
+    name: "卓球台",
+    sub: "Ping Pong Table — CNC加工の木製卓球台",
+    thumbnail: null,
+    variants: ["標準型"],
+    cases: 1,
+    records: [
+      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
+    ],
+    specs: {
+      material: "構造用合板",
+      finish: "ウレタン塗装",
+      weight: "-",
+      note: "分解・組立可能"
+    },
+    photos: []
+  },
+  {
+    id: "denzai-stool",
+    name: "電材スツール",
+    sub: "Denzai Stool — 電設資材を活用したスツール",
+    thumbnail: null,
+    variants: ["標準型"],
+    cases: 1,
+    records: [
+      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
+    ],
+    specs: {
+      material: "電設資材 + 合板座面",
+      finish: "素地",
+      weight: "-",
+      note: "電線管・ジョイントを構造に活用"
+    },
+    photos: []
   }
 ];
 
@@ -289,6 +527,96 @@ function renderProjects() {
   document.getElementById('projectCount').textContent = projects.length;
 }
 
+// Furniture
+function renderFurniture() {
+  document.getElementById('furnitureGrid').innerHTML = furnitureProducts.map(f => {
+    const imgHtml = f.thumbnail
+      ? `<img src="${f.thumbnail}" onerror="this.style.display='none'">`
+      : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-tertiary);font-size:14px">写真準備中</div>`;
+    return `
+    <div class="furn-card" onclick="openFurnModal('${f.id}')">
+      <div class="furn-card-img">
+        ${imgHtml}
+        <span class="furn-tag">${f.cases} 案件で導入</span>
+      </div>
+      <div class="furn-card-body">
+        <h3>${f.name}</h3>
+        <div class="furn-sub">${f.sub}</div>
+        <div class="furn-variants">
+          ${f.variants.map(v => `<span class="furn-variant-chip">${v}</span>`).join('')}
+        </div>
+        <div class="furn-card-stats">
+          <div class="pstat"><div class="pval">${f.variants.length}</div><div class="plabel">バリエーション</div></div>
+          <div class="pstat"><div class="pval">${f.cases}</div><div class="plabel">導入実績</div></div>
+          <div class="pstat"><div class="pval">${f.photos.length}</div><div class="plabel">写真</div></div>
+        </div>
+      </div>
+      <div class="furn-card-footer">
+        <span>${f.specs.material}</span>
+        <span>${f.specs.finish}</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('furnitureCount').textContent = furnitureProducts.length;
+}
+
+function openFurnModal(id) {
+  const f = furnitureProducts.find(p => p.id === id);
+  if (!f) return;
+  document.getElementById('furnModalTitle').textContent = f.name;
+  document.getElementById('furnModalSub').textContent = f.sub;
+
+  let html = '';
+
+  // Gallery
+  if (f.photos.length > 0) {
+    html += `<div class="furn-modal-gallery">
+      ${f.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}
+    </div>`;
+  }
+
+  // Specs
+  html += `<div class="furn-detail-section">
+    <h4>仕様</h4>
+    <table class="furn-detail-table">
+      <tr><td>素材</td><td>${f.specs.material}</td></tr>
+      <tr><td>仕上げ</td><td>${f.specs.finish}</td></tr>
+      <tr><td>重量</td><td>${f.specs.weight}</td></tr>
+      <tr><td>備考</td><td>${f.specs.note}</td></tr>
+    </table>
+  </div>`;
+
+  // Variants
+  html += `<div class="furn-detail-section">
+    <h4>バリエーション</h4>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${f.variants.map(v => `<span class="furn-variant-chip" style="font-size:12px;padding:6px 14px">${v}</span>`).join('')}
+    </div>
+  </div>`;
+
+  // Records
+  html += `<div class="furn-detail-section">
+    <h4>導入実績</h4>
+    <table class="furn-detail-table">
+      <tr style="font-weight:600;color:var(--text-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:1px">
+        <td>案件</td><td>形態</td><td>場所</td>
+      </tr>
+      ${f.records.map(r => `<tr><td style="font-weight:500">${r.project}</td><td>${r.type}</td><td>${r.location}</td></tr>`).join('')}
+    </table>
+  </div>`;
+
+  document.getElementById('furnModalBody').innerHTML = html;
+  document.getElementById('furnModal').classList.add('open');
+}
+
+function closeFurnModal() {
+  document.getElementById('furnModal').classList.remove('open');
+}
+
+document.getElementById('furnModal').addEventListener('click', function(e) {
+  if (e.target === this) closeFurnModal();
+});
+
 // Global Hardware
 let gwFilter = 'すべて';
 function renderGlobalHw() {
@@ -324,6 +652,7 @@ function renderGlobalHw() {
 
 document.addEventListener('DOMContentLoaded', () => {
   renderProjects();
+  renderFurniture();
   renderGlobalHw();
 });
 </script>
