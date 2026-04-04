@@ -21,13 +21,12 @@ const DataLoader = {
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`${url}: ${res.status}`);
-      let items = await res.json();
-      items = EditManager.mergeEdits(collection, items);
-      this.cache[collection] = items;
-      return items;
+      const json = await res.json();
+      this.cache[collection] = json;
+      return json;
     } catch (err) {
       console.error('[DataLoader]', err);
-      return [];
+      return {};
     }
   },
 
