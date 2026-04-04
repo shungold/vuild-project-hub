@@ -3,111 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VUILD — Furniture Detail</title>
-<link rel="stylesheet" href="../../style.css?v=4">
+<title>VUILD furniture — Detail</title>
+<link rel="stylesheet" href="../../style.css?v=5">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- Hero -->
-<div class="detail-hero" id="detail-hero"></div>
-
-<!-- Header (sticky) -->
 <header class="global-header">
   <div class="header-inner">
     <div class="brand">
-      <span class="brand-logo">VUILD</span>
+      <a href="../../index.html#furniture" class="brand-logo">VUILD</a>
       <div class="brand-divider"></div>
-      <span class="brand-title" id="header-title">VUILD furniture</span>
+      <span class="brand-title" id="header-title">furniture</span>
     </div>
   </div>
 </header>
 
 <div class="detail-container">
-  <a href="../../index.html#furniture" class="back-link">&larr; furnitureカタログに戻る</a>
+  <a href="../../index.html#furniture" class="back-link">&larr; furniture カタログ</a>
 
+  <!-- Title -->
+  <div class="detail-title-block">
+    <h1 id="furn-name"></h1>
+    <p class="detail-sub" id="furn-sub"></p>
+  </div>
+
+  <!-- Main Photo (Rhino axonometric / product photo) -->
+  <div class="detail-photo-area" id="photo-area" style="display:none">
+    <div class="detail-photo-main" id="photo-main" onclick="openLightbox(this.querySelector('img')?.src)"></div>
+    <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+  </div>
+
+  <!-- Two-column -->
   <div class="detail-grid">
-    <!-- Main Column -->
     <div class="detail-main">
 
       <!-- Overview -->
       <div class="detail-section">
-        <h2 class="detail-section-title">OVERVIEW</h2>
+        <h2 class="detail-section-title">Overview</h2>
         <p class="detail-description" id="furn-description"></p>
       </div>
 
-      <!-- Product Photos -->
-      <div class="detail-section" id="section-photos" style="display:none">
-        <h2 class="detail-section-title">PHOTOS</h2>
-        <div class="detail-gallery" id="furn-gallery"></div>
-      </div>
-
-      <!-- 導入事例 -->
+      <!-- Case Studies (導入事例) — always visible above tabs -->
       <div class="detail-section" id="section-cases" style="display:none">
-        <h2 class="detail-section-title">CASE STUDIES</h2>
-        <p class="detail-section-sub">このプロダクトが導入された案件</p>
+        <h2 class="detail-section-title">Case Studies</h2>
         <div class="detail-furniture-grid" id="furn-cases"></div>
       </div>
 
-      <!-- 什器系 金物・素材 -->
-      <div class="detail-section" id="section-hardware" style="display:none">
-        <h2 class="detail-section-title">HARDWARE / PARTS</h2>
-        <p class="detail-section-sub">この什器に使われた金物・パーツ</p>
-        <div style="overflow-x:auto">
-          <table class="material-table" id="furn-hardware">
-            <thead>
-              <tr><th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
+      <!-- Tabs -->
+      <div class="detail-tabs" id="detail-tabs"></div>
 
-      <!-- 製作ナレッジ -->
-      <div class="detail-section" id="section-knowledge" style="display:none">
-        <h2 class="detail-section-title">PRODUCTION KNOWLEDGE</h2>
-        <p class="detail-section-sub">製作フィードバック・ノウハウ</p>
-        <div class="knowledge-timeline" id="furn-knowledge"></div>
+      <!-- Tab Panels -->
+      <div id="tab-panels">
+        <div class="detail-tab-panel" id="panel-drawings"></div>
+        <div class="detail-tab-panel" id="panel-cost"></div>
+        <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-hardware"></div>
       </div>
     </div>
 
     <!-- Sidebar -->
     <div class="detail-sidebar">
-      <!-- Product Spec -->
       <div class="spec-card">
         <div class="spec-card-header">
-          <h3>Product Spec</h3>
-          <span class="badge" id="furn-series-badge" style="display:none"></span>
+          <h3>Spec</h3>
+          <span class="badge badge-active" id="furn-series-badge" style="display:none"></span>
         </div>
         <div class="spec-card-body" id="furn-spec-body"></div>
       </div>
 
-      <!-- Production Cost -->
-      <div class="spec-card" id="cost-card" style="margin-top:16px; display:none">
-        <div class="spec-card-header"><h3>Production Cost</h3></div>
-        <div class="spec-card-body" id="furn-cost-body"></div>
-      </div>
-
-      <!-- Tags -->
-      <div id="furn-tags" style="margin-top:16px; display:flex; flex-wrap:wrap; gap:6px;"></div>
+      <div id="furn-tags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
     </div>
   </div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<script src="../../common.js?v=4"></script>
+<script src="../../common.js?v=5"></script>
 <script>
 DataLoader.basePath = '../../';
-const BASE = DataLoader.basePath;
+const B = DataLoader.basePath;
 
 const pathParts = location.pathname.split('/').filter(Boolean);
 const furnitureId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+
+function initDetailTabs() {
+  document.querySelectorAll('.detail-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('is-active'));
+      document.querySelectorAll('.detail-tab-panel').forEach(p => p.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      const panel = document.getElementById('panel-' + tab.dataset.panel);
+      if (panel) panel.classList.add('is-active');
+    });
+  });
+}
+
+function setMainPhoto(src) {
+  const main = document.getElementById('photo-main');
+  main.innerHTML = `<img src="${src}" alt="">`;
+  main.onclick = () => openLightbox(src);
+  document.querySelectorAll('.detail-photo-thumb').forEach(t => {
+    t.classList.toggle('is-active', t.dataset.src === src);
+  });
+}
 
 async function init() {
   try {
@@ -118,40 +121,39 @@ async function init() {
       DataLoader.load('knowledge')
     ]);
 
-    const allFurniture = furnData.furniture || [];
-    const item = allFurniture.find(f => f.id === furnitureId);
+    const item = (furnData.furniture || []).find(f => f.id === furnitureId);
     if (!item) {
       document.querySelector('.detail-container').innerHTML =
-        '<p style="padding:60px;text-align:center;color:#999">プロダクトが見つかりません: ' + esc(furnitureId) + '</p>';
+        '<p class="empty-state">プロダクトが見つかりません</p>';
       return;
     }
 
-    document.title = `VUILD furniture — ${item.name}`;
+    document.title = 'VUILD furniture — ' + item.name;
     document.getElementById('header-title').textContent = item.name;
+    document.getElementById('furn-name').textContent = item.name;
+    document.getElementById('furn-sub').textContent =
+      [item.series, item.category, item.name_en].filter(Boolean).join(' — ');
 
-    // ── Hero (アクソメ or プロダクト写真) ──
-    const heroEl = document.getElementById('detail-hero');
-    if (item.hero_photos && item.hero_photos.length) {
-      heroEl.innerHTML = `
-        <img src="${BASE}${item.hero_photos[0]}" alt="${esc(item.name)}">
-        <div class="detail-hero-overlay">
-          ${item.series ? '<div class="detail-pid">' + esc(item.series) + '</div>' : ''}
-          <h1>${esc(item.name)}</h1>
-        </div>`;
-    } else {
-      heroEl.innerHTML = `
-        <div class="detail-hero-placeholder">${esc(item.name_en || item.name)}</div>
-        <div class="detail-hero-overlay">
-          ${item.series ? '<div class="detail-pid">' + esc(item.series) + '</div>' : ''}
-          <h1>${esc(item.name)}</h1>
-        </div>`;
+    // --- Photos ---
+    const photos = [...(item.hero_photos || []), ...(item.gallery_photos || [])];
+    if (photos.length) {
+      document.getElementById('photo-area').style.display = '';
+      setMainPhoto(B + photos[0]);
+      if (photos.length > 1) {
+        document.getElementById('photo-thumbs').innerHTML = photos.map(src =>
+          `<div class="detail-photo-thumb${src === photos[0] ? ' is-active' : ''}"
+               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}')">
+            <img src="${B}${src}" alt="" loading="lazy">
+          </div>`
+        ).join('');
+      }
     }
 
-    // ── Description ──
+    // --- Description ---
     document.getElementById('furn-description').textContent =
-      item.description || '（説明はまだ登録されていません）';
+      item.description || '';
 
-    // ── Spec card ──
+    // --- Spec ---
     const specs = [
       ['寸法', item.dimensions],
       ['重量', item.weight_kg ? item.weight_kg + ' kg' : null],
@@ -159,118 +161,123 @@ async function init() {
       ['仕上げ', item.specs?.finish],
       ['備考', item.specs?.note]
     ].filter(([,v]) => v);
-
-    document.getElementById('furn-spec-body').innerHTML = specs.map(([l, v]) =>
+    document.getElementById('furn-spec-body').innerHTML = specs.map(([l,v]) =>
       `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
     ).join('');
 
-    // Series badge
     if (item.series) {
       const badge = document.getElementById('furn-series-badge');
       badge.textContent = item.series;
-      badge.className = 'badge badge-active';
       badge.style.display = '';
     }
 
-    // ── Production Cost (生産原価) ──
-    const costCard = document.getElementById('cost-card');
-    if (item.production_cost) {
-      costCard.style.display = '';
-      const costRows = [['生産原価', formatPrice(item.production_cost)]];
-      if (item.cost_breakdown) {
-        for (const [k, v] of Object.entries(item.cost_breakdown)) {
-          costRows.push([k, formatPrice(v)]);
-        }
-      }
-      document.getElementById('furn-cost-body').innerHTML = costRows.map(([l,v]) =>
-        `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${v}</span></div>`
-      ).join('');
-    }
-
-    // ── Tags ──
+    // --- Tags ---
     document.getElementById('furn-tags').innerHTML = (item.tags || []).map(t =>
       `<span class="tag">${esc(t)}</span>`
     ).join('');
 
-    // ── Photos ──
-    const photos = [...(item.hero_photos || []), ...(item.gallery_photos || [])];
-    if (photos.length > 0) {
-      document.getElementById('section-photos').style.display = '';
-      document.getElementById('furn-gallery').innerHTML = photos.map(src =>
-        `<div class="detail-gallery-item" onclick="openLightbox('${BASE}${src}')">
-          <img src="${BASE}${src}" alt="" loading="lazy">
-        </div>`
-      ).join('');
-    }
-
-    // ── Case Studies: このfurnitureを使った案件 ──
-    const projects = projData.projects || [];
-    const cases = projects.filter(p =>
-      (p.furniture_ids || []).includes(furnitureId)
-    );
-    if (cases.length > 0) {
+    // --- Case Studies ---
+    const cases = (projData.projects || []).filter(p =>
+      (p.furniture_ids || []).includes(furnitureId));
+    if (cases.length) {
       document.getElementById('section-cases').style.display = '';
       document.getElementById('furn-cases').innerHTML = cases.map(p => {
         const thumb = (p.hero_photos && p.hero_photos[0])
-          ? `<img src="${BASE}${p.hero_photos[0]}" alt="${esc(p.name)}" loading="lazy">`
-          : `<div style="font-size:20px;color:var(--color-tertiary)">${esc(p.pid || p.name[0])}</div>`;
-        return `
-          <a href="${BASE}projects/${p.id}/index.html" class="furniture-link-card">
-            <div class="flc-thumb">${thumb}</div>
-            <div class="flc-body">
-              <h4>${esc(p.name)}</h4>
-              <p>${esc(p.pid)} — ${esc(p.client)}</p>
-            </div>
-          </a>`;
+          ? `<img src="${B}${p.hero_photos[0]}" alt="${esc(p.name)}" loading="lazy">`
+          : `<div style="font-size:18px;color:var(--color-tertiary)">${esc(p.pid || p.name[0])}</div>`;
+        return `<a href="${B}projects/${p.id}/index.html" class="furniture-link-card">
+          <div class="flc-thumb">${thumb}</div>
+          <div class="flc-body"><h4>${esc(p.name)}</h4><p>${esc(p.pid)} — ${esc(p.client)}</p></div>
+        </a>`;
       }).join('');
     }
 
-    // ── Hardware: 什器系金物 (furniture_hardware) ──
+    // --- Build Tabs ---
     const hwItems = (matData.materials || []).filter(m =>
-      (item.hardware_ids || []).includes(m.id) && m.type === 'furniture_hardware'
-    );
-    if (hwItems.length > 0) {
-      document.getElementById('section-hardware').style.display = '';
-      document.getElementById('furn-hardware').querySelector('tbody').innerHTML =
-        hwItems.map(m => `
-          <tr>
-            <td class="mat-name">${esc(m.name)}</td>
-            <td>${esc(m.product_code || '-')}</td>
-            <td>${esc(m.maker || '-')}</td>
-            <td class="mat-price">${formatPrice(m.price)}</td>
-            <td>${m.product_url ? `<a href="${m.product_url}" target="_blank" rel="noopener">詳細 &nearr;</a>` : ''}</td>
-          </tr>`
-        ).join('');
+      (item.hardware_ids || []).includes(m.id) && m.type === 'furniture_hardware');
+    const prodKnowledge = (knowData.entries || []).filter(k =>
+      k.furniture_id === furnitureId && k.scope === 'production');
+    const hasDrawings = item.drawings && item.drawings.length;
+    const hasCost = item.production_cost;
+
+    const tabs = [];
+    if (hasDrawings) tabs.push({ id: 'drawings', label: '図面', count: item.drawings.length });
+    if (hasCost) tabs.push({ id: 'cost', label: 'コスト', count: null });
+    if (hwItems.length) tabs.push({ id: 'hardware', label: '金物・パーツ', count: hwItems.length });
+    if (prodKnowledge.length) tabs.push({ id: 'knowledge', label: 'ナレッジ', count: prodKnowledge.length });
+
+    if (tabs.length) {
+      document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
+        `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
+          ${t.label}${t.count != null ? '<span class="tab-count">' + t.count + '</span>' : ''}
+        </button>`
+      ).join('');
+      document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
+      initDetailTabs();
     }
 
-    // ── Knowledge: 製作系(production)のみ ──
-    const prodKnowledge = (knowData.entries || []).filter(k =>
-      k.furniture_id === furnitureId && k.scope === 'production'
-    );
-    if (prodKnowledge.length > 0) {
-      document.getElementById('section-knowledge').style.display = '';
-      document.getElementById('furn-knowledge').innerHTML = prodKnowledge.map(k => {
-        const info = getKnowledgeTypeInfo(k.type);
-        return `
-          <div class="knowledge-entry">
+    // --- Drawings panel ---
+    if (hasDrawings) {
+      document.getElementById('panel-drawings').innerHTML =
+        '<div class="detail-gallery">' + item.drawings.map(d =>
+          `<div class="detail-gallery-item" onclick="openLightbox('${B}${d.src}')">
+            <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
+          </div>`
+        ).join('') + '</div>';
+    }
+
+    // --- Cost panel ---
+    if (hasCost) {
+      let costHtml = '<div class="spec-card" style="max-width:400px"><div class="spec-card-body">';
+      costHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
+      if (item.cost_breakdown) {
+        for (const [k, v] of Object.entries(item.cost_breakdown)) {
+          costHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+        }
+      }
+      costHtml += '</div></div>';
+      document.getElementById('panel-cost').innerHTML = costHtml;
+    }
+
+    // --- Hardware panel ---
+    if (hwItems.length) {
+      document.getElementById('panel-hardware').innerHTML =
+        '<div style="overflow-x:auto"><table class="material-table"><thead><tr>' +
+        '<th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr></thead><tbody>' +
+        hwItems.map(m => `<tr>
+          <td class="mat-name">${esc(m.name)}</td>
+          <td>${esc(m.product_code || '-')}</td>
+          <td>${esc(m.maker || '-')}</td>
+          <td class="mat-price">${formatPrice(m.price)}</td>
+          <td>${m.product_url ? `<a href="${m.product_url}" target="_blank">詳細 &nearr;</a>` : ''}</td>
+        </tr>`).join('') + '</tbody></table></div>';
+    }
+
+    // --- Knowledge panel ---
+    if (prodKnowledge.length) {
+      document.getElementById('panel-knowledge').innerHTML =
+        '<div class="knowledge-timeline">' + prodKnowledge.map(k => {
+          const info = getKnowledgeTypeInfo(k.type);
+          return `<div class="knowledge-entry">
             <div class="knowledge-entry__header">
               <span class="badge badge--${k.type}">${info.label}</span>
               <span class="knowledge-entry__date">${formatDate(k.date)}</span>
             </div>
-            <h4 style="font-size:14px;margin:4px 0">${esc(k.title)}</h4>
+            <h4 style="font-size:13px;margin:4px 0">${esc(k.title)}</h4>
             <p class="knowledge-entry__body">${esc(k.content || '')}</p>
           </div>`;
-      }).join('');
+        }).join('') + '</div>';
     }
 
   } catch (e) {
-    console.error('Furniture detail init error:', e);
+    console.error(e);
     document.querySelector('.detail-container').innerHTML =
-      '<p style="padding:40px;color:red">読み込みエラー: ' + e.message + '</p>';
+      '<p style="padding:40px;color:red">Error: ' + e.message + '</p>';
   }
 }
 
 function openLightbox(src) {
+  if (!src) return;
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('is-open');
 }

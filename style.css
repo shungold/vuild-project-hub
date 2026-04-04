@@ -1087,72 +1087,14 @@ ul, ol { list-style: none; }
 
 
 /* ------------------------------------------------------------
-   25. PROJECT DETAIL PAGE (tecture.jp inspired)
+   25. DETAIL PAGE — tecture.jp inspired (案件 + furniture共通)
    ------------------------------------------------------------ */
 
-/* --- Hero Section --- */
-.detail-hero {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 21 / 9;
-  max-height: 520px;
-  overflow: hidden;
-  background: var(--color-border-light);
-}
-
-.detail-hero img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.detail-hero-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 64px;
-  font-weight: 800;
-  color: var(--color-border);
-  background: linear-gradient(135deg, var(--color-border-light) 0%, #e8e6e1 100%);
-  letter-spacing: 8px;
-}
-
-.detail-hero-overlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: var(--sp-16) var(--sp-24);
-  background: linear-gradient(transparent, rgba(0,0,0,0.6));
-  color: #fff;
-}
-
-.detail-hero-overlay h1 {
-  font-size: 36px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-.detail-hero-overlay .detail-pid {
-  font-size: var(--font-body);
-  font-weight: 500;
-  opacity: 0.8;
-  margin-top: 4px;
-}
-
-/* --- Detail Layout --- */
+/* --- Detail Container --- */
 .detail-container {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: var(--sp-16) var(--content-padding) var(--sp-48);
-}
-
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 360px;
-  gap: var(--sp-24);
-  margin-top: var(--sp-16);
+  padding: var(--sp-8) var(--content-padding) var(--sp-48);
 }
 
 /* --- Back Link --- */
@@ -1166,24 +1108,111 @@ ul, ol { list-style: none; }
   transition: color var(--ease);
   margin-bottom: var(--sp-8);
 }
-
 .back-link:hover { color: var(--color-text); }
 
-/* --- Overview Section --- */
+/* --- Page Title (replaces giant hero) --- */
+.detail-title-block {
+  margin-bottom: var(--sp-12);
+}
+
+.detail-title-block h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.detail-title-block .detail-sub {
+  font-size: var(--font-body);
+  color: var(--color-tertiary);
+}
+
+/* --- Photo Gallery (tecture-style: main + grid) --- */
+.detail-photo-area {
+  margin-bottom: var(--sp-16);
+}
+
+.detail-photo-main {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-border-light);
+  margin-bottom: var(--sp-4);
+  cursor: pointer;
+}
+
+.detail-photo-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-photo-main .photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--color-tertiary);
+}
+
+.detail-photo-thumbs {
+  display: flex;
+  gap: var(--sp-4);
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 4px;
+}
+
+.detail-photo-thumbs::-webkit-scrollbar { display: none; }
+
+.detail-photo-thumb {
+  flex: 0 0 auto;
+  width: 100px;
+  aspect-ratio: 3 / 2;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--color-border-light);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: border-color var(--ease);
+}
+
+.detail-photo-thumb.is-active,
+.detail-photo-thumb:hover {
+  border-color: var(--color-text);
+}
+
+.detail-photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Two-column layout: main + sidebar --- */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--sp-24);
+}
+
+/* --- Detail Sections --- */
 .detail-section {
-  margin-bottom: var(--sp-24);
+  margin-bottom: var(--sp-16);
 }
 
 .detail-section-title {
-  font-size: var(--font-h3);
+  font-size: 11px;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   margin-bottom: var(--sp-8);
   padding-bottom: var(--sp-4);
   border-bottom: 1px solid var(--color-border-light);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 11px;
 }
 
 .detail-description {
@@ -1195,26 +1224,81 @@ ul, ol { list-style: none; }
 .detail-section-sub {
   font-size: var(--font-caption);
   color: var(--color-tertiary);
-  margin-top: -12px;
   margin-bottom: var(--sp-8);
+}
+
+/* --- Detail Tabs (FURNITURE / MATERIALS / KNOWLEDGE 切り替え) --- */
+.detail-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--sp-16);
+  margin-top: var(--sp-8);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.detail-tabs::-webkit-scrollbar { display: none; }
+
+.detail-tab {
+  position: relative;
+  padding: 12px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  white-space: nowrap;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color var(--ease), border-color var(--ease);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-tab:hover { color: var(--color-secondary); }
+
+.detail-tab.is-active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
+}
+
+.detail-tab .tab-count {
+  display: inline-block;
+  background: var(--color-bg);
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 10px;
+  margin-left: 4px;
+  color: var(--color-tertiary);
+  font-weight: 500;
+}
+
+.detail-tab-panel {
+  display: none;
+}
+
+.detail-tab-panel.is-active {
+  display: block;
 }
 
 /* --- Sidebar Spec Card --- */
 .detail-sidebar {
   position: sticky;
-  top: 80px;
+  top: 72px;
   align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
 }
 
 .spec-card {
   background: var(--color-surface);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
 .spec-card-header {
-  padding: var(--sp-8) var(--sp-8);
+  padding: 10px 14px;
   border-bottom: 1px solid var(--color-border-light);
   display: flex;
   align-items: center;
@@ -1222,19 +1306,19 @@ ul, ol { list-style: none; }
 }
 
 .spec-card-header h3 {
-  font-size: var(--font-h3);
+  font-size: 12px;
   font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.spec-card-body {
-  padding: 0;
-}
+.spec-card-body { padding: 0; }
 
 .spec-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 10px var(--sp-8);
+  padding: 8px 14px;
   border-bottom: 1px solid var(--color-border-light);
   font-size: var(--font-caption);
 }
@@ -1251,53 +1335,52 @@ ul, ol { list-style: none; }
 .spec-value {
   color: var(--color-text);
   text-align: right;
+  font-weight: 500;
 }
 
-/* --- Team Avatars (detail page) --- */
+/* --- Team --- */
 .team-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: var(--sp-8);
+  gap: 6px;
+  padding: 10px 14px;
 }
 
 .team-member {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .team-avatar {
-  width: 32px; height: 32px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   background: var(--color-bg);
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; color: var(--color-secondary);
+  font-size: 11px; font-weight: 700; color: var(--color-secondary);
   flex-shrink: 0;
 }
 
-.team-name { font-size: var(--font-body); font-weight: 500; }
-.team-role { font-size: var(--font-caption); color: var(--color-tertiary); margin-left: 4px; }
+.team-name { font-size: 13px; font-weight: 500; }
+.team-role { font-size: 11px; color: var(--color-tertiary); margin-left: 2px; }
 
-/* --- Photo Gallery (detail page) --- */
+/* --- Photo Gallery (grid inside tab) --- */
 .detail-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--sp-8);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--sp-4);
 }
 
 .detail-gallery-item {
-  border-radius: var(--radius-sm);
+  border-radius: 4px;
   overflow: hidden;
   background: var(--color-border-light);
   aspect-ratio: 3 / 2;
   cursor: pointer;
-  transition: transform var(--ease);
+  transition: opacity var(--ease);
 }
 
-.detail-gallery-item:hover {
-  transform: scale(1.02);
-}
+.detail-gallery-item:hover { opacity: 0.85; }
 
 .detail-gallery-item img {
   width: 100%;
@@ -1305,10 +1388,10 @@ ul, ol { list-style: none; }
   object-fit: cover;
 }
 
-/* --- Furniture Cards in Project --- */
+/* --- Furniture / Case Study Cards --- */
 .detail-furniture-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: var(--sp-8);
 }
 
@@ -1324,7 +1407,7 @@ ul, ol { list-style: none; }
 }
 
 .furniture-link-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
@@ -1344,21 +1427,21 @@ ul, ol { list-style: none; }
 }
 
 .furniture-link-card .flc-body {
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
 .furniture-link-card .flc-body h4 {
-  font-size: var(--font-body);
+  font-size: 13px;
   font-weight: 600;
   margin-bottom: 2px;
 }
 
 .furniture-link-card .flc-body p {
-  font-size: var(--font-caption);
+  font-size: 11px;
   color: var(--color-tertiary);
 }
 
-/* --- Material Table (compact) --- */
+/* --- Material Table --- */
 .material-table {
   width: 100%;
   border-collapse: collapse;
@@ -1380,31 +1463,17 @@ ul, ol { list-style: none; }
   vertical-align: top;
 }
 
-.material-table tr:hover {
-  background: rgba(0,0,0,0.015);
-}
-
-.material-table .mat-name {
-  font-weight: 500;
-  color: var(--color-text);
-}
-
-.material-table .mat-price {
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.material-table a {
-  color: var(--color-edit-blue);
-  font-size: 11px;
-}
+.material-table tr:hover { background: rgba(0,0,0,0.015); }
+.material-table .mat-name { font-weight: 500; color: var(--color-text); }
+.material-table .mat-price { font-weight: 600; white-space: nowrap; }
+.material-table a { color: var(--color-edit-blue); font-size: 11px; }
 
 /* --- Lightbox --- */
 .lightbox {
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1413,10 +1482,7 @@ ul, ol { list-style: none; }
   transition: opacity 0.3s;
 }
 
-.lightbox.is-open {
-  opacity: 1;
-  pointer-events: auto;
-}
+.lightbox.is-open { opacity: 1; pointer-events: auto; }
 
 .lightbox img {
   max-width: 90%;
@@ -1433,7 +1499,6 @@ ul, ol { list-style: none; }
   display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 20px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 .lightbox-close:hover { background: rgba(255,255,255,0.3); }
@@ -1462,20 +1527,9 @@ ul, ol { list-style: none; }
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
 
-  .info-table th {
-    display: block;
-    width: 100%;
-    padding-bottom: 0;
-  }
-
-  .info-table td {
-    display: block;
-    padding-top: var(--sp-2);
-  }
-
-  .photo-slider__item {
-    width: 92%;
-  }
+  .info-table th { display: block; width: 100%; padding-bottom: 0; }
+  .info-table td { display: block; padding-top: var(--sp-2); }
+  .photo-slider__item { width: 92%; }
 
   .modal {
     width: 100%;
@@ -1484,15 +1538,13 @@ ul, ol { list-style: none; }
     margin-top: auto;
   }
 
-  .knowledge-entry {
-    padding-left: var(--sp-8);
-  }
+  .knowledge-entry { padding-left: var(--sp-8); }
 
   /* Detail page responsive */
-  .detail-hero { aspect-ratio: 16 / 9; }
-  .detail-hero-overlay h1 { font-size: 24px; }
-  .detail-hero-overlay { padding: var(--sp-8) var(--sp-12); }
-  .detail-grid { grid-template-columns: 1fr; gap: var(--sp-16); }
+  .detail-grid { grid-template-columns: 1fr; gap: var(--sp-12); }
   .detail-sidebar { position: static; }
-  .detail-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+  .detail-title-block h1 { font-size: 22px; }
+  .detail-photo-main { aspect-ratio: 16 / 9; }
+  .detail-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+  .detail-furniture-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 }
