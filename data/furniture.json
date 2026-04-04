@@ -197,7 +197,7 @@
       "dimensions": "W3200×D450×H2400",
       "weight_kg": null,
       "hero_photos": ["photos/placeholders/axo-baum.svg"],
-      "gallery_photos": [],
+      "gallery_photos": ["photos/projects/baum_mobile/complete-01.jpg","photos/projects/baum_mobile/complete-02.jpg","photos/projects/baum_mobile/complete-03.jpg"],
       "specs": {"material": "檜・シナ合板（CNC加工）", "finish": "BAUMグリーン塗装 + ルビオピュア", "note": "引き戸・シンク・看板一体型"},
       "hardware_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
       "production_cost": 118778,

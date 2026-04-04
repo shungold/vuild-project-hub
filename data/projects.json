@@ -14,12 +14,14 @@
       "area_sqm": null,
       "structure": "木造（CNC加工）",
       "description": "資生堂BAUMブランドのポップアップ用移動式什器。引き戸収納、シンク、サイン看板を一体化した木製ワゴン。檜・シナ合板をCNC加工し、BAUMグリーンで塗装。",
-      "hero_photos": ["photos/placeholders/axo-baum.svg"],
+      "hero_photos": ["photos/projects/baum_mobile/complete-01.jpg"],
+      "gallery_photos": ["photos/projects/baum_mobile/complete-02.jpg","photos/projects/baum_mobile/complete-03.jpg","photos/projects/baum_mobile/complete-04.jpg","photos/projects/baum_mobile/complete-05.jpg","photos/projects/baum_mobile/complete-06.jpg","photos/projects/baum_mobile/IMG_6760_F0ADED.jpg","photos/projects/baum_mobile/paint-01.jpg","photos/projects/baum_mobile/paint-02.jpg"],
       "photo_pins": [
-        {"photo_index": 0, "x": 50, "y": 55, "type": "furniture", "id": "baum-yatai", "label": "BAUM 移動式什器"},
-        {"photo_index": 0, "x": 73, "y": 82, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
-        {"photo_index": 0, "x": 30, "y": 45, "type": "material", "id": "HW_001", "label": "規格型平蝶番"},
-        {"photo_index": 0, "x": 60, "y": 30, "type": "material", "id": "HW_007", "label": "ウルトララスト塗料"}
+        {"photo_index": 0, "x": 50, "y": 50, "type": "furniture", "id": "baum-yatai", "label": "BAUM 移動式什器"},
+        {"photo_index": 0, "x": 25, "y": 75, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
+        {"photo_index": 0, "x": 85, "y": 60, "type": "material", "id": "HW_005", "label": "シリンダープッシュ錠"},
+        {"photo_index": 2, "x": 70, "y": 50, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
+        {"photo_index": 5, "x": 50, "y": 50, "type": "furniture", "id": "baum-yatai", "label": "下北沢ポップアップ"}
       ],
       "team": [
         {"name": "金子俊耶", "role": "設計"},

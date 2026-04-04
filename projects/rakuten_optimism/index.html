@@ -289,10 +289,10 @@ async function init() {
           const info = getKnowledgeTypeInfo(k.type);
           const imgs = k.images || [];
           const imgHtml = imgs.length
-            ? `<div class="know-images">${imgs.map(img =>
-                `<div class="know-img-thumb"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--color-tertiary)">DL待</div></div>`
-              ).join('')}</div>
-              <div class="know-img-pending">${imgs.length}枚の画像（トークン取得後にDL）</div>`
+            ? `<div class="know-images">${imgs.map(img => {
+                const src = img.startsWith('photos/') ? B + img : img;
+                return `<div class="know-img-thumb" onclick="openLightbox('${src}')"><img src="${src}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--color-tertiary)\\'>DL待</div>'"></div>`;
+              }).join('')}</div>`
             : '';
           const slackHtml = k.slack_url
             ? `<a href="${k.slack_url}" target="_blank" class="know-slack-link">\u{1F4AC} Slackで見る</a>`
