@@ -297,7 +297,7 @@ async function init() {
     tabs.push({ id: 'drawings', label: '図面', count: hasDrawings ? project.drawings.length : 0 });
     tabs.push({ id: 'estimate', label: '見積', count: estimateDocs.length || null });
     tabs.push({ id: 'actual', label: '実績', count: null });
-    if (projectKnowledge.length) tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
+    tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
 
     document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
       `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
@@ -431,7 +431,7 @@ async function init() {
       document.getElementById('panel-actual').innerHTML = actHtml;
     }
 
-    // --- Knowledge panel ---
+    // --- Knowledge panel (design scopeのみ、0件でも空メッセージ表示) ---
     if (projectKnowledge.length) {
       window._knowledgeData = projectKnowledge;
       document.getElementById('panel-knowledge').innerHTML =
@@ -449,6 +449,9 @@ async function init() {
             <div class="know-author">${esc(k.posted_by || '')}</div>
           </div>`;
         }).join('') + '</div>';
+    } else {
+      document.getElementById('panel-knowledge').innerHTML =
+        '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">案件レベルのナレッジ（scope: design）はまだ登録されていません。<br>制作に関するナレッジは各furnitureページに表示されます。</p>';
     }
 
     // --- Pin Editor init ---
