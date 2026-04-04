@@ -168,9 +168,12 @@ async function renderFurniture() {
     groups[g].push(f);
   });
 
-  document.getElementById('furniture-grid').innerHTML = filtered.map(f => {
-    const group = f.series || f.category || '';
-    return `
+  // Build HTML with group headings, but cards flow horizontally within each group
+  let html = '';
+  for (const [groupName, items] of Object.entries(groups)) {
+    html += `<h2 class="sub-title">${esc(groupName)}</h2>`;
+    html += `<div class="card-grid material-grid">`;
+    html += items.map(f => `
       <div class="card material-card">
         <div class="card-thumb-sm">
           ${(f.hero_photos && f.hero_photos[0])
@@ -178,13 +181,16 @@ async function renderFurniture() {
             : `<div class="thumb-placeholder-sm">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`}
         </div>
         <div class="card-body">
-          <span class="badge badge-adopted">${esc(group)}</span>
           <h3>${esc(f.name)}</h3>
           <p class="card-meta">${f.dimensions ? esc(f.dimensions) : ''} ${f.weight_kg ? '/ ' + f.weight_kg + 'kg' : ''}</p>
           <p class="card-meta">${esc(f.specs?.material || '')}</p>
         </div>
-      </div>`;
-  }).join('') || '<p class="empty-state">該当するプロダクトがありません</p>';
+      </div>`).join('');
+    html += `</div>`;
+  }
+
+  document.getElementById('furniture-grid').innerHTML = html
+    || '<p class="empty-state">該当するプロダクトがありません</p>';
 }
 
 // ============ Materials ============
