@@ -1621,6 +1621,116 @@ ul, ol { list-style: none; }
 .doc-label { font-weight: 500; flex: 1; }
 .doc-note { font-size: 10px; color: var(--color-tertiary); }
 
+/* --- BOM Import (AUTOESTIMATOR JSON D&D) --- */
+.bom-dropzone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  color: var(--color-tertiary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: border-color var(--ease), background var(--ease);
+  margin-bottom: var(--sp-8);
+}
+
+.bom-dropzone.is-dragover {
+  border-color: var(--color-text);
+  background: rgba(0,0,0,0.02);
+}
+
+.bom-dropzone input[type="file"] { display: none; }
+
+.bom-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: var(--sp-8);
+}
+
+.bom-stat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.bom-stat .bom-stat-val {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.bom-stat .bom-stat-label {
+  font-size: 10px;
+  color: var(--color-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.bom-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.bom-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  padding: 6px 8px;
+  border-bottom: 2px solid var(--color-border);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bom-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.bom-table tr:hover { background: rgba(0,0,0,0.01); }
+
+.bom-cat { font-weight: 600; color: var(--color-secondary); }
+.bom-amount { font-weight: 600; text-align: right; }
+
+.bom-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.bom-match.matched { background: rgba(45,90,39,0.1); color: var(--color-accent-green); }
+.bom-match.unmatched { background: rgba(139,105,20,0.1); color: var(--color-wood); }
+
+/* --- 3D Model Download --- */
+.model-dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--ease);
+  text-decoration: none;
+}
+
+.model-dl-btn:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
 /* --- Lightbox --- */
 .lightbox {
   position: fixed;

@@ -203,7 +203,8 @@ async function init() {
     const hasDocs = item.documents && item.documents.length;
     const tabs = [];
     if (hasDrawings) tabs.push({ id: 'drawings', label: '図面', count: item.drawings.length });
-    if (hasCost || hasDocs) tabs.push({ id: 'cost', label: 'コスト', count: null });
+    // コストタブは常に表示（BOMインポート機能があるため）
+    tabs.push({ id: 'cost', label: 'コスト', count: null });
     if (hwItems.length) tabs.push({ id: 'hardware', label: '金物・パーツ', count: hwItems.length });
     if (prodKnowledge.length) tabs.push({ id: 'knowledge', label: 'ナレッジ', count: prodKnowledge.length });
 
@@ -227,11 +228,21 @@ async function init() {
         ).join('') + '</div>';
     }
 
-    // --- Cost panel (原価 + 内訳 + 参考資料リンク) ---
-    if (hasCost || hasDocs) {
+    // --- Cost panel (BOMインポート + 原価 + 参考資料) ---
+    {
       let costHtml = '';
+
+      // BOM D&D Import zone
+      costHtml += `
+        <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
+          AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
+          <input type="file" id="bom-file" accept=".json">
+        </div>
+        <div id="bom-result"></div>`;
+
+      // Existing cost data
       if (hasCost) {
-        costHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px"><div class="spec-card-header"><h3>Production Cost</h3></div><div class="spec-card-body">';
+        costHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px;margin-top:16px"><div class="spec-card-header"><h3>Production Cost (手入力)</h3></div><div class="spec-card-body">';
         costHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
         if (item.cost_breakdown) {
           for (const [k, v] of Object.entries(item.cost_breakdown)) {
@@ -240,22 +251,24 @@ async function init() {
         }
         costHtml += '</div></div>';
       }
+
+      // Documents
       if (hasDocs) {
-        costHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin-bottom:8px">参考資料</h3>';
+        costHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin:16px 0 8px">参考資料</h3>';
         costHtml += '<div class="doc-list">';
         const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
         costHtml += item.documents.map(d => `
           <div class="doc-item">
             <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
-            <div>
-              <div class="doc-label">${esc(d.label)}</div>
-              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
-            </div>
-          </div>`
-        ).join('');
+            <div><div class="doc-label">${esc(d.label)}</div>${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}</div>
+          </div>`).join('');
         costHtml += '</div>';
       }
+
       document.getElementById('panel-cost').innerHTML = costHtml;
+
+      // BOM import logic
+      initBomImport(hwItems);
     }
 
     // --- Hardware panel (サムネ付きカード) ---
@@ -298,6 +311,131 @@ async function init() {
     document.querySelector('.detail-container').innerHTML =
       '<p style="padding:40px;color:red">Error: ' + e.message + '</p>';
   }
+}
+
+// --- BOM Import from AUTOESTIMATOR JSON ---
+function initBomImport(hwItems) {
+  const dropzone = document.getElementById('bom-dropzone');
+  const fileInput = document.getElementById('bom-file');
+  if (!dropzone || !fileInput) return;
+
+  ['dragover','dragenter'].forEach(ev => {
+    dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('is-dragover'); });
+  });
+  ['dragleave','drop'].forEach(ev => {
+    dropzone.addEventListener(ev, () => dropzone.classList.remove('is-dragover'));
+  });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) processBomFile(file, hwItems);
+  });
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) processBomFile(e.target.files[0], hwItems);
+  });
+
+  // Auto-load saved estimate if available
+  const saved = localStorage.getItem('vuild_bom_' + furnitureId);
+  if (saved) {
+    try { renderBom(JSON.parse(saved), hwItems); } catch {}
+  }
+}
+
+function processBomFile(file, hwItems) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      localStorage.setItem('vuild_bom_' + furnitureId, JSON.stringify(data));
+      renderBom(data, hwItems);
+    } catch (err) {
+      document.getElementById('bom-result').innerHTML =
+        '<p style="color:red;padding:8px">JSONの読み込みに失敗: ' + err.message + '</p>';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function renderBom(data, hwItems) {
+  const er = data.estimate_result || {};
+  const est = (er.estimates || [])[0] || {};
+  const lineItems = est.line_items || [];
+  const materials = ((data.structured_data || {}).products || [])[0]?.materials || [];
+
+  // Build named line items
+  const named = lineItems.map((li, i) => ({
+    name: (materials[i] && materials[i].name) || li.name || '(' + (li.category || '不明') + ')',
+    category: li.category || '',
+    amount: li.amount || 0,
+    materialInfo: materials[i] || null
+  }));
+
+  // Categorize
+  const matItems = named.filter(n => n.category === '材料費');
+  const procItems = named.filter(n => n.category === '加工費');
+  const matTotal = matItems.reduce((s, n) => s + n.amount, 0);
+  const procTotal = procItems.reduce((s, n) => s + n.amount, 0);
+
+  // Match hardware items by name (fuzzy)
+  const hwNames = hwItems.map(h => ({ id: h.id, name: h.name.toLowerCase(), price: h.price }));
+  function findMatch(itemName) {
+    const lower = itemName.toLowerCase();
+    const keywords = ['丁番','蝶番','水栓','シンク','キャスター','車輪','取っ手','ビス','金物','錠','レール','ローラー','アングル'];
+    const isHw = keywords.some(k => lower.includes(k));
+    if (!isHw) return null;
+    return hwNames.find(h => {
+      const hn = h.name;
+      return lower.includes(hn) || hn.includes(lower) ||
+        keywords.some(k => lower.includes(k) && hn.includes(k));
+    });
+  }
+
+  let html = '';
+
+  // Summary stats
+  html += `<div class="bom-summary">
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(er.grand_total)}</div><div class="bom-stat-label">税込合計</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(matTotal)}</div><div class="bom-stat-label">材料費</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(procTotal)}</div><div class="bom-stat-label">加工費</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(er.management_fee)}</div><div class="bom-stat-label">管理費</div></div>
+  </div>`;
+
+  // Project info
+  const proj = er.project || data.structured_data?.project || {};
+  html += `<p style="font-size:11px;color:var(--color-tertiary);margin-bottom:12px">
+    ${esc(proj.project_name || '')} — AUTOESTIMATOR概算 (${data.exported_at ? data.exported_at.split('T')[0] : ''})
+  </p>`;
+
+  // Line items table
+  html += '<table class="bom-table"><thead><tr><th>品名</th><th>区分</th><th style="text-align:right">金額</th><th>照合</th></tr></thead><tbody>';
+  for (const n of named) {
+    const match = findMatch(n.name);
+    const matchHtml = match
+      ? `<span class="bom-match matched">実価格 ${formatPrice(match.price)}</span>`
+      : (n.category === '材料費' && ['丁番','蝶番','水栓','シンク','キャスター','車輪','取っ手','ビス','金物','錠','レール','ローラー','アングル'].some(k => n.name.includes(k))
+        ? '<span class="bom-match unmatched">未照合</span>'
+        : '');
+    html += `<tr>
+      <td>${esc(n.name)}</td>
+      <td class="bom-cat">${esc(n.category)}</td>
+      <td class="bom-amount">${formatPrice(n.amount)}</td>
+      <td>${matchHtml}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+
+  // Warnings
+  if (er.warnings && er.warnings.length) {
+    html += '<div style="margin-top:12px;padding:8px 12px;background:rgba(212,136,15,0.08);border-radius:4px;font-size:11px;color:var(--color-wood)">';
+    er.warnings.forEach(w => { html += '<div>' + esc(w) + '</div>'; });
+    html += '</div>';
+  }
+
+  // Reset button
+  html += `<button onclick="localStorage.removeItem('vuild_bom_${furnitureId}');document.getElementById('bom-result').innerHTML='';document.getElementById('bom-dropzone').style.display=''" style="margin-top:8px;font-size:11px;color:var(--color-tertiary);cursor:pointer;background:none;border:none;text-decoration:underline">クリア</button>`;
+
+  document.getElementById('bom-result').innerHTML = html;
+  document.getElementById('bom-dropzone').style.display = 'none';
 }
 
 function openLightbox(src) {
