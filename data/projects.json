@@ -20,7 +20,7 @@
         {"name": "黒部駿人", "role": "設計"},
         {"name": "向田涼哉", "role": "制作"}
       ],
-      "furniture_ids": [],
+      "furniture_ids": ["baum-yatai"],
       "material_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
       "slack_channel_id": "C09V70VFF96",
       "slack_channel_name": "#3040_baum移動式什器",

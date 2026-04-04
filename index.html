@@ -131,52 +131,72 @@ async function renderProjects() {
 // ============ Furniture ============
 async function renderFurniture() {
   const data = await DataLoader.load('furniture');
-  const furniture = data.furniture || data;
+  const furniture = data.furniture || [];
   document.getElementById('count-furniture').textContent = furniture.length;
 
-  // Series filter
-  const series = ['すべて', ...new Set(furniture.map(f => f.series).filter(Boolean))];
+  // Collect all groups: series + categories
+  const allGroups = ['すべて'];
+  const seriesSet = new Set();
+  const catSet = new Set();
+  furniture.forEach(f => {
+    if (f.series) seriesSet.add(f.series);
+    else if (f.category) catSet.add(f.category);
+  });
+  seriesSet.forEach(s => allGroups.push(s));
+  catSet.forEach(c => allGroups.push(c));
+
   document.getElementById('furniture-filters').innerHTML = `
     <div class="filter-chips">
-      ${series.map(s => `<button class="chip${s === furnitureFilter ? ' active' : ''}"
-        onclick="furnitureFilter='${s}';renderFurniture()">${s}</button>`).join('')}
+      ${allGroups.map(g => `<button class="chip${g === furnitureFilter ? ' active' : ''}"
+        onclick="furnitureFilter='${g}';renderFurniture()">${g}</button>`).join('')}
     </div>`;
+
+  // Group items
+  function getGroup(f) { return f.series || f.category || 'その他'; }
 
   const filtered = furnitureFilter === 'すべて'
     ? furniture
-    : furniture.filter(f => f.series === furnitureFilter);
+    : furniture.filter(f => getGroup(f) === furnitureFilter);
 
-  document.getElementById('furniture-grid').innerHTML = filtered.map(f => {
-    const heroImg = (f.hero_photos && f.hero_photos[0]);
-    const thumbHtml = heroImg
-      ? `<img src="${heroImg}" alt="${esc(f.name)}" loading="lazy">`
-      : `<div class="thumb-placeholder"><span>${esc(f.name_en || f.name)}</span></div>`;
-    const variantCount = (f.variants || []).length;
-    const caseCount = (f.deployment_history || []).length;
-    return `
-      <a href="furniture/${f.id}/index.html" class="card furniture-card">
-        <div class="card-thumb">
-          ${thumbHtml}
-          <span class="card-overlay-tag">${caseCount} 案件で導入</span>
-        </div>
-        <div class="card-body">
-          ${f.series ? `<span class="tag tag-wood">${esc(f.series)}</span>` : ''}
-          <h3>${esc(f.name)}</h3>
-          <p class="card-sub">${esc(f.name_en || '')} — ${esc(f.description || '')}</p>
-          <div class="variant-chips">
-            ${(f.variants || []).map(v => `<span class="variant-chip">${esc(v.name)}</span>`).join('')}
+  // Group by series/category for display
+  const groups = {};
+  filtered.forEach(f => {
+    const g = getGroup(f);
+    if (!groups[g]) groups[g] = [];
+    groups[g].push(f);
+  });
+
+  let html = '';
+  for (const [groupName, items] of Object.entries(groups)) {
+    html += `<h2 class="sub-title" style="margin-top:24px;margin-bottom:16px">${esc(groupName)}</h2>`;
+    html += `<div class="card-grid furniture-grid" style="margin-bottom:32px">`;
+    html += items.map(f => {
+      const heroImg = (f.hero_photos && f.hero_photos[0]);
+      const thumbHtml = heroImg
+        ? `<img src="${heroImg}" alt="${esc(f.name)}" loading="lazy">`
+        : `<div class="thumb-placeholder"><span>${esc(f.name_en || f.name)}</span></div>`;
+      return `
+        <a href="furniture/${f.id}/index.html" class="card furniture-card">
+          <div class="card-thumb">${thumbHtml}</div>
+          <div class="card-body">
+            <h3>${esc(f.name)}</h3>
+            <p class="card-sub">${esc(f.description || '')}</p>
+            <div class="card-meta">
+              ${f.dimensions ? esc(f.dimensions) : ''}
+              ${f.weight_kg ? ' / ' + f.weight_kg + 'kg' : ''}
+            </div>
           </div>
-          <div class="card-stats">
-            <div class="stat"><span class="stat-val">${variantCount}</span><span class="stat-label">バリエーション</span></div>
-            <div class="stat"><span class="stat-val">${caseCount}</span><span class="stat-label">導入実績</span></div>
+          <div class="card-footer">
+            <span>${esc(f.specs?.material || '')}</span>
+            <span>${esc(f.specs?.finish || '')}</span>
           </div>
-        </div>
-        <div class="card-footer">
-          <span>${esc(f.specs?.material || '')}</span>
-          <span>${esc(f.specs?.finish || '')}</span>
-        </div>
-      </a>`;
-  }).join('') || '<p class="empty-state">該当するプロダクトがありません</p>';
+        </a>`;
+    }).join('');
+    html += '</div>';
+  }
+
+  document.getElementById('furniture-grid').innerHTML = html
+    || '<p class="empty-state">該当するプロダクトがありません</p>';
 }
 
 // ============ Materials ============
