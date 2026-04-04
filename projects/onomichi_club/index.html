@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUILD — Project Detail</title>
+<link rel="stylesheet" href="../../style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Hero -->
+<div class="detail-hero" id="detail-hero"></div>
+
+<!-- Header (sticky) -->
+<header class="global-header">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-logo">VUILD</span>
+      <div class="brand-divider"></div>
+      <span class="brand-title" id="header-title">Project Hub</span>
+    </div>
+    <div id="header-badge"></div>
+  </div>
+</header>
+
+<div class="detail-container">
+  <a href="../../index.html" class="back-link">&larr; ポータルに戻る</a>
+
+  <div class="detail-grid">
+    <!-- Main Column -->
+    <div class="detail-main">
+
+      <!-- Overview -->
+      <div class="detail-section" id="section-overview">
+        <h2 class="detail-section-title">OVERVIEW</h2>
+        <p class="detail-description" id="detail-description"></p>
+      </div>
+
+      <!-- Photos -->
+      <div class="detail-section" id="section-photos" style="display:none">
+        <h2 class="detail-section-title">PHOTOS</h2>
+        <div class="detail-gallery" id="detail-gallery"></div>
+      </div>
+
+      <!-- Furniture -->
+      <div class="detail-section" id="section-furniture" style="display:none">
+        <h2 class="detail-section-title">VUILD FURNITURE</h2>
+        <div class="detail-furniture-grid" id="detail-furniture"></div>
+      </div>
+
+      <!-- Materials / Hardware -->
+      <div class="detail-section" id="section-materials" style="display:none">
+        <h2 class="detail-section-title">MATERIALS / HARDWARE</h2>
+        <div style="overflow-x:auto">
+          <table class="material-table" id="detail-materials">
+            <thead>
+              <tr><th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Knowledge -->
+      <div class="detail-section" id="section-knowledge" style="display:none">
+        <h2 class="detail-section-title">KNOWLEDGE</h2>
+        <div class="knowledge-timeline" id="detail-knowledge"></div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="detail-sidebar">
+      <div class="spec-card">
+        <div class="spec-card-header">
+          <h3>Project Info</h3>
+          <span class="badge" id="spec-status"></span>
+        </div>
+        <div class="spec-card-body" id="spec-body"></div>
+      </div>
+
+      <!-- Team -->
+      <div class="spec-card" style="margin-top:16px">
+        <div class="spec-card-header"><h3>Team</h3></div>
+        <div class="team-list" id="detail-team"></div>
+      </div>
+
+      <!-- Tags -->
+      <div id="detail-tags" style="margin-top:16px; display:flex; flex-wrap:wrap; gap:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="../../common.js?v=3"></script>
+<script>
+DataLoader.basePath = '../../';
+const BASE = DataLoader.basePath;
+
+// Get project ID from folder name
+const pathParts = location.pathname.split('/').filter(Boolean);
+const projectId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+
+async function init() {
+  try {
+    const [projData, furnData, matData, knowData] = await Promise.all([
+      DataLoader.load('projects'),
+      DataLoader.load('furniture'),
+      DataLoader.load('materials'),
+      DataLoader.load('knowledge')
+    ]);
+
+    const projects = projData.projects || [];
+    const project = projects.find(p => p.id === projectId);
+    if (!project) {
+      document.querySelector('.detail-container').innerHTML =
+        '<p style="padding:60px;text-align:center;color:#999">案件が見つかりません: ' + esc(projectId) + '</p>';
+      return;
+    }
+
+    document.title = `VUILD — ${project.name}`;
+
+    // Header
+    document.getElementById('header-title').textContent = project.name;
+
+    // Hero
+    const heroEl = document.getElementById('detail-hero');
+    if (project.hero_photos && project.hero_photos.length) {
+      heroEl.innerHTML = `
+        <img src="${BASE}${project.hero_photos[0]}" alt="${esc(project.name)}">
+        <div class="detail-hero-overlay">
+          <div class="detail-pid">${esc(project.pid)} — ${esc(project.client)}</div>
+          <h1>${esc(project.name)}</h1>
+        </div>`;
+    } else {
+      heroEl.innerHTML = `
+        <div class="detail-hero-placeholder">${esc(project.pid || 'VUILD')}</div>
+        <div class="detail-hero-overlay">
+          <div class="detail-pid">${esc(project.pid)} — ${esc(project.client)}</div>
+          <h1>${esc(project.name)}</h1>
+        </div>`;
+    }
+
+    // Description
+    document.getElementById('detail-description').textContent = project.description || '（説明はまだ登録されていません）';
+
+    // Status badge
+    const statusEl = document.getElementById('spec-status');
+    statusEl.textContent = getStatusLabel(project.status);
+    statusEl.className = 'badge badge-' + (project.status || '');
+
+    // Spec card
+    const specs = [
+      ['案件番号', project.pid],
+      ['クライアント', project.client],
+      ['カテゴリ', project.category],
+      ['所在地', project.location],
+      ['構造', project.structure],
+      ['面積', project.area_sqm ? project.area_sqm + ' m²' : null],
+      ['竣工', project.completion_date],
+      ['最終更新', project.updated_at]
+    ].filter(([,v]) => v);
+
+    document.getElementById('spec-body').innerHTML = specs.map(([label, val]) =>
+      `<div class="spec-row">
+        <span class="spec-label">${esc(label)}</span>
+        <span class="spec-value">${esc(val)}</span>
+      </div>`
+    ).join('');
+
+    // Team
+    document.getElementById('detail-team').innerHTML = (project.team || []).map(m =>
+      `<div class="team-member">
+        <div class="team-avatar">${esc(m.name[0])}</div>
+        <span class="team-name">${esc(m.name)}</span>
+        <span class="team-role">${esc(m.role)}</span>
+      </div>`
+    ).join('');
+
+    // Tags
+    document.getElementById('detail-tags').innerHTML = (project.tags || []).map(t =>
+      `<span class="tag">${esc(t)}</span>`
+    ).join('');
+
+    // Photos (hero_photos + gallery_photos)
+    const allPhotos = [
+      ...(project.hero_photos || []),
+      ...(project.gallery_photos || [])
+    ];
+    if (allPhotos.length > 0) {
+      document.getElementById('section-photos').style.display = '';
+      document.getElementById('detail-gallery').innerHTML = allPhotos.map(src =>
+        `<div class="detail-gallery-item" onclick="openLightbox('${BASE}${src}')">
+          <img src="${BASE}${src}" alt="" loading="lazy">
+        </div>`
+      ).join('');
+    }
+
+    // Furniture
+    const furnitureItems = (furnData.furniture || []).filter(f =>
+      (project.furniture_ids || []).includes(f.id)
+    );
+    if (furnitureItems.length > 0) {
+      document.getElementById('section-furniture').style.display = '';
+      document.getElementById('detail-furniture').innerHTML = furnitureItems.map(f => {
+        const thumb = (f.hero_photos && f.hero_photos[0])
+          ? `<img src="${BASE}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
+          : `<div style="font-size:28px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
+        return `
+          <a href="${BASE}furniture/${f.id}/index.html" class="furniture-link-card">
+            <div class="flc-thumb">${thumb}</div>
+            <div class="flc-body">
+              <h4>${esc(f.name)}</h4>
+              <p>${esc(f.dimensions || '')} ${f.specs?.material ? '/ ' + esc(f.specs.material) : ''}</p>
+            </div>
+          </a>`;
+      }).join('');
+    }
+
+    // Materials
+    const materialItems = (matData.materials || []).filter(m =>
+      (project.material_ids || []).includes(m.id)
+    );
+    if (materialItems.length > 0) {
+      document.getElementById('section-materials').style.display = '';
+      document.getElementById('detail-materials').querySelector('tbody').innerHTML =
+        materialItems.map(m => `
+          <tr>
+            <td class="mat-name">${esc(m.name)}</td>
+            <td>${esc(m.product_code || '-')}</td>
+            <td>${esc(m.maker || '-')}</td>
+            <td class="mat-price">${formatPrice(m.price)}</td>
+            <td>${m.product_url ? `<a href="${m.product_url}" target="_blank" rel="noopener">詳細 &nearr;</a>` : ''}</td>
+          </tr>`
+        ).join('');
+    }
+
+    // Knowledge
+    const knowledgeItems = (knowData.entries || []).filter(k =>
+      k.project_id === projectId || k.linked_id === projectId
+    );
+    if (knowledgeItems.length > 0) {
+      document.getElementById('section-knowledge').style.display = '';
+      document.getElementById('detail-knowledge').innerHTML = knowledgeItems.map(k => {
+        const info = getKnowledgeTypeInfo(k.type);
+        return `
+          <div class="knowledge-entry">
+            <div class="knowledge-entry__header">
+              <span class="badge badge--${k.type}">${info.label}</span>
+              <span class="knowledge-entry__date">${formatDate(k.date)}</span>
+            </div>
+            <h4 style="font-size:14px;margin:4px 0">${esc(k.title)}</h4>
+            <p class="knowledge-entry__body">${esc(k.content || '')}</p>
+          </div>`;
+      }).join('');
+    }
+
+  } catch (e) {
+    console.error('Detail init error:', e);
+    document.querySelector('.detail-container').innerHTML =
+      '<p style="padding:40px;color:red">読み込みエラー: ' + e.message + '</p>';
+  }
+}
+
+// Lightbox
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('is-open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('is-open');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

@@ -109,6 +109,68 @@
       "tags": ["内装","キッチン","セルフビルド","Panasonic"],
       "updated_at": "2026-04-02",
       "edited": false
+    },
+    {
+      "id": "rakuten_optimism",
+      "name": "楽天Optimism ブース",
+      "pid": "#60606185",
+      "client": "楽天グループ",
+      "status": "completed",
+      "category": "イベント",
+      "location": "パシフィコ横浜",
+      "completion_date": "2024-08",
+      "area_sqm": 150,
+      "structure": "木造（CNC加工）",
+      "description": "楽天グループの大規模イベント「Rakuten Optimism」のキッズゾーン・ブース設計制作。TECH & GREEN（木×テクノロジー）をコンセプトに、親子で楽しめる木製遊具・家具を約15m×10mの空間に展開。2023年・2024年の2回実施。来場者数 日1万〜1.5万人。",
+      "hero_photos": ["photos/projects/rakuten_optimism/hero.jpg"],
+      "gallery_photos": ["photos/furniture/town-unit/rakuten.jpg", "photos/furniture/town-unit/yokohama.jpg"],
+      "team": [
+        {"name": "黒部駿人", "role": "設計ディレクション"},
+        {"name": "沼田汐里", "role": "設計"},
+        {"name": "金子俊耶", "role": "設計"},
+        {"name": "長岡勉", "role": "レビュー"},
+        {"name": "宇都宮純", "role": "PM"},
+        {"name": "木村玲大", "role": "制作"}
+      ],
+      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve"],
+      "material_ids": [],
+      "slack_channel_id": "C05AYV4KG3E",
+      "slack_channel_name": "#393_楽天optimism",
+      "cost_overview": {"total": 23800000, "estimate_pdf": null},
+      "tags": ["イベント","ブース","キッズ","タウンユニット","楽天","横浜"],
+      "updated_at": "2026-04-04",
+      "edited": false
+    },
+    {
+      "id": "onomichi_club",
+      "name": "尾道倶楽部 FFE",
+      "pid": "#70081125043",
+      "client": "尾道倶楽部（オレンジ）",
+      "status": "completed",
+      "category": "ホテル",
+      "location": "広島県尾道市",
+      "completion_date": "2025-03",
+      "area_sqm": null,
+      "structure": "木造（CNC加工）",
+      "description": "千光寺山荘リニューアルプロジェクト。ホテル・リゾート施設のFFE（家具・什器・備品）設計制作。屋上テラスのファイヤーピット周りのシーティングやナミナミベンチなど、尾道の景観に溶け込む木製家具を提供。",
+      "hero_photos": ["photos/projects/onomichi_club/hero.jpg"],
+      "gallery_photos": ["photos/furniture/namunami-bench/onomichi.jpg", "photos/furniture/namunami-bench/main.jpg"],
+      "team": [
+        {"name": "宇都宮純", "role": "PM"},
+        {"name": "黒部駿人", "role": "設計ディレクション"},
+        {"name": "金子俊耶", "role": "制作管理"},
+        {"name": "長岡勉", "role": "レビュー"},
+        {"name": "長尾和樹", "role": "制作"},
+        {"name": "木村玲大", "role": "経理"}
+      ],
+      "furniture_ids": ["namunami-bench"],
+      "material_ids": [],
+      "slack_channel_id": "C07K02J6SUE",
+      "slack_channel_name": "#3035_尾道-千光寺山荘リニューアル",
+      "cost_overview": {"total": 5165918, "estimate_pdf": null},
+      "tags": ["ホテル","FFE","リノベーション","ナミナミベンチ","尾道"],
+      "updated_at": "2026-04-04",
+      "edited": false
     }
   ]
 }

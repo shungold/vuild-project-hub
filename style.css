@@ -1087,7 +1087,353 @@ ul, ol { list-style: none; }
 
 
 /* ------------------------------------------------------------
-   25. RESPONSIVE — max 768px
+   25. PROJECT DETAIL PAGE (tecture.jp inspired)
+   ------------------------------------------------------------ */
+
+/* --- Hero Section --- */
+.detail-hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: 520px;
+  overflow: hidden;
+  background: var(--color-border-light);
+}
+
+.detail-hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail-hero-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 64px;
+  font-weight: 800;
+  color: var(--color-border);
+  background: linear-gradient(135deg, var(--color-border-light) 0%, #e8e6e1 100%);
+  letter-spacing: 8px;
+}
+
+.detail-hero-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: var(--sp-16) var(--sp-24);
+  background: linear-gradient(transparent, rgba(0,0,0,0.6));
+  color: #fff;
+}
+
+.detail-hero-overlay h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.detail-hero-overlay .detail-pid {
+  font-size: var(--font-body);
+  font-weight: 500;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* --- Detail Layout --- */
+.detail-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--sp-16) var(--content-padding) var(--sp-48);
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: var(--sp-24);
+  margin-top: var(--sp-16);
+}
+
+/* --- Back Link --- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-body);
+  font-weight: 500;
+  color: var(--color-secondary);
+  transition: color var(--ease);
+  margin-bottom: var(--sp-8);
+}
+
+.back-link:hover { color: var(--color-text); }
+
+/* --- Overview Section --- */
+.detail-section {
+  margin-bottom: var(--sp-24);
+}
+
+.detail-section-title {
+  font-size: var(--font-h3);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--sp-8);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--color-border-light);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+}
+
+.detail-description {
+  font-size: var(--font-body);
+  color: var(--color-secondary);
+  line-height: 1.8;
+}
+
+/* --- Sidebar Spec Card --- */
+.detail-sidebar {
+  position: sticky;
+  top: 80px;
+  align-self: start;
+}
+
+.spec-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.spec-card-header {
+  padding: var(--sp-8) var(--sp-8);
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.spec-card-header h3 {
+  font-size: var(--font-h3);
+  font-weight: 700;
+}
+
+.spec-card-body {
+  padding: 0;
+}
+
+.spec-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px var(--sp-8);
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: var(--font-caption);
+}
+
+.spec-row:last-child { border-bottom: none; }
+
+.spec-label {
+  color: var(--color-tertiary);
+  font-weight: 500;
+  flex-shrink: 0;
+  margin-right: var(--sp-4);
+}
+
+.spec-value {
+  color: var(--color-text);
+  text-align: right;
+}
+
+/* --- Team Avatars (detail page) --- */
+.team-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: var(--sp-8);
+}
+
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.team-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: var(--color-secondary);
+  flex-shrink: 0;
+}
+
+.team-name { font-size: var(--font-body); font-weight: 500; }
+.team-role { font-size: var(--font-caption); color: var(--color-tertiary); margin-left: 4px; }
+
+/* --- Photo Gallery (detail page) --- */
+.detail-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--sp-8);
+}
+
+.detail-gallery-item {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-border-light);
+  aspect-ratio: 3 / 2;
+  cursor: pointer;
+  transition: transform var(--ease);
+}
+
+.detail-gallery-item:hover {
+  transform: scale(1.02);
+}
+
+.detail-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* --- Furniture Cards in Project --- */
+.detail-furniture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--sp-8);
+}
+
+.furniture-link-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: transform var(--ease), box-shadow var(--ease);
+  text-decoration: none;
+}
+
+.furniture-link-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.furniture-link-card .flc-thumb {
+  aspect-ratio: 4 / 3;
+  background: var(--color-border-light);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.furniture-link-card .flc-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.furniture-link-card .flc-body {
+  padding: 10px 12px;
+}
+
+.furniture-link-card .flc-body h4 {
+  font-size: var(--font-body);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.furniture-link-card .flc-body p {
+  font-size: var(--font-caption);
+  color: var(--color-tertiary);
+}
+
+/* --- Material Table (compact) --- */
+.material-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-caption);
+}
+
+.material-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.material-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: top;
+}
+
+.material-table tr:hover {
+  background: rgba(0,0,0,0.015);
+}
+
+.material-table .mat-name {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.material-table .mat-price {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.material-table a {
+  color: var(--color-edit-blue);
+  font-size: 11px;
+}
+
+/* --- Lightbox --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0,0,0,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
+  border-radius: 4px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lightbox-close:hover { background: rgba(255,255,255,0.3); }
+
+
+/* ------------------------------------------------------------
+   26. RESPONSIVE — max 768px
    ------------------------------------------------------------ */
 @media (max-width: 768px) {
   :root {
@@ -1134,4 +1480,12 @@ ul, ol { list-style: none; }
   .knowledge-entry {
     padding-left: var(--sp-8);
   }
+
+  /* Detail page responsive */
+  .detail-hero { aspect-ratio: 16 / 9; }
+  .detail-hero-overlay h1 { font-size: 24px; }
+  .detail-hero-overlay { padding: var(--sp-8) var(--sp-12); }
+  .detail-grid { grid-template-columns: 1fr; gap: var(--sp-16); }
+  .detail-sidebar { position: static; }
+  .detail-gallery { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 }

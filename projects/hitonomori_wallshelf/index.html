@@ -3,1897 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fixture Drawing Previewer</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --bg: #fafaf8;
-    --surface: #ffffff;
-    --surface-2: #f5f4f0;
-    --text-primary: #111111;
-    --text-secondary: #666666;
-    --text-tertiary: #999999;
-    --border: #e8e6e1;
-    --border-light: #f0eee9;
-    --accent: #1a1a1a;
-    --accent-green: #2d5a27;
-    --accent-green-light: #e8f2e6;
-    --pin-active: #e63b2e;
-    --pin-idle: rgba(230, 59, 46, 0.85);
-    --warning: #d4880f;
-    --warning-bg: #fef8ec;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
-    --radius: 8px;
-    --radius-lg: 16px;
-    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  body {
-    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text-primary);
-    line-height: 1.7;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ═══════════ HEADER ═══════════ */
-  .global-header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-light);
-  }
-  .header-inner {
-    max-width: 1440px; margin: 0 auto; padding: 0 48px;
-    height: 64px; display: flex; align-items: center; justify-content: space-between;
-  }
-  .brand { display: flex; align-items: center; gap: 16px; }
-  .brand-logo { font-size: 11px; letter-spacing: 4px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; }
-  .brand-divider { width: 1px; height: 20px; background: var(--border); }
-  .brand-project { font-size: 15px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.2px; }
-  .header-right { display: flex; align-items: center; gap: 20px; }
-  .header-badge { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 100px; background: var(--accent-green-light); color: var(--accent-green); letter-spacing: 0.5px; }
-  .header-meta { font-size: 12px; color: var(--text-tertiary); }
-
-  /* ═══════════ NAV ═══════════ */
-  .nav-bar { background: var(--surface); border-bottom: 1px solid var(--border-light); }
-  .nav-inner { max-width: 1440px; margin: 0 auto; padding: 0 48px; display: flex; gap: 0; }
-  .nav-tab {
-    padding: 16px 20px; font-size: 13px; font-weight: 500; color: var(--text-tertiary);
-    cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition);
-    letter-spacing: 0.3px; user-select: none;
-  }
-  .nav-tab:hover { color: var(--text-secondary); }
-  .nav-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
-  .nav-tab .count {
-    display: inline-block; background: var(--surface-2); font-size: 10px;
-    padding: 1px 6px; border-radius: 10px; margin-left: 6px; color: var(--text-tertiary);
-  }
-
-  /* ═══════════ CONTENT ═══════════ */
-  .content-area { max-width: 1440px; margin: 0 auto; padding: 32px 48px 80px; }
-  .view { display: none; }
-  .view.active { display: block; }
-  .section-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 24px; }
-
-  /* ═══════════ AXONOMETRIC / PIN VIEW ═══════════ */
-  .axo-viewer {
-    display: grid; grid-template-columns: 1fr 400px; gap: 0;
-    background: var(--surface); border-radius: var(--radius-lg);
-    overflow: hidden; box-shadow: var(--shadow-md); min-height: 560px;
-  }
-  .axo-main {
-    position: relative; background: #e8e5de; overflow: hidden;
-  }
-  .axo-main svg { width: 100%; height: 100%; }
-
-  /* Pins */
-  .pin-dot {
-    position: absolute; transform: translate(-50%, -50%);
-    z-index: 10; cursor: pointer;
-  }
-  .pin-dot .dot-core {
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--pin-idle); border: 2.5px solid #fff;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    transition: var(--transition); position: relative;
-  }
-  .pin-dot:hover .dot-core, .pin-dot.active .dot-core {
-    width: 18px; height: 18px; background: var(--pin-active);
-  }
-  .pin-dot .dot-pulse {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 30px; height: 30px; border-radius: 50%;
-    border: 1.5px solid var(--pin-idle);
-    animation: pulse 2.5s ease-out infinite;
-    pointer-events: none;
-  }
-  @keyframes pulse {
-    0% { transform: translate(-50%,-50%) scale(0.6); opacity: 0.8; }
-    100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; }
-  }
-  .pin-dot.active .dot-pulse { display: none; }
-  .pin-dot.warning .dot-core { background: var(--warning); }
-  .pin-dot.warning .dot-pulse { border-color: var(--warning); }
-
-  .pin-tooltip {
-    position: absolute; bottom: calc(100% + 10px); left: 50%;
-    transform: translateX(-50%) translateY(4px);
-    background: var(--text-primary); color: #fff;
-    padding: 6px 12px; border-radius: 6px;
-    font-size: 12px; font-weight: 500; white-space: nowrap;
-    opacity: 0; pointer-events: none; transition: var(--transition);
-  }
-  .pin-tooltip::after {
-    content: ''; position: absolute; top: 100%; left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent; border-top-color: var(--text-primary);
-  }
-  .pin-dot:hover .pin-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  /* Pin sidebar */
-  .pin-sidebar { border-left: 1px solid var(--border-light); display: flex; flex-direction: column; }
-  .sidebar-header { padding: 24px 28px; border-bottom: 1px solid var(--border-light); }
-  .sidebar-header .label {
-    font-size: 10px; text-transform: uppercase; letter-spacing: 2px;
-    color: var(--text-tertiary); font-weight: 600; margin-bottom: 6px;
-  }
-  .sidebar-header .title { font-size: 16px; font-weight: 600; }
-  .sidebar-empty {
-    flex: 1; display: flex; align-items: center; justify-content: center;
-    flex-direction: column; gap: 8px; color: var(--text-tertiary);
-    font-size: 13px; padding: 40px; text-align: center;
-  }
-  .sidebar-empty .icon { font-size: 32px; opacity: 0.3; }
-  .pin-detail-panel { display: none; flex: 1; overflow-y: auto; }
-  .pin-detail-panel.active { display: flex; flex-direction: column; }
-  .detail-image {
-    height: 200px; background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-  }
-  .detail-image img { width: 100%; height: 100%; object-fit: contain; padding: 10px; }
-  .detail-body { padding: 24px 28px; flex: 1; }
-  .detail-body .hw-name { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 2px; }
-  .detail-body .hw-maker { font-size: 12px; color: var(--text-tertiary); margin-bottom: 20px; }
-  .detail-specs { list-style: none; }
-  .detail-specs li {
-    display: flex; justify-content: space-between;
-    padding: 10px 0; border-bottom: 1px solid var(--border-light); font-size: 13px;
-  }
-  .detail-specs li .key { color: var(--text-tertiary); }
-  .detail-specs li .val { font-weight: 500; text-align: right; max-width: 60%; }
-  .detail-note {
-    margin-top: 16px; padding: 14px 16px;
-    background: #fdf6ee; border-radius: var(--radius);
-    font-size: 12px; color: #8a6d3b; line-height: 1.6;
-  }
-  .detail-timestamps {
-    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border-light);
-    font-size: 11px; color: var(--text-tertiary); line-height: 1.8;
-  }
-  .detail-timestamps .updated { color: var(--accent-green); font-weight: 500; }
-  .detail-actions {
-    padding: 16px 28px; border-top: 1px solid var(--border-light);
-    display: flex; gap: 8px;
-  }
-  .btn {
-    padding: 8px 18px; border-radius: var(--radius); font-size: 12px;
-    font-weight: 500; cursor: pointer; transition: var(--transition);
-    font-family: inherit; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text-primary);
-  }
-  .btn:hover { border-color: var(--text-secondary); }
-  .btn-primary {
-    background: var(--text-primary); color: #fff; border-color: var(--text-primary);
-  }
-  .btn-primary:hover { opacity: 0.85; }
-  .btn-green { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
-  .btn-sm { padding: 5px 12px; font-size: 11px; }
-
-  /* ═══════════ DRAWING PANEL ═══════════ */
-  .drawing-controls {
-    display: flex; align-items: center; gap: 16px;
-    margin-bottom: 20px; flex-wrap: wrap;
-  }
-  .control-group {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--text-secondary);
-  }
-  .control-group select {
-    padding: 6px 12px; border: 1px solid var(--border); border-radius: var(--radius);
-    font-size: 12px; background: var(--surface); font-family: inherit;
-    color: var(--text-primary);
-  }
-  .layer-toggles { display: flex; gap: 14px; margin-left: auto; }
-  .layer-toggle {
-    display: flex; align-items: center; gap: 5px;
-    font-size: 11px; color: var(--text-secondary); cursor: pointer;
-  }
-  .layer-toggle input { accent-color: var(--accent-green); }
-
-  .paper-container {
-    background: #d8d5ce; border-radius: var(--radius-lg); padding: 40px;
-    display: flex; justify-content: center; align-items: center;
-    min-height: 480px; overflow: auto;
-  }
-  .paper {
-    background: #fff; box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
-    transition: width 0.3s, height 0.3s;
-  }
-  .paper-inner { width: 100%; height: 100%; position: relative; }
-  .view-slot {
-    position: absolute; border: 1px dashed #ddd;
-    cursor: move; user-select: none; transition: box-shadow 0.15s;
-  }
-  .view-slot:hover { box-shadow: 0 0 0 2px var(--accent-green); }
-  .view-slot.dragging { opacity: 0.7; z-index: 10; }
-  .view-label {
-    position: absolute; top: -18px; left: 0;
-    font-size: 10px; color: var(--text-tertiary); font-weight: 500;
-  }
-  .view-slot svg { width: 100%; height: 100%; }
-  .hw-marker { cursor: pointer; transition: r 0.15s; }
-  .hw-marker:hover { r: 10; }
-  .hw-marker.ok { fill: var(--accent-green); }
-  .hw-marker.warning { fill: var(--warning); }
-
-  .title-block {
-    position: absolute; bottom: 8px; right: 8px;
-    border: 1px solid #333; font-size: 8px; padding: 6px 10px;
-    display: grid; grid-template-columns: auto auto; gap: 2px 12px;
-    background: #fff;
-  }
-  .title-block .tb-label { color: var(--text-tertiary); }
-  .title-block .tb-val { font-weight: 600; }
-
-  /* ═══════════ CATALOG VIEW ═══════════ */
-  .catalog-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
-  .catalog-top .result-count { font-size: 13px; color: var(--text-tertiary); }
-  .filter-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-  .filter-chip {
-    padding: 7px 18px; border-radius: 100px; border: 1px solid var(--border);
-    background: var(--surface); font-size: 12px; font-weight: 500;
-    cursor: pointer; transition: var(--transition); font-family: inherit; color: var(--text-secondary);
-  }
-  .filter-chip:hover { border-color: var(--text-secondary); color: var(--text-primary); }
-  .filter-chip.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
-
-  .catalog-search {
-    width: 100%; padding: 10px 18px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 13px; background: var(--surface);
-    font-family: inherit; margin-bottom: 20px;
-  }
-  .catalog-search:focus { outline: none; border-color: var(--text-secondary); }
-
-  .catalog-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;
-  }
-  .catalog-card {
-    background: var(--surface); border-radius: var(--radius-lg);
-    overflow: hidden; box-shadow: var(--shadow-sm); transition: var(--transition);
-    cursor: pointer; border: 1px solid var(--border-light);
-  }
-  .catalog-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
-  .card-visual {
-    height: 180px; background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .card-visual img {
-    width: 100%; height: 100%; object-fit: contain;
-    padding: 12px; transition: var(--transition);
-  }
-  .catalog-card:hover .card-visual img { transform: scale(1.05); }
-  .card-visual .card-cat {
-    position: absolute; top: 14px; left: 14px;
-    font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 4px; background: rgba(0,0,0,0.65); color: #fff;
-  }
-  .card-visual .card-status {
-    position: absolute; top: 14px; right: 14px;
-    font-size: 10px; font-weight: 600; padding: 4px 10px;
-    border-radius: 4px;
-  }
-  .card-status.verified { background: var(--accent-green-light); color: var(--accent-green); }
-  .card-status.unverified { background: var(--warning-bg); color: var(--warning); }
-  .card-body { padding: 20px 22px; }
-  .card-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 2px; letter-spacing: -0.2px; }
-  .card-body .card-maker { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
-  .card-specs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .card-spec-item { font-size: 11px; }
-  .card-spec-item .spec-label { color: var(--text-tertiary); }
-  .card-spec-item .spec-value { font-weight: 600; color: var(--text-primary); }
-  .card-timestamps {
-    margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border-light);
-    font-size: 10px; color: var(--text-tertiary); line-height: 1.8;
-  }
-  .card-timestamps .updated { color: var(--accent-green); font-weight: 500; }
-
-  .duplicate-alert {
-    background: var(--warning-bg); border: 1px solid var(--warning);
-    border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 16px;
-  }
-  .duplicate-alert h4 { font-size: 12px; color: var(--warning); margin-bottom: 6px; font-weight: 600; }
-  .duplicate-alert p { font-size: 12px; color: var(--text-primary); margin-bottom: 10px; }
-
-  /* ═══════════ BOM VIEW ═══════════ */
-  .bom-header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
-  .bom-meta { display: flex; gap: 24px; }
-  .bom-meta-item { text-align: center; }
-  .bom-meta-item .meta-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-tertiary); font-weight: 600; }
-  .bom-meta-item .meta-value { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  .bom-meta-item .meta-value.green { color: var(--accent-green); }
-  .bom-budget-input {
-    display: flex; align-items: center; gap: 8px; font-size: 13px;
-  }
-  .bom-budget-input input {
-    width: 140px; padding: 6px 12px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 13px; font-family: inherit; text-align: right;
-  }
-
-  .bom-table {
-    width: 100%; border-collapse: collapse; font-size: 12px;
-    background: var(--surface); border-radius: var(--radius-lg);
-    overflow: hidden; box-shadow: var(--shadow-sm);
-  }
-  .bom-table th {
-    background: var(--text-primary); color: #fff;
-    padding: 10px 14px; text-align: left; font-weight: 500; font-size: 11px;
-    letter-spacing: 0.5px; white-space: nowrap;
-  }
-  .bom-table td { padding: 8px 14px; border-bottom: 1px solid var(--border-light); }
-  .bom-table tr:last-child td { border-bottom: none; }
-  .bom-table .warn-row { background: var(--warning-bg); }
-  .bom-table .total-row { font-weight: 700; background: var(--surface-2); }
-  .bom-table .cat-row {
-    background: #f0eee9; font-weight: 700; font-size: 12px;
-  }
-  .bom-table .cat-row td { padding: 10px 14px; letter-spacing: 0.3px; }
-  .bom-table .cat-subtotal td { font-weight: 600; background: #fafaf6; border-top: 1px solid var(--border); }
-  .bom-table .grand-total td { font-weight: 700; background: var(--text-primary); color: #fff; font-size: 13px; }
-  .bom-table input[type="number"] {
-    width: 80px; padding: 3px 6px; border: 1px solid var(--border);
-    border-radius: 3px; font-size: 12px; font-family: inherit; text-align: right;
-  }
-  .bom-table input[type="checkbox"] { accent-color: var(--accent-green); transform: scale(1.2); }
-  .bom-table select {
-    padding: 3px 6px; border: 1px solid var(--border); border-radius: 3px;
-    font-size: 11px; font-family: inherit; background: var(--surface);
-  }
-  .bom-table a { color: var(--accent-green); text-decoration: none; font-size: 11px; }
-  .bom-table a:hover { text-decoration: underline; }
-  .bom-add-row {
-    padding: 6px 14px; font-size: 11px; color: var(--text-tertiary);
-    cursor: pointer; transition: var(--transition);
-  }
-  .bom-add-row:hover { color: var(--accent-green); }
-
-  .bom-import-area {
-    display: flex; gap: 12px; align-items: center;
-    margin-bottom: 20px; padding: 16px 20px;
-    background: var(--surface); border: 2px dashed var(--border);
-    border-radius: var(--radius-lg); transition: var(--transition);
-  }
-  .bom-import-area.dragover { border-color: var(--accent-green); background: var(--accent-green-light); }
-  .bom-import-area .import-label { font-size: 13px; color: var(--text-secondary); flex: 1; }
-  .bom-import-area .import-label strong { color: var(--text-primary); }
-
-  .bom-diff { font-size: 10px; margin-top: 2px; }
-  .bom-diff.positive { color: #c0392b; }
-  .bom-diff.negative { color: var(--accent-green); }
-  .bom-diff.neutral { color: var(--text-tertiary); }
-  .bom-source-tag {
-    display: inline-block; font-size: 9px; padding: 1px 6px; border-radius: 10px;
-    font-weight: 600; letter-spacing: 0.3px; margin-left: 6px;
-  }
-  .bom-source-tag.auto { background: #e3f2fd; color: #1565c0; }
-  .bom-source-tag.manual { background: var(--accent-green-light); color: var(--accent-green); }
-  .bom-source-tag.estimate { background: #f3e5f5; color: #7b1fa2; }
-
-  /* ═══════════ CANDIDATES ═══════════ */
-  .candidates-section {
-    margin-bottom: 32px; padding: 24px; background: #fefcf7;
-    border: 2px dashed #d4c89a; border-radius: var(--radius-lg);
-  }
-  .candidates-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;
-  }
-  .candidates-header h3 {
-    font-size: 16px; font-weight: 700; letter-spacing: -0.3px;
-    display: flex; align-items: center; gap: 10px;
-  }
-  .candidates-header h3 .cand-count {
-    font-size: 11px; font-weight: 600; padding: 3px 10px;
-    border-radius: 100px; background: #f0e6c8; color: #8a6d3b;
-  }
-  .btn-slack-scan {
-    background: #4A154B; color: #fff; border-color: #4A154B;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .btn-slack-scan:hover { opacity: 0.85; }
-  .candidates-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;
-  }
-  .candidate-card {
-    background: var(--surface); border: 1px dashed var(--border);
-    border-radius: var(--radius); padding: 18px 20px;
-    transition: var(--transition); position: relative;
-  }
-  .candidate-card:hover { box-shadow: var(--shadow-md); border-color: var(--text-tertiary); }
-  .candidate-card .cand-top {
-    display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;
-  }
-  .candidate-card .cand-name {
-    font-size: 14px; font-weight: 700; letter-spacing: -0.2px; line-height: 1.4;
-  }
-  .candidate-card .cand-name a {
-    color: var(--text-primary); text-decoration: none;
-  }
-  .candidate-card .cand-name a:hover { color: var(--accent-green); text-decoration: underline; }
-  .cand-source-badge {
-    flex-shrink: 0; font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
-    padding: 3px 8px; border-radius: 4px; text-transform: uppercase;
-    background: #4A154B; color: #fff;
-  }
-  .candidate-card .cand-meta {
-    font-size: 11px; color: var(--text-tertiary); margin-bottom: 10px; line-height: 1.6;
-  }
-  .candidate-card .cand-meta strong { color: var(--text-secondary); font-weight: 600; }
-  .candidate-card .cand-context {
-    font-size: 12px; color: var(--text-secondary); line-height: 1.6;
-    padding: 10px 12px; background: var(--surface-2); border-radius: 6px;
-    margin-bottom: 12px; border-left: 3px solid #d4c89a;
-  }
-  .candidate-card .cand-specs {
-    font-size: 11px; color: var(--text-tertiary); margin-bottom: 12px;
-  }
-  .candidate-card .cand-actions {
-    display: flex; gap: 8px; align-items: center;
-  }
-  .btn-adopt { background: var(--accent-green); color: #fff; border-color: var(--accent-green); }
-  .btn-adopt:hover { opacity: 0.85; }
-  .btn-dismiss { color: var(--text-tertiary); border-color: var(--border); }
-  .btn-dismiss:hover { color: #c0392b; border-color: #c0392b; }
-
-  /* ═══════════ KNOWLEDGE VIEW ═══════════ */
-  .knowledge-filters {
-    display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;
-  }
-  .knowledge-search {
-    width: 100%; padding: 10px 18px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 13px; background: var(--surface);
-    font-family: inherit; margin-bottom: 16px;
-  }
-  .knowledge-search:focus { outline: none; border-color: var(--text-secondary); }
-
-  .knowledge-list { display: flex; flex-direction: column; gap: 16px; }
-
-  .knowledge-card {
-    background: var(--surface); border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
-    overflow: hidden; transition: var(--transition);
-  }
-  .knowledge-card:hover { box-shadow: var(--shadow-md); }
-
-  .knowledge-card-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 20px; border-bottom: 1px solid var(--border-light);
-  }
-  .knowledge-card-header .k-type {
-    display: flex; align-items: center; gap: 8px;
-    font-size: 13px; font-weight: 600;
-  }
-  .knowledge-card-header .k-date {
-    font-size: 12px; color: var(--text-tertiary);
-  }
-
-  .k-badge {
-    display: inline-block; padding: 3px 10px; border-radius: 100px;
-    font-size: 11px; font-weight: 600;
-  }
-  .k-badge.progress { background: #e3f2fd; color: #1565c0; }
-  .k-badge.trouble { background: #fce4ec; color: #c62828; }
-  .k-badge.howto { background: #fff8e1; color: #f57f17; }
-  .k-badge.spec { background: #e8f5e9; color: #2e7d32; }
-
-  .knowledge-card-body {
-    padding: 16px 20px;
-  }
-  .knowledge-card-body .k-title {
-    font-size: 15px; font-weight: 700; margin-bottom: 8px;
-    letter-spacing: -0.2px;
-  }
-  .knowledge-card-body .k-content {
-    font-size: 13px; color: var(--text-secondary); line-height: 1.8;
-    white-space: pre-wrap;
-  }
-
-  .knowledge-card-footer {
-    display: flex; align-items: center; gap: 16px;
-    padding: 12px 20px; border-top: 1px solid var(--border-light);
-    font-size: 12px; color: var(--text-tertiary);
-  }
-  .knowledge-card-footer a {
-    color: var(--accent-green); text-decoration: none; margin-left: auto;
-  }
-  .knowledge-card-footer a:hover { text-decoration: underline; }
-
-  /* ═══════════ MODAL ═══════════ */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
-    z-index: 200; align-items: center; justify-content: center;
-  }
-  .modal-overlay.show { display: flex; }
-  .modal-panel {
-    background: var(--surface); border-radius: var(--radius-lg);
-    max-width: 560px; width: 92%; max-height: 88vh; overflow-y: auto; position: relative;
-  }
-  .modal-close {
-    position: absolute; top: 16px; right: 16px;
-    width: 36px; height: 36px; border-radius: 50%; border: none;
-    background: var(--surface-2); font-size: 16px; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: var(--transition); z-index: 1;
-  }
-  .modal-close:hover { background: var(--border); }
-  .modal-body { padding: 32px; }
-  .modal-body h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 24px; }
-
-  .form-row { margin-bottom: 14px; }
-  .form-row label {
-    display: block; font-size: 10px; text-transform: uppercase;
-    letter-spacing: 1.5px; color: var(--text-tertiary); font-weight: 600; margin-bottom: 5px;
-  }
-  .form-row input, .form-row select, .form-row textarea {
-    width: 100%; padding: 9px 14px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 13px; font-family: inherit;
-    color: var(--text-primary); transition: var(--transition);
-  }
-  .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
-    outline: none; border-color: var(--text-secondary);
-  }
-  .form-row textarea { resize: vertical; min-height: 60px; }
-  .form-row .duplicate-warn {
-    background: var(--warning-bg); border: 1px solid var(--warning);
-    border-radius: var(--radius); padding: 8px 12px; font-size: 11px; margin-top: 6px; color: var(--warning);
-  }
-  .form-section {
-    font-size: 10px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-tertiary); margin: 20px 0 12px; padding-top: 16px; border-top: 1px solid var(--border-light);
-  }
-
-  .thumb-upload { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
-  .thumb-preview {
-    width: 72px; height: 72px; border-radius: var(--radius); background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center; overflow: hidden;
-    border: 1px solid var(--border-light);
-  }
-  .thumb-preview img { width: 100%; height: 100%; object-fit: cover; }
-
-  .history-list { font-size: 12px; color: var(--text-secondary); margin-bottom: 16px; }
-  .h-row {
-    display: flex; gap: 10px; padding: 6px 0;
-    border-bottom: 1px solid var(--border-light);
-  }
-  .h-date { width: 130px; flex-shrink: 0; color: var(--text-tertiary); font-size: 11px; }
-  .h-by { width: 110px; flex-shrink: 0; font-weight: 500; }
-  .h-action { flex: 1; }
-
-  .modal-actions {
-    display: flex; gap: 10px; justify-content: flex-end; padding-top: 20px;
-    border-top: 1px solid var(--border-light); margin-top: 8px;
-  }
-
-  /* ═══════════ RESPONSIVE ═══════════ */
-  @media (max-width: 1024px) {
-    .axo-viewer { grid-template-columns: 1fr; }
-    .pin-sidebar { border-left: none; border-top: 1px solid var(--border-light); }
-  }
-  @media (max-width: 768px) {
-    .header-inner, .nav-inner, .content-area { padding-left: 20px; padding-right: 20px; }
-    .catalog-grid { grid-template-columns: 1fr; }
-    .drawing-controls { flex-direction: column; align-items: flex-start; }
-    .layer-toggles { margin-left: 0; }
-  }
-  @media print {
-    .global-header, .nav-bar, .drawing-controls, .layer-toggles { display: none !important; }
-    .paper-container { background: none; padding: 0; }
-    .paper { box-shadow: none; }
-  }
-</style>
+<title>VUILD — Project Detail</title>
+<link rel="stylesheet" href="../../style.css?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
-<div class="global-header">
+<!-- Hero -->
+<div class="detail-hero" id="detail-hero"></div>
+
+<!-- Header (sticky) -->
+<header class="global-header">
   <div class="header-inner">
     <div class="brand">
-      <a href="../../index.html" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;" title="案件リストに戻る">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-tertiary)"><path d="M15 18l-6-6 6-6"/></svg>
-        <span class="brand-logo">VUILD</span>
-      </a>
+      <span class="brand-logo">VUILD</span>
       <div class="brand-divider"></div>
-      <span class="brand-project">曲面壁面什器</span>
+      <span class="brand-title" id="header-title">Project Hub</span>
     </div>
-    <div class="header-right">
-      <span class="header-badge">設計中</span>
-      <span class="header-meta">#1141 ・ 人の森 ライブラリースペース</span>
-    </div>
+    <div id="header-badge"></div>
   </div>
-</div>
+</header>
 
-<!-- ═══ NAV ═══ -->
-<div class="nav-bar">
-  <div class="nav-inner">
-    <div class="nav-tab active" data-view="axo">アクソメビュー</div>
-    <div class="nav-tab" data-view="drawing">図面プレビュー</div>
-    <div class="nav-tab" data-view="catalog">金物カタログ <span class="count" id="hwCount">5</span></div>
-    <div class="nav-tab" data-view="bom">BOM</div>
-    <div class="nav-tab" data-view="knowledge">ナレッジ <span class="count" id="knowledgeCount">0</span></div>
-  </div>
-</div>
+<div class="detail-container">
+  <a href="../../index.html" class="back-link">&larr; ポータルに戻る</a>
 
-<div class="content-area">
+  <div class="detail-grid">
+    <!-- Main Column -->
+    <div class="detail-main">
 
-<!-- ━━━ AXONOMETRIC VIEW ━━━ -->
-<div class="view active" id="view-axo">
-  <div class="section-title">什器構成と金物配置</div>
-  <div class="section-desc">アクソメ図上のピンをクリックすると、該当箇所の金物スペックが表示されます</div>
-
-  <div class="axo-viewer">
-    <div class="axo-main" id="axoMain">
-      <!-- Axonometric SVG of the furniture -->
-      <svg viewBox="0 0 800 600" style="background: linear-gradient(145deg, #eae7e0 0%, #ddd9d0 100%);">
-        <!-- Floor shadow -->
-        <ellipse cx="400" cy="540" rx="300" ry="30" fill="rgba(0,0,0,0.06)"/>
-
-        <!-- Main cabinet body - axonometric -->
-        <g class="structure">
-          <!-- Left side -->
-          <path d="M 150,480 L 150,140 L 250,80 L 250,420" fill="#d4c4a0" stroke="#a89870" stroke-width="1.5"/>
-          <!-- Top -->
-          <path d="M 150,140 L 250,80 L 650,80 L 550,140" fill="#e0d4b4" stroke="#a89870" stroke-width="1.5"/>
-          <!-- Curved top edge -->
-          <path d="M 150,140 Q 350,115 550,140" fill="none" stroke="#a89870" stroke-width="2"/>
-          <path d="M 250,80 Q 450,55 650,80" fill="none" stroke="#a89870" stroke-width="2"/>
-          <!-- Front face -->
-          <path d="M 150,480 L 150,140 L 550,140 L 550,480" fill="#c8b894" stroke="#a89870" stroke-width="1.5"/>
-          <!-- Right side -->
-          <path d="M 550,480 L 550,140 L 650,80 L 650,420" fill="#baa878" stroke="#a89870" stroke-width="1.5"/>
-
-          <!-- Shelves -->
-          <line x1="150" y1="240" x2="550" y2="240" stroke="#a89870" stroke-width="1"/>
-          <line x1="550" y1="240" x2="650" y2="180" stroke="#a89870" stroke-width="1"/>
-          <line x1="150" y1="340" x2="550" y2="340" stroke="#a89870" stroke-width="1"/>
-          <line x1="550" y1="340" x2="650" y2="280" stroke="#a89870" stroke-width="1"/>
-
-          <!-- Vertical divider -->
-          <line x1="350" y1="240" x2="350" y2="480" stroke="#a89870" stroke-width="1"/>
-
-          <!-- Door panels -->
-          <rect x="160" y="250" width="180" height="85" rx="2" fill="#d0c098" stroke="#a89870" stroke-width="1" stroke-dasharray="4,2"/>
-          <rect x="360" y="250" width="180" height="85" rx="2" fill="#c8b890" stroke="#a89870" stroke-width="1"/>
-          <rect x="160" y="345" width="180" height="65" rx="2" fill="#c8b890" stroke="#a89870" stroke-width="1"/>
-          <rect x="360" y="345" width="180" height="65" rx="2" fill="#d0c098" stroke="#a89870" stroke-width="1"/>
-
-          <!-- Legs -->
-          <rect x="160" y="480" width="8" height="30" fill="#888" stroke="#666" stroke-width="1"/>
-          <rect x="530" y="480" width="8" height="30" fill="#888" stroke="#666" stroke-width="1"/>
-          <rect x="560" y="420" width="8" height="30" fill="#888" stroke="#666" stroke-width="1" transform="skewY(-30) translate(0,260)"/>
-          <rect x="640" y="420" width="8" height="30" fill="#888" stroke="#666" stroke-width="1" transform="skewY(-30) translate(0,260)"/>
-        </g>
-      </svg>
-
-      <!-- Pins on the axonometric view -->
-      <div class="pin-dot" style="left:23%; top:91%" data-pin="HW_CASTER_L">
-        <div class="dot-core"></div><div class="dot-pulse"></div>
-        <div class="pin-tooltip">自在キャスター 100mm</div>
+      <!-- Overview -->
+      <div class="detail-section" id="section-overview">
+        <h2 class="detail-section-title">OVERVIEW</h2>
+        <p class="detail-description" id="detail-description"></p>
       </div>
-      <div class="pin-dot" style="left:50%; top:52%" data-pin="HW_HINGE_A">
-        <div class="dot-core"></div><div class="dot-pulse"></div>
-        <div class="pin-tooltip">スライド丁番 26mm</div>
+
+      <!-- Photos -->
+      <div class="detail-section" id="section-photos" style="display:none">
+        <h2 class="detail-section-title">PHOTOS</h2>
+        <div class="detail-gallery" id="detail-gallery"></div>
       </div>
-      <div class="pin-dot" style="left:40%; top:42%" data-pin="HW_SHELF_PIN">
-        <div class="dot-core"></div><div class="dot-pulse"></div>
-        <div class="pin-tooltip">棚ダボ 差込式 5mm</div>
+
+      <!-- Furniture -->
+      <div class="detail-section" id="section-furniture" style="display:none">
+        <h2 class="detail-section-title">VUILD FURNITURE</h2>
+        <div class="detail-furniture-grid" id="detail-furniture"></div>
       </div>
-      <div class="pin-dot" style="left:72%; top:38%" data-pin="HW_SLIDE_350">
-        <div class="dot-core"></div><div class="dot-pulse"></div>
-        <div class="pin-tooltip">スライドレール 350mm</div>
+
+      <!-- Materials / Hardware -->
+      <div class="detail-section" id="section-materials" style="display:none">
+        <h2 class="detail-section-title">MATERIALS / HARDWARE</h2>
+        <div style="overflow-x:auto">
+          <table class="material-table" id="detail-materials">
+            <thead>
+              <tr><th>品名</th><th>品番</th><th>メーカー</th><th>単価</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
-      <div class="pin-dot warning" style="left:62%; top:18%" data-pin="HW_NEW_01">
-        <div class="dot-core"></div><div class="dot-pulse"></div>
-        <div class="pin-tooltip">未登録金物</div>
+
+      <!-- Knowledge -->
+      <div class="detail-section" id="section-knowledge" style="display:none">
+        <h2 class="detail-section-title">KNOWLEDGE</h2>
+        <div class="knowledge-timeline" id="detail-knowledge"></div>
       </div>
     </div>
 
     <!-- Sidebar -->
-    <div class="pin-sidebar">
-      <div class="sidebar-header">
-        <div class="label">Hardware Detail</div>
-        <div class="title" id="sidebarTitle">ピンを選択</div>
-      </div>
-      <div class="sidebar-empty" id="sidebarEmpty">
-        <div class="icon">+</div>
-        <div>アクソメ図上のピンをクリックすると<br>金物の詳細が表示されます</div>
-      </div>
-      <div class="pin-detail-panel" id="sidebarContent"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ━━━ DRAWING VIEW ━━━ -->
-<div class="view" id="view-drawing">
-  <div class="section-title">図面プレビュー</div>
-  <div class="section-desc">用紙・縮尺を設定し、ビューをドラッグでレイアウト調整。PDF出力も可能です。</div>
-
-  <div class="drawing-controls">
-    <div class="control-group">
-      <span>用紙</span>
-      <select id="paperSize">
-        <option value="A1">A1 (841x594)</option>
-        <option value="A2" selected>A2 (594x420)</option>
-        <option value="A3">A3 (420x297)</option>
-      </select>
-    </div>
-    <div class="control-group">
-      <span>縮尺</span>
-      <select id="drawingScale">
-        <option value="1">1:1</option><option value="2">1:2</option>
-        <option value="5">1:5</option><option value="10" selected>1:10</option>
-        <option value="20">1:20</option><option value="50">1:50</option>
-      </select>
-    </div>
-    <button class="btn btn-sm" onclick="autoLayout()">自動レイアウト</button>
-    <button class="btn btn-sm" onclick="window.print()">PDF出力</button>
-    <div class="layer-toggles">
-      <label class="layer-toggle"><input type="checkbox" checked data-layer="structure"> 構造</label>
-      <label class="layer-toggle"><input type="checkbox" checked data-layer="hardware"> 金物</label>
-      <label class="layer-toggle"><input type="checkbox" checked data-layer="equipment"> 設備</label>
-      <label class="layer-toggle"><input type="checkbox" checked data-layer="hidden"> 隠れ線</label>
-      <label class="layer-toggle"><input type="checkbox" checked data-layer="dimensions"> 寸法</label>
-    </div>
-  </div>
-
-  <div class="paper-container">
-    <div class="paper" id="paper">
-      <div class="paper-inner" id="paperInner"></div>
-      <div class="title-block">
-        <span class="tb-label">Project</span><span class="tb-val">人の森</span>
-        <span class="tb-label">Title</span><span class="tb-val">曲面壁面什器</span>
-        <span class="tb-label">Scale</span><span class="tb-val" id="tb-scale">1:10</span>
-        <span class="tb-label">Paper</span><span class="tb-val" id="tb-paper">A2</span>
-        <span class="tb-label">Date</span><span class="tb-val">2026-04-02</span>
-        <span class="tb-label">Author</span><span class="tb-val">VUILD / 金子</span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ━━━ CATALOG VIEW ━━━ -->
-<div class="view" id="view-catalog">
-  <div class="catalog-top">
-    <div><div class="section-title">金物カタログ</div></div>
-    <div class="result-count" id="resultCount"></div>
-  </div>
-  <input type="text" class="catalog-search" id="catalogSearch" placeholder="金物を検索（品名・品番・メーカー）...">
-  <div class="filter-row" id="filterRow"></div>
-  <div class="candidates-section" id="candidatesSection">
-    <div class="candidates-header">
-      <h3>Slackからの候補 <span class="cand-count" id="candCount">0</span></h3>
-      <button class="btn btn-sm btn-slack-scan" onclick="slackScan()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>
-        Slackスキャン
-      </button>
-    </div>
-    <div class="candidates-grid" id="candidatesGrid"></div>
-  </div>
-  <div id="duplicateAlerts"></div>
-  <div class="catalog-grid" id="catalogGrid"></div>
-</div>
-
-<!-- ━━━ BOM VIEW ━━━ -->
-<div class="view" id="view-bom">
-  <div class="section-title">概算見積もり</div>
-  <div class="section-desc">人の森_曲面壁面什器 — 原価管理</div>
-
-  <div class="bom-import-area" id="bomImportArea"
-    ondragover="event.preventDefault();this.classList.add('dragover')"
-    ondragleave="this.classList.remove('dragover')"
-    ondrop="event.preventDefault();this.classList.remove('dragover');handleEstimateImport(event.dataTransfer.files[0])">
-    <div class="import-label">
-      <strong>AUTOESTIMATOR JSON</strong> をドラッグ&ドロップ、または →
-    </div>
-    <button class="btn btn-sm" onclick="document.getElementById('estimateFileInput').click()">JSONファイルを選択</button>
-    <button class="btn btn-sm" onclick="exportEstimateJSON()">JSONエクスポート</button>
-    <input type="file" id="estimateFileInput" accept=".json" style="display:none" onchange="handleEstimateImport(this.files[0])">
-  </div>
-  <div id="importStatus"></div>
-
-  <div class="bom-header-row">
-    <div class="bom-budget-input">
-      <span>製作予算:</span>
-      <input type="number" id="bomBudget" value="3177105" onchange="renderBOM()">
-      <span>円</span>
-    </div>
-    <div class="bom-meta">
-      <div class="bom-meta-item">
-        <div class="meta-label">原価</div>
-        <div class="meta-value" id="bomCostTotal">-</div>
-      </div>
-      <div class="bom-meta-item">
-        <div class="meta-label">粗利</div>
-        <div class="meta-value green" id="bomProfit">-</div>
-      </div>
-      <div class="bom-meta-item">
-        <div class="meta-label">粗利率</div>
-        <div class="meta-value green" id="bomMargin">-</div>
-      </div>
-    </div>
-  </div>
-
-  <table class="bom-table">
-    <thead><tr>
-      <th style="width:30px">#</th>
-      <th>品名</th>
-      <th style="width:90px">原価</th>
-      <th style="width:60px">数量</th>
-      <th style="width:60px">単位</th>
-      <th style="width:100px">価格</th>
-      <th style="width:120px">発注先</th>
-      <th style="width:40px">発注</th>
-    </tr></thead>
-    <tbody id="bomBody"></tbody>
-  </table>
-  <div style="margin-top:16px; display:flex; gap:10px;">
-    <button class="btn btn-primary" onclick="exportCSV()">CSVエクスポート</button>
-    <button class="btn" onclick="window.print()">PDF出力</button>
-  </div>
-</div>
-
-<!-- ━━━ KNOWLEDGE VIEW ━━━ -->
-<div class="view" id="view-knowledge">
-  <div class="section-title">ナレッジ</div>
-  <div class="section-desc">プロジェクトの気づき・メモ・トラブル記録 — Slackのスタンプ付き投稿を自動収集</div>
-
-  <input type="text" class="knowledge-search" id="knowledgeSearch" placeholder="ナレッジを検索..." oninput="renderKnowledge()">
-
-  <div class="knowledge-filters" id="knowledgeFilters"></div>
-
-  <div class="knowledge-list" id="knowledgeList"></div>
-</div>
-
-</div><!-- /content-area -->
-
-<!-- ═══ EDIT MODAL ═══ -->
-<div class="modal-overlay" id="editModal">
-  <div class="modal-panel">
-    <button class="modal-close" onclick="closeEditModal()">&#10005;</button>
-    <div class="modal-body">
-      <h3 id="editModalTitle">金物を編集</h3>
-      <div class="thumb-upload">
-        <div class="thumb-preview" id="editThumbPreview"><span style="font-size:10px;color:var(--text-tertiary)">No Image</span></div>
-        <div style="display:flex;flex-direction:column;gap:6px;">
-          <button class="btn btn-sm" onclick="document.getElementById('thumbFileInput').click()">画像をアップロード</button>
-          <button class="btn btn-sm" onclick="loadThumbFromUrl()">URLから取得</button>
-          <input type="file" id="thumbFileInput" accept="image/*" style="display:none" onchange="handleThumbUpload(event)">
+    <div class="detail-sidebar">
+      <div class="spec-card">
+        <div class="spec-card-header">
+          <h3>Project Info</h3>
+          <span class="badge" id="spec-status"></span>
         </div>
+        <div class="spec-card-body" id="spec-body"></div>
       </div>
-      <div class="form-row"><label>品名</label><input type="text" id="editName"></div>
-      <div class="form-row"><label>品番</label><input type="text" id="editProductCode" oninput="checkDuplicate(this.value)"><div id="editDupWarn"></div></div>
-      <div class="form-row"><label>メーカー</label><input type="text" id="editMaker"></div>
-      <div class="form-row"><label>単価 (円)</label><input type="number" id="editPrice"></div>
-      <div class="form-row"><label>商品URL</label><input type="url" id="editUrl"></div>
-      <div class="form-row"><label>カテゴリ</label>
-        <select id="editCategory">
-          <option value="キャスター">キャスター</option><option value="丁番">丁番</option>
-          <option value="スライドレール">スライドレール</option><option value="棚受け">棚受け</option>
-          <option value="取手">取手</option><option value="ボルト・ナット">ボルト・ナット</option>
-          <option value="金物・金具">金物・金具</option>
-          <option value="設備・水回り">設備・水回り</option><option value="その他">その他</option>
-        </select>
+
+      <!-- Team -->
+      <div class="spec-card" style="margin-top:16px">
+        <div class="spec-card-header"><h3>Team</h3></div>
+        <div class="team-list" id="detail-team"></div>
       </div>
-      <div class="form-row"><label>メモ / スペック</label><textarea id="editMemo"></textarea></div>
-      <div class="form-section">更新履歴</div>
-      <div class="history-list" id="editHistory"></div>
-      <div class="form-section">Rhinoブロック</div>
-      <div class="form-row"><label>ブロック名</label><input type="text" id="editBlockName"></div>
-      <div class="form-section">AIサーチ</div>
-      <div style="display:flex;gap:8px;margin-bottom:8px;">
-        <button class="btn btn-sm" onclick="aiSearchByCode()">品番で類似品を検索</button>
-        <button class="btn btn-sm" onclick="aiSearchByName()">品名で候補を検索</button>
-      </div>
-      <div class="modal-actions">
-        <button class="btn" onclick="closeEditModal()">キャンセル</button>
-        <button class="btn btn-primary" onclick="saveEdit()">保存</button>
-      </div>
+
+      <!-- Tags -->
+      <div id="detail-tags" style="margin-top:16px; display:flex; flex-wrap:wrap; gap:6px;"></div>
     </div>
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="../../common.js?v=3"></script>
 <script>
-// ═══════════════════════════════════════════
-//  DATA
-// ═══════════════════════════════════════════
+DataLoader.basePath = '../../';
+const BASE = DataLoader.basePath;
 
-const hardwareCatalog = [];
+// Get project ID from folder name
+const pathParts = location.pathname.split('/').filter(Boolean);
+const projectId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
 
-const candidatesData = [];
+async function init() {
+  try {
+    const [projData, furnData, matData, knowData] = await Promise.all([
+      DataLoader.load('projects'),
+      DataLoader.load('furniture'),
+      DataLoader.load('materials'),
+      DataLoader.load('knowledge')
+    ]);
 
-const drawingMeta = {
-  project:"人の森_曲面壁面什器", model_file:"260402_壁面什器.3dm",
-  overall_dimensions:{width:3200,height:2400,depth:450},
-  views:[
-    {id:"front",direction:"正面図",w:320,h:240},
-    {id:"right",direction:"右側面図",w:120,h:240},
-    {id:"plan",direction:"平面図",w:320,h:120},
-    {id:"sectionA",direction:"断面図 A-A'",w:120,h:240}
-  ],
-  hardware_instances:[]
-};
+    const projects = projData.projects || [];
+    const project = projects.find(p => p.id === projectId);
+    if (!project) {
+      document.querySelector('.detail-container').innerHTML =
+        '<p style="padding:60px;text-align:center;color:#999">案件が見つかりません: ' + esc(projectId) + '</p>';
+      return;
+    }
 
-const PAPER_SIZES = {A1:{w:841,h:594},A2:{w:594,h:420},A3:{w:420,h:297}};
-const PAPER_SCALE_PX = 1.2;
+    document.title = `VUILD — ${project.name}`;
 
-// ═══════════════════════════════════════════
-//  UTILITIES
-// ═══════════════════════════════════════════
+    // Header
+    document.getElementById('header-title').textContent = project.name;
 
-function formatDate(isoStr) {
-  if (!isoStr) return '-';
-  const d = new Date(isoStr);
-  const m = String(d.getMonth()+1).padStart(2,'0');
-  const day = String(d.getDate()).padStart(2,'0');
-  const h = String(d.getHours()).padStart(2,'0');
-  const min = String(d.getMinutes()).padStart(2,'0');
-  return `${d.getFullYear()}-${m}-${day} ${h}:${min}`;
-}
-
-// ═══════════════════════════════════════════
-//  TAB SWITCHING
-// ═══════════════════════════════════════════
-
-document.querySelectorAll('.nav-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + tab.dataset.view).classList.add('active');
-    if (tab.dataset.view === 'drawing') { initDrawing(); }
-  });
-});
-
-// ═══════════════════════════════════════════
-//  AXONOMETRIC PIN VIEW
-// ═══════════════════════════════════════════
-
-document.querySelectorAll('.pin-dot').forEach(pin => {
-  pin.addEventListener('click', () => {
-    document.querySelectorAll('.pin-dot').forEach(p => p.classList.remove('active'));
-    pin.classList.add('active');
-
-    const hwId = pin.dataset.pin;
-    const hw = hardwareCatalog.find(h => h.id === hwId);
-    const inst = drawingMeta.hardware_instances.find(i => i.block_id === hwId);
-
-    document.getElementById('sidebarTitle').textContent = hw ? hw.name : '未登録: ' + hwId;
-    document.getElementById('sidebarEmpty').style.display = 'none';
-
-    const panel = document.getElementById('sidebarContent');
-    panel.className = 'pin-detail-panel active';
-
-    if (hw && hw.in_catalog !== false) {
-      panel.innerHTML = `
-        <div class="detail-image">${hw.thumbnail_url ? `<img src="${hw.thumbnail_url}" onerror="this.parentElement.innerHTML='No Image'">` : '<span style="font-size:13px;color:var(--text-tertiary)">No Image</span>'}</div>
-        <div class="detail-body">
-          <div class="hw-name">${hw.name}</div>
-          <div class="hw-maker">${hw.maker}${hw.product_url ? ` ・ <a href="${hw.product_url}" target="_blank" style="color:var(--accent-green)">商品ページ</a>` : ''}</div>
-          <ul class="detail-specs">
-            <li><span class="key">品番</span><span class="val">${hw.product_code||'-'}</span></li>
-            <li><span class="key">単価</span><span class="val">${hw.price?'¥'+hw.price.toLocaleString():'-'}</span></li>
-            <li><span class="key">使用数</span><span class="val">${inst?inst.count+'個':'-'}</span></li>
-            <li><span class="key">カテゴリ</span><span class="val">${hw.category}</span></li>
-            ${hw.specs?`<li><span class="key">スペック</span><span class="val">${hw.specs}</span></li>`:''}
-          </ul>
-          <div class="detail-timestamps">
-            ${hw.created_at?`取得: ${formatDate(hw.created_at)} (${hw.created_by||'-'})`:''}
-            ${hw.updated_at?`<br><span class="updated">更新: ${formatDate(hw.updated_at)} by ${hw.updated_by}</span>`:''}
-          </div>
-        </div>
-        <div class="detail-actions">
-          <button class="btn btn-sm" onclick="openEditModal('${hw.id}')">編集</button>
-        </div>
-      `;
+    // Hero
+    const heroEl = document.getElementById('detail-hero');
+    if (project.hero_photos && project.hero_photos.length) {
+      heroEl.innerHTML = `
+        <img src="${BASE}${project.hero_photos[0]}" alt="${esc(project.name)}">
+        <div class="detail-hero-overlay">
+          <div class="detail-pid">${esc(project.pid)} — ${esc(project.client)}</div>
+          <h1>${esc(project.name)}</h1>
+        </div>`;
     } else {
-      panel.innerHTML = `
-        <div class="detail-image"><span style="font-size:13px;color:var(--warning)">未登録金物</span></div>
-        <div class="detail-body">
-          <div class="hw-name" style="color:var(--warning);">未登録: ${hwId}</div>
-          <div class="hw-maker">使用数: ${inst?inst.count+'個':'-'}</div>
-          <div class="detail-note">このブロックはカタログに未登録です。編集ボタンから金物情報を登録してください。</div>
-        </div>
-        <div class="detail-actions">
-          <button class="btn btn-green btn-sm" onclick="openEditModal('${hwId}')">登録する</button>
-        </div>
-      `;
+      heroEl.innerHTML = `
+        <div class="detail-hero-placeholder">${esc(project.pid || 'VUILD')}</div>
+        <div class="detail-hero-overlay">
+          <div class="detail-pid">${esc(project.pid)} — ${esc(project.client)}</div>
+          <h1>${esc(project.name)}</h1>
+        </div>`;
     }
-  });
-});
 
-// ═══════════════════════════════════════════
-//  DRAWING PANEL
-// ═══════════════════════════════════════════
-
-let viewPositions = {};
-let drawingInitialized = false;
-
-function generateSampleSVG(viewId) {
-  const svgs = {
-    front: `
-      <g class="structure" stroke="#333" stroke-width="0.8" fill="none">
-        <rect x="10" y="10" width="300" height="220" rx="2"/>
-        <line x1="10" y1="80" x2="310" y2="80"/><line x1="10" y1="160" x2="310" y2="160"/>
-        <line x1="155" y1="80" x2="155" y2="220"/>
-        <rect x="15" y="85" width="135" height="70" rx="1"/><rect x="160" y="85" width="145" height="70" rx="1"/>
-        <rect x="15" y="165" width="135" height="50" rx="1"/><rect x="160" y="165" width="145" height="50" rx="1"/>
-        <path d="M10 10 Q160 0 310 10" stroke="#333" stroke-width="0.6"/>
-      </g>
-      <g class="hidden" stroke="#999" stroke-width="0.4" stroke-dasharray="4,2" fill="none">
-        <line x1="30" y1="220" x2="30" y2="235"/><line x1="280" y1="220" x2="280" y2="235"/>
-        <rect x="60" y="85" width="30" height="70" rx="1"/><rect x="220" y="85" width="30" height="70" rx="1"/>
-      </g>
-      <g class="equipment" stroke="#2196F3" stroke-width="0.6" fill="none">
-        <circle cx="155" cy="45" r="12"/><line x1="155" y1="33" x2="155" y2="57"/>
-      </g>
-      <g class="dimensions" stroke="#c00" stroke-width="0.3" fill="none" font-size="7" text-anchor="middle">
-        <line x1="10" y1="245" x2="310" y2="245"/><line x1="10" y1="240" x2="10" y2="250"/>
-        <line x1="310" y1="240" x2="310" y2="250"/><text x="160" y="255" fill="#c00">3,200</text>
-      </g>`,
-    right: `
-      <g class="structure" stroke="#333" stroke-width="0.8" fill="none">
-        <rect x="15" y="10" width="90" height="220" rx="2"/>
-        <line x1="15" y1="80" x2="105" y2="80"/><line x1="15" y1="160" x2="105" y2="160"/>
-        <rect x="20" y="85" width="80" height="70" rx="1"/>
-        <path d="M15 10 Q60 5 105 10" stroke="#333" stroke-width="0.6"/>
-      </g>
-      <g class="hidden" stroke="#999" stroke-width="0.4" stroke-dasharray="4,2" fill="none">
-        <line x1="35" y1="220" x2="35" y2="235"/><line x1="85" y1="220" x2="85" y2="235"/>
-      </g>
-      <g class="dimensions" stroke="#c00" stroke-width="0.3" fill="none" font-size="7" text-anchor="middle">
-        <line x1="15" y1="245" x2="105" y2="245"/><line x1="15" y1="240" x2="15" y2="250"/>
-        <line x1="105" y1="240" x2="105" y2="250"/><text x="60" y="255" fill="#c00">450</text>
-      </g>`,
-    plan: `
-      <g class="structure" stroke="#333" stroke-width="0.8" fill="none">
-        <rect x="10" y="10" width="300" height="100" rx="2"/>
-        <line x1="155" y1="10" x2="155" y2="110"/>
-        <rect x="15" y="15" width="135" height="90" rx="1"/><rect x="160" y="15" width="145" height="90" rx="1"/>
-        <path d="M10 10 Q160 5 310 10" stroke="#333" stroke-width="0.6"/>
-      </g>
-      <g class="hidden" stroke="#999" stroke-width="0.4" stroke-dasharray="4,2" fill="none">
-        <circle cx="30" cy="95" r="8"/><circle cx="280" cy="95" r="8"/>
-        <circle cx="30" cy="25" r="8"/><circle cx="280" cy="25" r="8"/>
-      </g>`,
-    sectionA: `
-      <g class="structure" stroke="#333" stroke-width="0.8" fill="none">
-        <rect x="15" y="10" width="90" height="220" rx="2"/>
-        <line x1="15" y1="80" x2="105" y2="80"/><line x1="15" y1="160" x2="105" y2="160"/>
-        <line x1="35" y1="80" x2="35" y2="230"/>
-        <rect x="40" y="85" width="60" height="8" fill="#ddd" stroke="#333"/>
-        <rect x="40" y="145" width="60" height="8" fill="#ddd" stroke="#333"/>
-        <rect x="40" y="165" width="60" height="8" fill="#ddd" stroke="#333"/>
-      </g>
-      <g class="hidden" stroke="#999" stroke-width="0.4" stroke-dasharray="4,2" fill="none">
-        <line x1="35" y1="220" x2="35" y2="240"/>
-      </g>`
-  };
-  return svgs[viewId] || '';
-}
-
-function initDrawing() {
-  if (drawingInitialized) return;
-  drawingInitialized = true;
-  updatePaper();
-  placeViews();
-}
-
-function updatePaper() {
-  const size = PAPER_SIZES[document.getElementById('paperSize').value];
-  const paper = document.getElementById('paper');
-  paper.style.width = (size.w*PAPER_SCALE_PX)+'px';
-  paper.style.height = (size.h*PAPER_SCALE_PX)+'px';
-  document.getElementById('tb-paper').textContent = document.getElementById('paperSize').value;
-  document.getElementById('tb-scale').textContent = '1:'+document.getElementById('drawingScale').value;
-}
-
-function placeViews() {
-  const inner = document.getElementById('paperInner');
-  inner.querySelectorAll('.view-slot').forEach(v => v.remove());
-  const scale = parseInt(document.getElementById('drawingScale').value);
-  let cx = 20, cy = 30;
-
-  drawingMeta.views.forEach(view => {
-    const vw = view.w*PAPER_SCALE_PX/(scale/10);
-    const vh = view.h*PAPER_SCALE_PX/(scale/10);
-    const slot = document.createElement('div');
-    slot.className = 'view-slot';
-    slot.style.width = vw+'px'; slot.style.height = vh+'px';
-    if (!viewPositions[view.id]) viewPositions[view.id] = {x:cx, y:cy};
-    slot.style.left = viewPositions[view.id].x+'px';
-    slot.style.top = viewPositions[view.id].y+'px';
-    cx += vw+20; if(cx>500){cx=20;cy+=vh+40;}
-
-    const label = document.createElement('div');
-    label.className = 'view-label'; label.textContent = view.direction;
-    slot.appendChild(label);
-
-    const svgEl = document.createElementNS('http://www.w3.org/2000/svg','svg');
-    svgEl.setAttribute('viewBox',`0 0 ${view.w} ${view.h}`);
-    svgEl.innerHTML = generateSampleSVG(view.id);
-    slot.appendChild(svgEl);
-
-    drawingMeta.hardware_instances.forEach(inst => {
-      inst.positions.filter(p=>p.view===view.id).forEach(pos => {
-        const hw = hardwareCatalog.find(h=>h.id===inst.block_id);
-        const isOk = hw && hw.in_catalog!==false && hw.product_code;
-        const marker = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        marker.setAttribute('cx',pos.x); marker.setAttribute('cy',pos.y);
-        marker.setAttribute('r','7');
-        marker.classList.add('hw-marker'); marker.classList.add(isOk?'ok':'warning');
-        marker.addEventListener('click',e=>{e.stopPropagation();showDrawingPopup(inst.block_id);});
-        svgEl.appendChild(marker);
-      });
-    });
-    makeDraggable(slot,view.id);
-    inner.appendChild(slot);
-  });
-}
-
-function makeDraggable(el,viewId) {
-  let sx,sy,ox,oy;
-  el.addEventListener('mousedown',e=>{
-    if(e.target.classList.contains('hw-marker'))return;
-    e.preventDefault(); el.classList.add('dragging');
-    sx=e.clientX;sy=e.clientY;ox=parseInt(el.style.left);oy=parseInt(el.style.top);
-    const onMove=e2=>{el.style.left=(ox+e2.clientX-sx)+'px';el.style.top=(oy+e2.clientY-sy)+'px';viewPositions[viewId]={x:ox+e2.clientX-sx,y:oy+e2.clientY-sy};};
-    const onUp=()=>{el.classList.remove('dragging');document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onUp);};
-    document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onUp);
-  });
-}
-
-function autoLayout() {
-  viewPositions={};drawingInitialized=false;initDrawing();
-}
-
-function showDrawingPopup(blockId) {
-  // Switch to axo view and activate pin
-  const pin = document.querySelector(`.pin-dot[data-pin="${blockId}"]`);
-  if (pin) pin.click();
-}
-
-document.querySelectorAll('[data-layer]').forEach(cb=>{
-  cb.addEventListener('change',()=>{
-    document.querySelectorAll('.paper .'+cb.dataset.layer).forEach(g=>{g.style.display=cb.checked?'':'none';});
-  });
-});
-document.getElementById('paperSize').addEventListener('change',()=>{updatePaper();drawingInitialized=false;viewPositions={};initDrawing();});
-document.getElementById('drawingScale').addEventListener('change',()=>{updatePaper();drawingInitialized=false;viewPositions={};initDrawing();});
-
-// ═══════════════════════════════════════════
-//  EDIT MODAL
-// ═══════════════════════════════════════════
-
-let editingId = null;
-
-function openEditModal(blockId) {
-  editingId = blockId;
-  const modal = document.getElementById('editModal');
-  const hw = blockId ? hardwareCatalog.find(h=>h.id===blockId) : null;
-
-  document.getElementById('editModalTitle').textContent = hw ? '金物を編集' : '新規金物登録';
-  document.getElementById('editName').value = hw?hw.name:'';
-  document.getElementById('editProductCode').value = hw?hw.product_code:'';
-  document.getElementById('editMaker').value = hw?hw.maker:'';
-  document.getElementById('editPrice').value = hw?hw.price:'';
-  document.getElementById('editUrl').value = hw?hw.product_url:'';
-  document.getElementById('editCategory').value = hw?hw.category:'その他';
-  document.getElementById('editMemo').value = hw?hw.specs:'';
-  document.getElementById('editBlockName').value = hw?hw.rhino_block:'';
-  document.getElementById('editDupWarn').innerHTML = '';
-
-  const tp = document.getElementById('editThumbPreview');
-  tp.innerHTML = hw&&hw.thumbnail_url ? `<img src="${hw.thumbnail_url}">` : '<span style="font-size:10px;color:var(--text-tertiary)">No Image</span>';
-
-  const histEl = document.getElementById('editHistory');
-  if (hw&&hw.history&&hw.history.length>0) {
-    histEl.innerHTML = hw.history.slice().reverse().map(h=>`
-      <div class="h-row"><span class="h-date">${formatDate(h.date)}</span><span class="h-by">${h.by}</span><span class="h-action">${h.action}</span></div>
-    `).join('');
-  } else {
-    histEl.innerHTML = '<div style="font-size:11px;color:var(--text-tertiary);">履歴なし</div>';
-  }
-  modal.classList.add('show');
-}
-
-function closeEditModal() { document.getElementById('editModal').classList.remove('show'); editingId=null; }
-document.getElementById('editModal').addEventListener('click',e=>{if(e.target===document.getElementById('editModal'))closeEditModal();});
-
-function checkDuplicate(code) {
-  const w = document.getElementById('editDupWarn');
-  if(!code){w.innerHTML='';return;}
-  const norm = code.replace(/[-\s]/g,'').toUpperCase();
-  const dupes = hardwareCatalog.filter(h=>h.id!==editingId&&h.product_code&&h.product_code.replace(/[-\s]/g,'').toUpperCase()===norm);
-  w.innerHTML = dupes.length>0 ? `<div class="duplicate-warn">この品番は既に登録済みです: 「${dupes[0].name}」(${dupes[0].id})</div>` : '';
-}
-
-function saveEdit() {
-  const now = new Date().toISOString().slice(0,19);
-  const user = '金子';
-  const data = {
-    name:document.getElementById('editName').value, product_code:document.getElementById('editProductCode').value,
-    maker:document.getElementById('editMaker').value, price:parseInt(document.getElementById('editPrice').value)||0,
-    product_url:document.getElementById('editUrl').value, category:document.getElementById('editCategory').value,
-    specs:document.getElementById('editMemo').value, rhino_block:document.getElementById('editBlockName').value,
-    verified:true, source:'manual', updated_at:now, updated_by:user
-  };
-  if(editingId) {
-    const hw=hardwareCatalog.find(h=>h.id===editingId);
-    if(hw){Object.assign(hw,data);hw.in_catalog=true;if(!hw.history)hw.history=[];hw.history.push({date:now,by:user,action:'手動編集'});}
-  } else {
-    hardwareCatalog.push({id:'HW_'+Date.now(),...data,thumbnail_url:'',in_catalog:true,created_at:now,created_by:user,history:[{date:now,by:user,action:'新規登録'}]});
-  }
-  closeEditModal(); renderCatalog(); renderBOM();
-  document.getElementById('hwCount').textContent = hardwareCatalog.length;
-  // Notify about Slack notification possibility
-  if (editingId && hardwareCatalog.find(h => h.id === editingId && h.source === 'slack')) {
-    setTimeout(() => {
-      if (confirm('Slackにも本採用の通知を投稿しますか？\n(次回のClaude Codeセッションで実行します)')) {
-        // Store notification request for next scan
-        if (!window._slackNotifyQueue) window._slackNotifyQueue = [];
-        window._slackNotifyQueue.push(editingId);
-      }
-    }, 300);
-  }
-}
-
-function handleThumbUpload(event) {
-  const file=event.target.files[0]; if(!file)return;
-  const reader=new FileReader();
-  reader.onload=e=>{document.getElementById('editThumbPreview').innerHTML=`<img src="${e.target.result}">`;if(editingId){const hw=hardwareCatalog.find(h=>h.id===editingId);if(hw)hw.thumbnail_url=e.target.result;}};
-  reader.readAsDataURL(file);
-}
-function loadThumbFromUrl() {
-  const url=prompt('画像URLを入力:'); if(!url)return;
-  document.getElementById('editThumbPreview').innerHTML=`<img src="${url}">`;
-  if(editingId){const hw=hardwareCatalog.find(h=>h.id===editingId);if(hw)hw.thumbnail_url=url;}
-}
-function aiSearchByCode(){alert(`品番「${document.getElementById('editProductCode').value}」でAIサーチを実行します...\n(実装時は金物サーチエージェントと連携)`);}
-function aiSearchByName(){alert(`品名「${document.getElementById('editName').value}」でAIサーチを実行します...\n(実装時は金物サーチエージェントと連携)`);}
-
-// ═══════════════════════════════════════════
-//  CANDIDATES
-// ═══════════════════════════════════════════
-
-function renderCandidates() {
-  const grid = document.getElementById('candidatesGrid');
-  const section = document.getElementById('candidatesSection');
-  const pending = candidatesData.filter(c => c.status === 'pending');
-  document.getElementById('candCount').textContent = pending.length;
-
-  if (pending.length === 0) {
-    section.style.display = 'none';
-    return;
-  }
-  section.style.display = 'block';
-
-  grid.innerHTML = pending.map(c => `
-    <div class="candidate-card" id="cand-${c.id}">
-      <div class="cand-top">
-        <div class="cand-name">
-          <a href="${c.product_url}" target="_blank" onclick="event.stopPropagation()">${c.name}</a>
-        </div>
-        <span class="cand-source-badge">slack</span>
-      </div>
-      <div class="cand-meta">
-        <strong>${c.slack_channel}</strong> / ${c.posted_by} / ${c.posted_at}
-        ${c.maker ? ' / ' + c.maker : ''}
-      </div>
-      <div class="cand-context">${c.context}</div>
-      ${c.specs && c.specs !== c.context ? `<div class="cand-specs">${c.specs}</div>` : ''}
-      <div class="cand-actions">
-        <button class="btn btn-sm btn-adopt" onclick="adoptCandidate('${c.id}')">採用する</button>
-        <button class="btn btn-sm btn-dismiss" onclick="dismissCandidate('${c.id}')">却下</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function adoptCandidate(candId) {
-  const cand = candidatesData.find(c => c.id === candId);
-  if (!cand) return;
-
-  const now = new Date().toISOString().slice(0,19);
-  const newId = 'HW_SLACK_' + Date.now();
-
-  // Add to hardwareCatalog
-  hardwareCatalog.push({
-    id: newId,
-    name: cand.name,
-    product_code: cand.product_code || '',
-    maker: cand.maker || '',
-    price: cand.price || 0,
-    product_url: cand.product_url || '',
-    thumbnail_url: cand.thumbnail_url || '',
-    category: cand.category || 'その他',
-    specs: cand.specs || '',
-    rhino_block: '',
-    source: 'slack',
-    verified: false,
-    in_catalog: true,
-    created_at: now,
-    created_by: 'Slack (' + cand.posted_by + ')',
-    updated_at: null,
-    updated_by: null,
-    history: [
-      { date: cand.posted_at + 'T00:00:00', by: cand.posted_by, action: 'Slack ' + cand.slack_channel + ' で共有' },
-      { date: now, by: '金子', action: '候補から採用' }
-    ]
-  });
-
-  // Mark candidate as adopted
-  cand.status = 'adopted';
-  cand.adopted_at = now;
-  cand.adopted_by = '金子';
-
-  // Update counts and re-render
-  document.getElementById('hwCount').textContent = hardwareCatalog.length;
-  renderCandidates();
-  renderCatalog();
-  renderBOM();
-
-  // Open edit modal pre-filled so user can refine
-  openEditModal(newId);
-}
-
-function dismissCandidate(candId) {
-  const cand = candidatesData.find(c => c.id === candId);
-  if (!cand) return;
-  cand.status = 'dismissed';
-  const card = document.getElementById('cand-' + candId);
-  if (card) {
-    card.style.transition = 'opacity 0.3s, transform 0.3s';
-    card.style.opacity = '0';
-    card.style.transform = 'scale(0.95)';
-    setTimeout(() => { renderCandidates(); }, 300);
-  } else {
-    renderCandidates();
-  }
-}
-
-function slackScan() {
-  alert('Slackスキャン機能は実装予定です。\n\n実装時は Slack API でプロジェクトチャンネルの商品リンクを自動収集し、candidates.json に追加します。');
-}
-
-// ═══════════════════════════════════════════
-//  CATALOG
-// ═══════════════════════════════════════════
-
-let activeFilter = 'すべて';
-
-function renderCatalog() {
-  const grid = document.getElementById('catalogGrid');
-  const alerts = document.getElementById('duplicateAlerts');
-  const search = document.getElementById('catalogSearch').value.toLowerCase();
-
-  // Filters
-  const cats = ['すべて', ...new Set(hardwareCatalog.map(h=>h.category))];
-  document.getElementById('filterRow').innerHTML = cats.map(c=>
-    `<button class="filter-chip ${c===activeFilter?'active':''}" onclick="activeFilter='${c}';renderCatalog();">${c}</button>`
-  ).join('');
-
-  // Duplicates
-  const codeMap={};
-  hardwareCatalog.forEach(hw=>{if(!hw.product_code)return;const n=hw.product_code.replace(/[-\s]/g,'').toUpperCase();if(!codeMap[n])codeMap[n]=[];codeMap[n].push(hw);});
-  alerts.innerHTML = Object.values(codeMap).filter(a=>a.length>1).map(dupes=>`
-    <div class="duplicate-alert">
-      <h4>重複の可能性</h4>
-      <p>「${dupes.map(d=>d.name).join('」と「')}」 → 同一品番: ${dupes[0].product_code}</p>
-      <div style="display:flex;gap:8px;"><button class="btn btn-green btn-sm" onclick="alert('統合機能は実装予定')">統合する</button><button class="btn btn-sm" onclick="this.closest('.duplicate-alert').remove()">別物として保持</button></div>
-    </div>`).join('');
-
-  // Filter
-  const filtered = hardwareCatalog.filter(hw=>{
-    if(search && !(hw.name+hw.product_code+hw.maker+hw.category).toLowerCase().includes(search)) return false;
-    if(activeFilter!=='すべて' && hw.category!==activeFilter) return false;
-    return true;
-  });
-  document.getElementById('resultCount').textContent = filtered.length+' items';
-
-  grid.innerHTML = filtered.map(hw=>`
-    <div class="catalog-card" onclick="openEditModal('${hw.id}')">
-      <div class="card-visual">
-        ${hw.thumbnail_url?`<img src="${hw.thumbnail_url}" onerror="this.style.display='none'">`:'<span style="font-size:40px;color:var(--text-tertiary);">&#9881;</span>'}
-        <div class="card-cat">${hw.category}</div>
-        ${hw.verified?'<div class="card-status verified">確認済み</div>':'<div class="card-status unverified">'+(hw.in_catalog===false?'未登録':'未確認')+'</div>'}
-      </div>
-      <div class="card-body">
-        <h3>${hw.name}</h3>
-        <div class="card-maker">${hw.maker||'メーカー不明'}${hw.product_url?' ・ <a href="'+hw.product_url+'" target="_blank" style="color:var(--accent-green)" onclick="event.stopPropagation()">商品ページ</a>':''}</div>
-        <div class="card-specs">
-          <div class="card-spec-item"><div class="spec-label">品番</div><div class="spec-value">${hw.product_code||'-'}</div></div>
-          <div class="card-spec-item"><div class="spec-label">単価</div><div class="spec-value">${hw.price?'¥'+hw.price.toLocaleString():'-'}</div></div>
-        </div>
-        <div class="card-timestamps">
-          ${hw.created_at?`取得: ${formatDate(hw.created_at)} (${hw.created_by||'-'})`:''}
-          ${hw.updated_at?`<br><span class="updated">更新: ${formatDate(hw.updated_at)} by ${hw.updated_by}</span>`:''}
-        </div>
-      </div>
-    </div>
-  `).join('');
-}
-
-document.getElementById('catalogSearch').addEventListener('input', renderCatalog);
-
-// ═══════════════════════════════════════════
-//  BOM DATA (概算見積もり format)
-// ═══════════════════════════════════════════
-
-const bomData = [
-  { cat:"家具", items:[]},
-  { cat:"金物", items:[] }, // auto-filled from hardwareCatalog
-  { cat:"シンク・ポンプ系", items:[]},
-  { cat:"電源系", items:[]},
-  { cat:"塗料", items:[]},
-  { cat:"外注費", items:[]},
-  { cat:"社内工数 — 一般人件費", items:[]},
-  { cat:"社内工数 — 特殊業務委託費", items:[]},
-  { cat:"製作及び施工管理費", items:[]},
-  { cat:"製作管理費", items:[]},
-  { cat:"輸送費", items:[]},
-  { cat:"消耗品費", items:[]},
-];
-
-// ═══════════════════════════════════════════
-//  BOM RENDER
-// ═══════════════════════════════════════════
-
-function buildHardwareItems() {
-  // Sync hardware items from hardwareCatalog + drawingMeta instances
-  const hwCat = bomData.find(c=>c.cat==="金物");
-  if (!hwCat) return;
-  hwCat.items = drawingMeta.hardware_instances.map(inst=>{
-    const hw = hardwareCatalog.find(h=>h.id===inst.block_id);
-    return {
-      name: hw ? hw.name : inst.block_id,
-      cost: hw ? hw.price : 0,
-      qty: inst.count,
-      unit: "個",
-      price: hw ? hw.price * inst.count : 0,
-      url: hw ? hw.product_url : "",
-      ordered: false,
-      _hwId: inst.block_id,
-      _warn: !hw || hw.in_catalog===false || !hw.product_code
-    };
-  });
-}
-
-function renderBOM() {
-  buildHardwareItems();
-  const body = document.getElementById('bomBody');
-  const units = ["個","枚","台","セット","式","m","m2","m3","人工","時間","回"];
-  let grandTotal = 0;
-  let rows = '';
-  let globalIdx = 0;
-
-  bomData.forEach((cat, ci) => {
-    let catTotal = 0;
-    rows += `<tr class="cat-row"><td colspan="8">${cat.cat}</td></tr>`;
-
-    cat.items.forEach((item, ii) => {
-      globalIdx++;
-      const price = item.cost * item.qty;
-      item.price = price;
-      catTotal += price;
-      const isWarn = item._warn;
-
-      // Source tag
-      const src = item._source || 'manual';
-      const srcTag = src === 'estimate' ? '<span class="bom-source-tag estimate">概算</span>'
-        : src === 'auto' ? '<span class="bom-source-tag auto">自動</span>' : '';
-
-      // Diff from estimate
-      let diffHtml = '';
-      if (item._estimateCost != null && item._estimateCost !== item.cost) {
-        const diff = item.cost - item._estimateCost;
-        const cls = diff > 0 ? 'positive' : diff < 0 ? 'negative' : 'neutral';
-        diffHtml = `<div class="bom-diff ${cls}">概算: ¥${item._estimateCost.toLocaleString()} (${diff>0?'+':''}${diff.toLocaleString()})</div>`;
-      }
-
-      rows += `<tr class="${isWarn?'warn-row':''}">
-        <td style="color:var(--text-tertiary)">${globalIdx}</td>
-        <td>${item.name}${srcTag}${item._spec?`<div style="font-size:10px;color:var(--text-tertiary)">${item._spec}</div>`:''}${diffHtml}</td>
-        <td><input type="number" value="${item.cost}" data-cat="${ci}" data-item="${ii}" data-field="cost" onchange="updateBomItem(this)"></td>
-        <td><input type="number" value="${item.qty}" style="width:50px" data-cat="${ci}" data-item="${ii}" data-field="qty" onchange="updateBomItem(this)"></td>
-        <td><select data-cat="${ci}" data-item="${ii}" data-field="unit" onchange="updateBomItem(this)">
-          ${units.map(u=>`<option ${u===item.unit?'selected':''}>${u}</option>`).join('')}
-        </select></td>
-        <td style="font-weight:500;text-align:right">${price?'¥'+price.toLocaleString():'-'}</td>
-        <td>${item.url?`<a href="${item.url}" target="_blank">link</a>`:'-'}</td>
-        <td style="text-align:center"><input type="checkbox" ${item.ordered?'checked':''} data-cat="${ci}" data-item="${ii}" data-field="ordered" onchange="updateBomItem(this)"></td>
-      </tr>`;
-    });
-
-    rows += `<tr><td colspan="8" class="bom-add-row" onclick="addBomRow(${ci})">+ 行を追加</td></tr>`;
-    rows += `<tr class="cat-subtotal">
-      <td colspan="5" style="text-align:right">${cat.cat} 小計</td>
-      <td style="text-align:right">¥${catTotal.toLocaleString()}</td>
-      <td colspan="2"></td>
-    </tr>`;
-    grandTotal += catTotal;
-  });
-
-  rows += `<tr class="grand-total">
-    <td colspan="5" style="text-align:right">原価合計</td>
-    <td style="text-align:right">¥${grandTotal.toLocaleString()}</td>
-    <td colspan="2"></td>
-  </tr>`;
-  body.innerHTML = rows;
-
-  const budget = parseInt(document.getElementById('bomBudget').value) || 0;
-  const profit = budget - grandTotal;
-  const margin = budget > 0 ? ((profit / budget) * 100).toFixed(1) : 0;
-  document.getElementById('bomCostTotal').textContent = '¥' + grandTotal.toLocaleString();
-  document.getElementById('bomProfit').textContent = '¥' + profit.toLocaleString();
-  document.getElementById('bomMargin').textContent = margin + '%';
-}
-
-function updateBomItem(el) {
-  const ci = parseInt(el.dataset.cat);
-  const ii = parseInt(el.dataset.item);
-  const field = el.dataset.field;
-  if (field === 'ordered') {
-    bomData[ci].items[ii].ordered = el.checked;
-  } else if (field === 'cost' || field === 'qty') {
-    bomData[ci].items[ii][field] = parseFloat(el.value) || 0;
-  } else if (field === 'unit') {
-    bomData[ci].items[ii].unit = el.value;
-  }
-  renderBOM();
-}
-
-function addBomRow(catIdx) {
-  bomData[catIdx].items.push({
-    name:"新規項目", cost:0, qty:0, unit:"個", price:0, url:"", ordered:false
-  });
-  renderBOM();
-  // Focus the new name cell - make it editable
-  const rows = document.querySelectorAll(`[data-cat="${catIdx}"]`);
-  const last = rows[rows.length-1];
-  if (last) last.closest('tr').querySelector('td:nth-child(2)').click();
-}
-
-function exportCSV() {
-  buildHardwareItems();
-  let csv = 'カテゴリ,No,品名,原価,数量,単位,価格,発注先,発注\n';
-  let idx = 0;
-  bomData.forEach(cat => {
-    cat.items.forEach(item => {
-      idx++;
-      csv += `"${cat.cat}",${idx},"${item.name}",${item.cost},${item.qty},"${item.unit}",${item.price},"${item.url}",${item.ordered?'済':''}\n`;
-    });
-  });
-  const budget = parseInt(document.getElementById('bomBudget').value)||0;
-  const total = bomData.reduce((s,c)=>s+c.items.reduce((s2,i)=>s2+i.price,0),0);
-  csv += `\n,,,,,,"原価合計",¥${total}\n`;
-  csv += `,,,,,,"製作予算",¥${budget}\n`;
-  csv += `,,,,,,"粗利",¥${budget-total}\n`;
-  csv += `,,,,,,"粗利率",${budget>0?((budget-total)/budget*100).toFixed(1):'0'}%\n`;
-
-  const blob = new Blob(['\uFEFF'+csv], {type:'text/csv;charset=utf-8;'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = drawingMeta.project + '_見積もり.csv';
-  a.click();
-}
-
-// ═══════════════════════════════════════════
-//  AUTOESTIMATOR IMPORT / EXPORT
-// ═══════════════════════════════════════════
-
-function handleEstimateImport(file) {
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    try {
-      const json = JSON.parse(e.target.result);
-      importEstimateJSON(json);
-    } catch(err) {
-      document.getElementById('importStatus').innerHTML =
-        `<div style="color:#c0392b;font-size:12px;margin-bottom:12px;">JSONの読み込みに失敗しました: ${err.message}</div>`;
-    }
-  };
-  reader.readAsText(file);
-}
-
-function importEstimateJSON(json) {
-  const result = json.estimate_result;
-  if (!result) { alert('estimate_result が見つかりません'); return; }
-
-  // Map line_items from estimates (manufacturing)
-  const estimates = result.estimates || [];
-  const parts = result.estimate_parts || [];
-
-  // Clear existing items (except hardware which comes from model)
-  bomData.forEach(cat => {
-    if (cat.cat !== '金物') cat.items = [];
-  });
-
-  // Helper to find or create a BOM category
-  function getOrCreateCat(catName) {
-    let cat = bomData.find(c => c.cat === catName);
-    if (!cat) {
-      cat = { cat: catName, items: [] };
-      // Insert before 製作管理費
-      const mgmtIdx = bomData.findIndex(c => c.cat === '製作管理費');
-      if (mgmtIdx >= 0) bomData.splice(mgmtIdx, 0, cat);
-      else bomData.push(cat);
-    }
-    return cat;
-  }
-
-  // Process manufacturing line_items
-  estimates.forEach(est => {
-    (est.line_items || []).forEach(li => {
-      const item = {
-        name: li.item_name,
-        cost: Math.round(li.cost_unit_price || li.unit_price || 0),
-        qty: li.quantity || 0,
-        unit: li.unit || '式',
-        price: Math.round(li.cost_amount || li.amount || 0),
-        url: '',
-        ordered: false,
-        _source: 'estimate',
-        _spec: li.specification || '',
-        _estimateCost: Math.round(li.cost_unit_price || li.unit_price || 0),
-        _notes: li.notes || '',
-        _processName: li.process_name || null
-      };
-
-      // Route to correct BOM category
-      if (li.item_name.startsWith('金物:')) {
-        // Try to match with hardwareCatalog
-        const hwName = li.item_name.replace('金物: ', '').replace('金物:', '');
-        const matched = hardwareCatalog.find(h =>
-          h.name.includes(hwName) || hwName.includes(h.name.substring(0,4))
-        );
-        if (matched) {
-          // Store estimate cost for diff display, actual cost from catalog
-          const inst = drawingMeta.hardware_instances.find(i => i.block_id === matched.id);
-          if (inst) {
-            // Will be handled by buildHardwareItems, just store estimate ref
-            if (!matched._estimateCost) matched._estimateCost = item.cost;
-          }
-        } else {
-          getOrCreateCat('金物').items.push(item);
-        }
-      } else if (li.category === '材料費' && li.item_name === '塗料') {
-        getOrCreateCat('塗料').items.push(item);
-      } else if (li.category === '材料費') {
-        getOrCreateCat('家具').items.push(item);
-      } else if (li.category === '加工費') {
-        if (li.process_name === 'shopbot' || li.process_name === 'biesse' || li.process_name === 'cam_data') {
-          getOrCreateCat('社内工数 — 特殊業務委託費').items.push(item);
-        } else if (li.process_name === 'packing') {
-          getOrCreateCat('輸送費').items.push(item);
-        } else {
-          getOrCreateCat('社内工数 — 一般人件費').items.push(item);
-        }
-      }
-    });
-  });
-
-  // Process estimate_parts (design, production_design, installation)
-  parts.forEach(part => {
-    if (!part.enabled) return;
-    (part.line_items || []).forEach(li => {
-      const item = {
-        name: li.item_name,
-        cost: Math.round(li.cost_unit_price || li.unit_price || 0),
-        qty: li.quantity || 0,
-        unit: li.unit || '式',
-        price: Math.round(li.cost_amount || li.amount || 0),
-        url: '',
-        ordered: false,
-        _source: 'estimate',
-        _spec: li.specification || '',
-        _estimateCost: Math.round(li.cost_unit_price || li.unit_price || 0),
-        _notes: li.notes || ''
-      };
-
-      if (part.part_type === 'design' || part.part_type === 'production_design') {
-        getOrCreateCat(part.part_display_name + '費').items.push(item);
-      } else if (part.part_type === 'installation') {
-        if (li.item_name.includes('車両') || li.item_name.includes('配送')) {
-          getOrCreateCat('輸送費').items.push(item);
-        } else {
-          getOrCreateCat('製作及び施工管理費').items.push(item);
-        }
-      }
-    });
-  });
-
-  // Update hardware items with estimate diffs
-  buildHardwareItems();
-  const hwCat = bomData.find(c => c.cat === '金物');
-  if (hwCat) {
-    hwCat.items.forEach(item => {
-      if (item._hwId) {
-        const hw = hardwareCatalog.find(h => h.id === item._hwId);
-        if (hw && hw._estimateCost) {
-          item._estimateCost = hw._estimateCost;
-          item._source = 'auto';
-        }
-      }
-    });
-  }
-
-  // Update project name if available
-  if (result.project && result.project.project_name) {
-    drawingMeta.project = result.project.project_name;
-  }
-
-  // Management fee
-  if (result.management_fee) {
-    const mgmt = getOrCreateCat('製作管理費');
-    if (mgmt.items.length === 0 || mgmt.items[0]._source !== 'estimate') {
-      mgmt.items = [{
-        name: '製作管理費', cost: Math.round(result.management_fee), qty: 1,
-        unit: '式', price: Math.round(result.management_fee), url: '', ordered: false,
-        _source: 'estimate', _spec: 'AUTOESTIMATOR算出'
-      }];
-    }
-  }
-
-  // Show status
-  const totalItems = bomData.reduce((s, c) => s + c.items.length, 0);
-  document.getElementById('importStatus').innerHTML =
-    `<div style="background:var(--accent-green-light);color:var(--accent-green);padding:10px 16px;border-radius:8px;font-size:12px;margin-bottom:16px;font-weight:500;">
-      AUTOESTIMATOR からインポート完了 — ${totalItems}項目を読み込みました
-      ${json.exported_at ? ` (${json.exported_at.slice(0,10)})` : ''}
-    </div>`;
-
-  renderBOM();
-  renderCatalog();
-}
-
-function exportEstimateJSON() {
-  buildHardwareItems();
-  const exportData = {
-    version: "1.0",
-    exported_at: new Date().toISOString(),
-    source: "fixture-drawing-previewer",
-    project: drawingMeta.project,
-    budget: parseInt(document.getElementById('bomBudget').value) || 0,
-    categories: bomData.map(cat => ({
-      cat: cat.cat,
-      items: cat.items.map(item => ({
-        name: item.name,
-        cost: item.cost,
-        qty: item.qty,
-        unit: item.unit,
-        price: item.price,
-        url: item.url || '',
-        ordered: item.ordered || false,
-        source: item._source || 'manual',
-        spec: item._spec || '',
-        estimate_cost: item._estimateCost || null
-      }))
-    })),
-    hardware_catalog: hardwareCatalog.filter(h => h.in_catalog !== false).map(h => ({
-      id: h.id, name: h.name, product_code: h.product_code,
-      maker: h.maker, price: h.price, category: h.category
-    })),
-    summary: {
-      total_cost: bomData.reduce((s, c) => s + c.items.reduce((s2, i) => s2 + (i.cost * i.qty), 0), 0),
-      budget: parseInt(document.getElementById('bomBudget').value) || 0
-    }
-  };
-
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `見積_${drawingMeta.project}_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-}
-
-// ═══════════════════════════════════════════
-//  KNOWLEDGE DATA & RENDER
-// ═══════════════════════════════════════════
-
-const knowledgeData = [
-  {id:"K001",type:"spec",title:"曲面壁面什器の方針",content:"画像の部分を作る材料はカウントしてない。シナの曲げベニヤで曲面は作って、下地の部材を追加する方針。",posted_by:"金子俊耶",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-04-01",slack_url:""},
-  {id:"K002",type:"progress",title:"華厳工場搬入ルート確認",content:"華厳工場搬入ルート。トラックも入れるが、私有地なので要確認。",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-25",slack_url:""},
-  {id:"K003",type:"spec",title:"6月19日に納品完了、16日あたりに現場開始",content:"6月19日に納品完了。16日あたりに現場開始。連休前に契約できるように見積もり。",posted_by:"金子俊耶",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-26",slack_url:""},
-  {id:"K004",type:"spec",title:"Bach様からの棚仕様要望",content:"カーブをもう少しゆるやかに調整可能か。中板仕切りのピッチが狭い→最低350〜380mmあると書籍やディスプレイ使いやすい。華厳工場の上段奥行き250mmだと単行本サイズ程度まで。",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-03-12",slack_url:""},
-  {id:"K005",type:"progress",title:"シナ合板のウォルナット塗装サンプル依頼",content:"シナ合板のウォルナットの塗装サンプル欲しいと言われていて、海老名にあまりの塗料あるかな？",posted_by:"黒部駿人",channel:"#1141_人の森",channel_id:"C0AFAFBC8AH",message_ts:"",date:"2026-04-02",slack_url:""}
-];
-
-const KNOWLEDGE_TYPES = {
-  progress: { label: "経過メモ", icon: "📝", class: "progress" },
-  trouble: { label: "トラブル", icon: "⚠️", class: "trouble" },
-  howto: { label: "ハウツー", icon: "💡", class: "howto" },
-  spec: { label: "仕様決定", icon: "🚩", class: "spec" }
-};
-
-let activeKnowledgeFilter = "all";
-
-function renderKnowledge() {
-  const list = document.getElementById('knowledgeList');
-  const search = document.getElementById('knowledgeSearch').value.toLowerCase();
-
-  // Render filter chips
-  const counts = { all: knowledgeData.length };
-  Object.keys(KNOWLEDGE_TYPES).forEach(t => { counts[t] = knowledgeData.filter(k => k.type === t).length; });
-
-  document.getElementById('knowledgeFilters').innerHTML =
-    `<button class="filter-chip ${activeKnowledgeFilter==='all'?'active':''}" onclick="activeKnowledgeFilter='all';renderKnowledge()">すべて (${counts.all})</button>` +
-    Object.entries(KNOWLEDGE_TYPES).map(([key, val]) =>
-      `<button class="filter-chip ${activeKnowledgeFilter===key?'active':''}" onclick="activeKnowledgeFilter='${key}';renderKnowledge()">${val.icon} ${val.label} (${counts[key]||0})</button>`
+    // Description
+    document.getElementById('detail-description').textContent = project.description || '（説明はまだ登録されていません）';
+
+    // Status badge
+    const statusEl = document.getElementById('spec-status');
+    statusEl.textContent = getStatusLabel(project.status);
+    statusEl.className = 'badge badge-' + (project.status || '');
+
+    // Spec card
+    const specs = [
+      ['案件番号', project.pid],
+      ['クライアント', project.client],
+      ['カテゴリ', project.category],
+      ['所在地', project.location],
+      ['構造', project.structure],
+      ['面積', project.area_sqm ? project.area_sqm + ' m²' : null],
+      ['竣工', project.completion_date],
+      ['最終更新', project.updated_at]
+    ].filter(([,v]) => v);
+
+    document.getElementById('spec-body').innerHTML = specs.map(([label, val]) =>
+      `<div class="spec-row">
+        <span class="spec-label">${esc(label)}</span>
+        <span class="spec-value">${esc(val)}</span>
+      </div>`
     ).join('');
 
-  // Filter
-  const filtered = knowledgeData.filter(k => {
-    if (activeKnowledgeFilter !== 'all' && k.type !== activeKnowledgeFilter) return false;
-    if (search && !(k.title + k.content + k.posted_by + k.channel).toLowerCase().includes(search)) return false;
-    return true;
-  }).sort((a, b) => b.date.localeCompare(a.date));
+    // Team
+    document.getElementById('detail-team').innerHTML = (project.team || []).map(m =>
+      `<div class="team-member">
+        <div class="team-avatar">${esc(m.name[0])}</div>
+        <span class="team-name">${esc(m.name)}</span>
+        <span class="team-role">${esc(m.role)}</span>
+      </div>`
+    ).join('');
 
-  // Render cards
-  list.innerHTML = filtered.map(k => {
-    const t = KNOWLEDGE_TYPES[k.type] || KNOWLEDGE_TYPES.progress;
-    return `
-      <div class="knowledge-card">
-        <div class="knowledge-card-header">
-          <div class="k-type">
-            <span class="k-badge ${t.class}">${t.icon} ${t.label}</span>
-            <span style="font-weight:400;color:var(--text-primary)">${k.title}</span>
-          </div>
-          <div class="k-date">${k.date}</div>
-        </div>
-        <div class="knowledge-card-body">
-          <div class="k-content">${k.content}</div>
-        </div>
-        <div class="knowledge-card-footer">
-          <span>${k.posted_by}</span>
-          <span>${k.channel}</span>
-          ${k.slack_url ? `<a href="${k.slack_url}" target="_blank">Slackで見る ↗</a>` : ''}
-        </div>
-      </div>
-    `;
-  }).join('') || '<div style="text-align:center;color:var(--text-tertiary);padding:40px;">該当するナレッジがありません</div>';
+    // Tags
+    document.getElementById('detail-tags').innerHTML = (project.tags || []).map(t =>
+      `<span class="tag">${esc(t)}</span>`
+    ).join('');
 
-  document.getElementById('knowledgeCount').textContent = knowledgeData.length;
+    // Photos (hero_photos + gallery_photos)
+    const allPhotos = [
+      ...(project.hero_photos || []),
+      ...(project.gallery_photos || [])
+    ];
+    if (allPhotos.length > 0) {
+      document.getElementById('section-photos').style.display = '';
+      document.getElementById('detail-gallery').innerHTML = allPhotos.map(src =>
+        `<div class="detail-gallery-item" onclick="openLightbox('${BASE}${src}')">
+          <img src="${BASE}${src}" alt="" loading="lazy">
+        </div>`
+      ).join('');
+    }
+
+    // Furniture
+    const furnitureItems = (furnData.furniture || []).filter(f =>
+      (project.furniture_ids || []).includes(f.id)
+    );
+    if (furnitureItems.length > 0) {
+      document.getElementById('section-furniture').style.display = '';
+      document.getElementById('detail-furniture').innerHTML = furnitureItems.map(f => {
+        const thumb = (f.hero_photos && f.hero_photos[0])
+          ? `<img src="${BASE}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
+          : `<div style="font-size:28px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
+        return `
+          <a href="${BASE}furniture/${f.id}/index.html" class="furniture-link-card">
+            <div class="flc-thumb">${thumb}</div>
+            <div class="flc-body">
+              <h4>${esc(f.name)}</h4>
+              <p>${esc(f.dimensions || '')} ${f.specs?.material ? '/ ' + esc(f.specs.material) : ''}</p>
+            </div>
+          </a>`;
+      }).join('');
+    }
+
+    // Materials
+    const materialItems = (matData.materials || []).filter(m =>
+      (project.material_ids || []).includes(m.id)
+    );
+    if (materialItems.length > 0) {
+      document.getElementById('section-materials').style.display = '';
+      document.getElementById('detail-materials').querySelector('tbody').innerHTML =
+        materialItems.map(m => `
+          <tr>
+            <td class="mat-name">${esc(m.name)}</td>
+            <td>${esc(m.product_code || '-')}</td>
+            <td>${esc(m.maker || '-')}</td>
+            <td class="mat-price">${formatPrice(m.price)}</td>
+            <td>${m.product_url ? `<a href="${m.product_url}" target="_blank" rel="noopener">詳細 &nearr;</a>` : ''}</td>
+          </tr>`
+        ).join('');
+    }
+
+    // Knowledge
+    const knowledgeItems = (knowData.entries || []).filter(k =>
+      k.project_id === projectId || k.linked_id === projectId
+    );
+    if (knowledgeItems.length > 0) {
+      document.getElementById('section-knowledge').style.display = '';
+      document.getElementById('detail-knowledge').innerHTML = knowledgeItems.map(k => {
+        const info = getKnowledgeTypeInfo(k.type);
+        return `
+          <div class="knowledge-entry">
+            <div class="knowledge-entry__header">
+              <span class="badge badge--${k.type}">${info.label}</span>
+              <span class="knowledge-entry__date">${formatDate(k.date)}</span>
+            </div>
+            <h4 style="font-size:14px;margin:4px 0">${esc(k.title)}</h4>
+            <p class="knowledge-entry__body">${esc(k.content || '')}</p>
+          </div>`;
+      }).join('');
+    }
+
+  } catch (e) {
+    console.error('Detail init error:', e);
+    document.querySelector('.detail-container').innerHTML =
+      '<p style="padding:40px;color:red">読み込みエラー: ' + e.message + '</p>';
+  }
 }
 
-// ═══════════════════════════════════════════
-//  INIT
-// ═══════════════════════════════════════════
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCandidates();
-  renderCatalog();
-  renderBOM();
-  renderKnowledge();
-  document.getElementById('hwCount').textContent = hardwareCatalog.length;
+// Lightbox
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('is-open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('is-open');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
 });
+
+document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>
