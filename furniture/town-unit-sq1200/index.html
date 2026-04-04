@@ -297,11 +297,21 @@ async function init() {
         `).join('') + '</div>';
     }
 
-    // --- Knowledge panel (カード化) ---
+    // --- Knowledge panel (カード化 + 画像 + Slackリンク) ---
     if (prodKnowledge.length) {
       document.getElementById('panel-knowledge').innerHTML =
         '<div class="hw-card-grid">' + prodKnowledge.map(k => {
           const info = getKnowledgeTypeInfo(k.type);
+          const imgs = k.images || [];
+          const imgHtml = imgs.length
+            ? `<div class="know-images">${imgs.map(img =>
+                `<div class="know-img-thumb"><div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--color-tertiary)">DL待</div></div>`
+              ).join('')}</div>
+              <div class="know-img-pending">${imgs.length}枚の画像（トークン取得後にDL）</div>`
+            : '';
+          const slackHtml = k.slack_url
+            ? `<a href="${k.slack_url}" target="_blank" class="know-slack-link">\u{1F4AC} Slackで見る</a>`
+            : '';
           return `<div class="know-card">
             <div class="know-card-header">
               <span class="badge badge--${k.type}">${info.label}</span>
@@ -309,7 +319,8 @@ async function init() {
             </div>
             <h4>${esc(k.title)}</h4>
             <p>${esc(k.content || '')}</p>
-            <div class="know-author">${esc(k.posted_by || '')}</div>
+            ${imgHtml}
+            <div class="know-author">${esc(k.posted_by || '')} ${slackHtml}</div>
           </div>`;
         }).join('') + '</div>';
     }

@@ -30,12 +30,6 @@
 
   <div class="detail-grid">
     <div class="detail-main">
-      <!-- 使用案件 -->
-      <div class="detail-section" id="section-projects" style="display:none">
-        <h2 class="detail-section-title">使用案件</h2>
-        <div class="detail-furniture-grid" id="hw-projects"></div>
-      </div>
-
       <!-- 使用furniture -->
       <div class="detail-section" id="section-furniture" style="display:none">
         <h2 class="detail-section-title">使用 VUILD Furniture</h2>
@@ -117,22 +111,6 @@ async function init() {
     document.getElementById('hw-spec').innerHTML = specs.map(([l,v]) =>
       `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
     ).join('');
-
-    // Projects using this material
-    const projects = (projData.projects || []).filter(p =>
-      (p.material_ids || []).includes(materialId));
-    if (projects.length) {
-      document.getElementById('section-projects').style.display = '';
-      document.getElementById('hw-projects').innerHTML = projects.map(p => {
-        const thumb = (p.hero_photos && p.hero_photos[0])
-          ? `<img src="${B}${p.hero_photos[0]}" alt="${esc(p.name)}" loading="lazy">`
-          : `<div style="font-size:18px;color:var(--color-tertiary)">${esc(p.pid)}</div>`;
-        return `<a href="${B}projects/${p.id}/index.html" class="furniture-link-card">
-          <div class="flc-thumb">${thumb}</div>
-          <div class="flc-body"><h4>${esc(p.name)}</h4><p>${esc(p.pid)} — ${esc(p.client)}</p></div>
-        </a>`;
-      }).join('');
-    }
 
     // Furniture using this material
     const furniture = (furnData.furniture || []).filter(f =>
