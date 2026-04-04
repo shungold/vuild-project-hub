@@ -2112,6 +2112,155 @@ ul, ol { list-style: none; }
   margin-left: 8px;
 }
 
+/* --- Image Management UI --- */
+.img-manage-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.img-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-edit-blue);
+  background: rgba(74,144,217,0.08);
+  border: 1px solid rgba(74,144,217,0.2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background var(--ease);
+}
+
+.img-add-btn:hover { background: rgba(74,144,217,0.15); }
+
+.img-delete-btn {
+  position: absolute;
+  top: 4px; right: 4px;
+  width: 20px; height: 20px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.detail-photo-thumb:hover .img-delete-btn,
+.detail-gallery-item:hover .img-delete-btn {
+  display: flex;
+}
+
+/* --- Pin Editor --- */
+.pin-editor-mode .pin-photo-container {
+  cursor: crosshair;
+}
+
+.pin-editor-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(74,144,217,0.06);
+  border: 1px solid rgba(74,144,217,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.pin-editor-bar .pin-edit-toggle {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  transition: all var(--ease);
+}
+
+.pin-editor-bar .pin-edit-toggle.is-active {
+  background: var(--color-text);
+  color: #fff;
+  border-color: var(--color-text);
+}
+
+/* --- Candidate Action Buttons --- */
+.cand-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.cand-btn {
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all var(--ease);
+}
+
+.cand-btn-adopt {
+  color: var(--color-accent-green);
+  border-color: rgba(45,90,39,0.3);
+  background: rgba(45,90,39,0.06);
+}
+
+.cand-btn-adopt:hover {
+  background: var(--color-accent-green);
+  color: #fff;
+}
+
+.cand-btn-dismiss {
+  color: #b44d1e;
+  border-color: rgba(180,77,30,0.3);
+  background: rgba(180,77,30,0.06);
+}
+
+.cand-btn-dismiss:hover {
+  background: #b44d1e;
+  color: #fff;
+}
+
+/* --- Sync Status Bar --- */
+.sync-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 8px 24px;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 200;
+  transform: translateY(100%);
+  transition: transform 0.3s;
+}
+
+.sync-bar.is-visible {
+  transform: translateY(0);
+}
+
+.sync-bar button {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #fff;
+  color: var(--color-text);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 /* --- Card cost display --- */
 .card-cost {
   font-size: 12px;

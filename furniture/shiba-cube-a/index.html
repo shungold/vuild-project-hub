@@ -182,22 +182,26 @@ async function init() {
     document.getElementById('furn-sub').textContent =
       [item.series, item.category, item.name_en].filter(Boolean).join(' — ');
 
-    // --- Photos with pins ---
+    // --- Photos with pins + image management ---
     _furnMatData = matData;
     _furnPhotoPins = item.photo_pins || [];
     const photos = [...(item.hero_photos || []), ...(item.gallery_photos || [])];
+    document.getElementById('photo-area').style.display = '';
     if (photos.length) {
-      document.getElementById('photo-area').style.display = '';
       setMainPhoto(B + photos[0], 0);
-      if (photos.length > 1) {
-        document.getElementById('photo-thumbs').innerHTML = photos.map((src, i) =>
-          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}"
-               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
-            <img src="${B}${src}" alt="" loading="lazy">
-          </div>`
-        ).join('');
-      }
     }
+    // Thumbs + add button
+    let thumbsHtml = photos.map((src, i) =>
+      `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" style="position:relative"
+           data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
+        <img src="${B}${src}" alt="" loading="lazy">
+        <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('furniture','${furnitureId}','${src}');this.parentElement.remove();">&times;</div>
+      </div>`
+    ).join('');
+    thumbsHtml += `<div class="detail-photo-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;border:1px dashed var(--color-border)" onclick="WebEditor.addImageUI('furniture','${furnitureId}',()=>location.reload())">
+      <span style="font-size:20px;color:var(--color-tertiary)">+</span>
+    </div>`;
+    document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
 
     // --- Description ---
     document.getElementById('furn-description').textContent =
@@ -346,6 +350,10 @@ async function init() {
               <div class="hw-meta">${esc(c.maker || '')} / ${esc(c.product_code || '')}</div>
               <div class="hw-price">${formatPrice(c.price)}</div>
               <div class="hw-meta">${esc(c.posted_by || '')} ${c.posted_at || ''}</div>
+              <div class="cand-actions">
+                <button class="cand-btn cand-btn-adopt" onclick="event.preventDefault();WebEditor.setCandidateStatus('${c.id}','adopted','${esc(c.name)}');this.closest('.hw-card').style.borderLeftColor='var(--color-accent-green)';this.closest('.cand-actions').innerHTML='<span style=\\'color:var(--color-accent-green);font-size:10px\\'>採用済み（次回同期で反映）</span>';">採用</button>
+                <button class="cand-btn cand-btn-dismiss" onclick="event.preventDefault();WebEditor.setCandidateStatus('${c.id}','dismissed','${esc(c.name)}');this.closest('.hw-card').style.opacity='0.4';this.closest('.cand-actions').innerHTML='<span style=\\'color:var(--color-tertiary);font-size:10px\\'>不採用（次回同期で反映）</span>';">不採用</button>
+              </div>
             </div>
           </a>
         `).join('') + '</div>';

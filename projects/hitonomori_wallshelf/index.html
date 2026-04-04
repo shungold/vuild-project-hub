@@ -216,18 +216,21 @@ async function init() {
     // --- Photos with pins ---
     _photoPins = project.photo_pins || [];
     const photos = [...(project.hero_photos || []), ...(project.gallery_photos || [])];
+    document.getElementById('photo-area').style.display = '';
     if (photos.length) {
-      document.getElementById('photo-area').style.display = '';
       setMainPhoto(B + photos[0], 0);
-      if (photos.length > 1) {
-        document.getElementById('photo-thumbs').innerHTML = photos.map((src, i) =>
-          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}"
-               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
-            <img src="${B}${src}" alt="" loading="lazy">
-          </div>`
-        ).join('');
-      }
     }
+    let thumbsHtml = photos.map((src, i) =>
+      `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" style="position:relative"
+           data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
+        <img src="${B}${src}" alt="" loading="lazy">
+        <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('project','${projectId}','${src}');this.parentElement.remove();">&times;</div>
+      </div>`
+    ).join('');
+    thumbsHtml += `<div class="detail-photo-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;border:1px dashed var(--color-border)" onclick="WebEditor.addImageUI('project','${projectId}',()=>location.reload())">
+      <span style="font-size:20px;color:var(--color-tertiary)">+</span>
+    </div>`;
+    document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
 
     // --- Description ---
     document.getElementById('detail-description').textContent =

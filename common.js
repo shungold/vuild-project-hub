@@ -335,7 +335,64 @@ function renderBackButton() {
 }
 
 /* ============================================================
-   5. 3D Model Upload/Download Manager
+   5. GDrive Storage Manager
+   ============================================================ */
+const GDriveManager = {
+  // GDriveのベースパス（ローカルマウント）
+  LOCAL_BASE: 'G:/マイドライブ/Claude_Projects/VUILD_Project_Hub/',
+
+  // GDrive Web共有リンクのベース（リンク共有設定後にIDベースで生成）
+  // フォーマット: https://drive.google.com/file/d/{fileId}/view
+  // 画像直リンク: https://drive.google.com/uc?id={fileId}
+
+  /**
+   * エンティティのGDriveフォルダパスを返す
+   */
+  getFolderPath(entityType, entityId) {
+    const typeMap = { project: 'projects', furniture: 'furniture', material: 'materials' };
+    return `${typeMap[entityType] || entityType}/${entityId}/`;
+  },
+
+  /**
+   * アップロード予約をlocalStorageに記録
+   * （実際のファイルコピーは次回Claudeセッションで実行）
+   */
+  registerUpload(entityType, entityId, category, fileName, fileSize) {
+    const key = 'vuild_gdrive_uploads';
+    let uploads = [];
+    try { uploads = JSON.parse(localStorage.getItem(key)) || []; } catch {}
+    uploads.push({
+      entityType,
+      entityId,
+      category, // 'photos' | 'models' | 'docs'
+      fileName,
+      fileSize,
+      timestamp: new Date().toISOString(),
+      synced: false
+    });
+    localStorage.setItem(key, JSON.stringify(uploads));
+  },
+
+  /**
+   * 未同期のアップロード一覧を取得
+   */
+  getPendingUploads() {
+    try {
+      return (JSON.parse(localStorage.getItem('vuild_gdrive_uploads')) || [])
+        .filter(u => !u.synced);
+    } catch { return []; }
+  },
+
+  /**
+   * 全アップロードをクリア
+   */
+  clearUploads() {
+    localStorage.removeItem('vuild_gdrive_uploads');
+  }
+};
+
+/* ============================================================
+   6. 3D Model Upload/Download Manager
    ============================================================ */
 const ModelManager = {
   STORAGE_PREFIX: 'vuild_models_',
@@ -419,8 +476,141 @@ const ModelManager = {
 };
 
 /* ============================================================
-   初期化: ページ読み込み時にバッジを更新
+   7. Web Editor — 画像管理 + ピン編集 + 候補ステータス + 同期
+   ============================================================ */
+const WebEditor = {
+  CHANGES_KEY: 'vuild_pending_changes',
+
+  /** 変更を記録 */
+  addChange(type, data) {
+    let changes = [];
+    try { changes = JSON.parse(localStorage.getItem(this.CHANGES_KEY)) || []; } catch {}
+    changes.push({ type, data, timestamp: new Date().toISOString() });
+    localStorage.setItem(this.CHANGES_KEY, JSON.stringify(changes));
+    this.updateSyncBar();
+  },
+
+  /** 未同期の変更一覧 */
+  getPendingChanges() {
+    try { return JSON.parse(localStorage.getItem(this.CHANGES_KEY)) || []; } catch { return []; }
+  },
+
+  /** 変更をクリア */
+  clearChanges() {
+    localStorage.removeItem(this.CHANGES_KEY);
+    this.updateSyncBar();
+  },
+
+  /** 同期バーの表示/非表示 */
+  updateSyncBar() {
+    let bar = document.getElementById('sync-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.id = 'sync-bar';
+      bar.className = 'sync-bar';
+      document.body.appendChild(bar);
+    }
+    const changes = this.getPendingChanges();
+    const uploads = GDriveManager.getPendingUploads();
+    const total = changes.length + uploads.length;
+    if (total > 0) {
+      bar.classList.add('is-visible');
+      bar.innerHTML = `<span>${total}件の未同期変更</span>
+        <div style="display:flex;gap:8px">
+          <button onclick="WebEditor.exportChanges()">エクスポート</button>
+          <button onclick="WebEditor.clearAll()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.3)">クリア</button>
+        </div>`;
+    } else {
+      bar.classList.remove('is-visible');
+    }
+  },
+
+  /** 変更をJSONでエクスポート（Claudeに渡す用） */
+  exportChanges() {
+    const data = {
+      changes: this.getPendingChanges(),
+      uploads: GDriveManager.getPendingUploads(),
+      exported_at: new Date().toISOString()
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vuild_sync_' + new Date().toISOString().split('T')[0] + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  },
+
+  clearAll() {
+    this.clearChanges();
+    GDriveManager.clearUploads();
+    this.updateSyncBar();
+  },
+
+  /** 画像追加UI — ファイル選択 → base64プレビュー + GDrive登録予約 */
+  addImageUI(entityType, entityId, callback) {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.multiple = true;
+    input.onchange = e => {
+      for (const file of e.target.files) {
+        // GDrive登録予約
+        GDriveManager.registerUpload(entityType, entityId, 'photos', file.name, file.size);
+        // base64プレビュー用にlocalStorageに一時保存
+        const reader = new FileReader();
+        reader.onload = ev => {
+          // Resize for preview (max 800px)
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const max = 800;
+            let w = img.width, h = img.height;
+            if (w > max) { h = h * max / w; w = max; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            const preview = canvas.toDataURL('image/jpeg', 0.7);
+            WebEditor.addChange('add_image', {
+              entityType, entityId, fileName: file.name, preview
+            });
+            if (callback) callback();
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+    input.click();
+  },
+
+  /** 画像削除を記録 */
+  removeImage(entityType, entityId, imagePath) {
+    this.addChange('remove_image', { entityType, entityId, imagePath });
+  },
+
+  /** 候補ステータス変更 */
+  setCandidateStatus(candidateId, newStatus, candidateName) {
+    this.addChange('candidate_status', { candidateId, newStatus, candidateName });
+    this.updateSyncBar();
+  },
+
+  /** ピン追加を記録 */
+  addPin(entityType, entityId, photoIndex, x, y, linkedType, linkedId, label) {
+    this.addChange('add_pin', {
+      entityType, entityId, photoIndex, x, y, linkedType, linkedId, label
+    });
+  },
+
+  /** ピン削除を記録 */
+  removePin(entityType, entityId, photoIndex, pinIndex) {
+    this.addChange('remove_pin', { entityType, entityId, photoIndex, pinIndex });
+  }
+};
+
+/* ============================================================
+   初期化: ページ読み込み時にバッジ + 同期バーを更新
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
   EditManager.updateBadge();
+  WebEditor.updateSyncBar();
 });
