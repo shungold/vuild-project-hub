@@ -1,0 +1,188 @@
+{
+  "version": "2.0",
+  "last_updated": "2026-04-04T12:00:00",
+  "furniture": [
+    {
+      "id": "town-unit",
+      "name": "タウンユニット",
+      "name_en": "Town Unit",
+      "series": "タウンユニットシリーズ",
+      "description": "角型・カーブ型の組合せ屋外ユニット家具。広場やイベントスペースでベンチ・テーブルとして使用。組立式でフォークリフト搬入可。",
+      "hero_photos": [
+        "photos/furniture/town-unit/rakuten.jpg",
+        "photos/furniture/town-unit/nagoya.jpg",
+        "photos/furniture/town-unit/vpl.jpg"
+      ],
+      "variants": [
+        {"id": "town-unit-sq900", "name": "角型 900", "dimensions": "W900×D900×H450", "weight_kg": 40},
+        {"id": "town-unit-sq1200", "name": "角型 1200", "dimensions": "W1200×D900×H450", "weight_kg": 55},
+        {"id": "town-unit-sq1800", "name": "角型 1800", "dimensions": "W1800×D900×H450", "weight_kg": 80},
+        {"id": "town-unit-curve", "name": "カーブ型", "dimensions": "R1200×H450", "weight_kg": 65}
+      ],
+      "specs": {
+        "material": "構造用合板 24mm",
+        "finish": "屋外用ウレタン塗装",
+        "note": "組立式・フォークリフト搬入可"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "楽天 Optimism 2023", "project_id": null, "type": "レンタル", "location": "横浜みなとみらい", "date": "2023-07", "photo": "photos/furniture/town-unit/rakuten.jpg"},
+        {"project_name": "楽天 Optimism 2024", "project_id": null, "type": "レンタル", "location": "横浜みなとみらい", "date": "2024-08", "photo": "photos/furniture/town-unit/rakuten.jpg"},
+        {"project_name": "名古屋 久屋大通", "project_id": null, "type": "制作+設置", "location": "名古屋市", "date": "2023-09", "photo": "photos/furniture/town-unit/nagoya.jpg"},
+        {"project_name": "VUILD Place Lab", "project_id": null, "type": "設置", "location": "秋葉原", "date": "2023", "photo": "photos/furniture/town-unit/vpl.jpg"},
+        {"project_name": "UR赤羽台", "project_id": null, "type": "レンタル", "location": "東京都北区", "date": "2024", "photo": "photos/furniture/town-unit/vpl.jpg"},
+        {"project_name": "横浜ネイチャーウィーク 2025", "project_id": null, "type": "レンタル", "location": "横浜", "date": "2025-05", "photo": "photos/furniture/yokohama-nw/main.jpg"}
+      ],
+      "cost": {
+        "rental_price": "要相談",
+        "production_price": null,
+        "note": "レンタル実績: ¥39,000〜¥270,000（台数・期間による）"
+      },
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["屋外","ベンチ","テーブル","イベント","レンタル"],
+      "edited": false
+    },
+    {
+      "id": "shiba-cube",
+      "name": "芝キューブ",
+      "name_en": "Shiba Cube",
+      "series": "芝キューブシリーズ",
+      "description": "天面に人工芝を張ったベンチ/テーブルユニット。7種のバリエーションで自由にレイアウト可能。",
+      "hero_photos": [
+        "photos/furniture/shiba-cube/main.jpg",
+        "photos/furniture/shiba-cube/detail.jpg"
+      ],
+      "variants": [
+        {"id": "shiba-a", "name": "Type A (600)", "dimensions": "W600×D600×H450", "weight_kg": 25},
+        {"id": "shiba-b", "name": "Type B (900)", "dimensions": "W900×D600×H450", "weight_kg": 30},
+        {"id": "shiba-c", "name": "Type C (1200)", "dimensions": "W1200×D600×H450", "weight_kg": 38},
+        {"id": "shiba-d", "name": "Type D (1500)", "dimensions": "W1500×D600×H450", "weight_kg": 45},
+        {"id": "shiba-e", "name": "Type E (L型)", "dimensions": "L型", "weight_kg": 40},
+        {"id": "shiba-f", "name": "Type F (コーナー)", "dimensions": "コーナー型", "weight_kg": 35},
+        {"id": "shiba-g", "name": "Type G (ハイ)", "dimensions": "H750", "weight_kg": 50}
+      ],
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": "7種のバリエーションで自由にレイアウト"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "PAN 門真新棟", "project_id": "pan_kitchen", "type": "制作", "location": "大阪府門真市", "date": "2025-12", "photo": "photos/furniture/shiba-cube/main.jpg"},
+        {"project_name": "丸の内ストリートパーク", "project_id": null, "type": "レンタル", "location": "東京都千代田区", "date": "2025", "photo": "photos/furniture/shiba-cube/detail.jpg"}
+      ],
+      "cost": {
+        "rental_price": null,
+        "production_price": 1370000,
+        "note": "A-G全体で¥1,370,000（税別）"
+      },
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["屋外","ベンチ","人工芝","イベント"],
+      "edited": false
+    },
+    {
+      "id": "namunami-bench",
+      "name": "ナミナミベンチ",
+      "name_en": "Naminami Bench",
+      "series": "ナミナミベンチシリーズ",
+      "description": "CNC加工による有機的な曲面ベンチ。5軸CNC加工で木材を積層し、流れるような形状を実現。",
+      "hero_photos": [
+        "photos/furniture/namunami-bench/onomichi.jpg",
+        "photos/furniture/namunami-bench/main.jpg"
+      ],
+      "variants": [
+        {"id": "namunami-std", "name": "標準型", "dimensions": "W1800×D500×H450", "weight_kg": 30},
+        {"id": "namunami-long", "name": "ロング型", "dimensions": "W2400×D500×H450", "weight_kg": 45}
+      ],
+      "specs": {
+        "material": "構造用合板 積層",
+        "finish": "ウレタン塗装",
+        "note": "5軸CNC加工による曲面形状"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "尾道倶楽部 FFE", "project_id": null, "type": "制作", "location": "広島県尾道市", "date": "2025-01", "photo": "photos/furniture/namunami-bench/onomichi.jpg"}
+      ],
+      "cost": {
+        "rental_price": null,
+        "production_price": null,
+        "note": "原価合計: 加工¥573,060 + 塗装¥66,660 + 工具¥25,410 + 材料¥310,930 + 金物¥65,300 + 運送¥26,300"
+      },
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["ベンチ","CNC","曲面","5軸"],
+      "edited": false
+    },
+    {
+      "id": "seesaw-bench",
+      "name": "シーソーベンチ",
+      "name_en": "Seesaw Bench",
+      "series": null,
+      "description": "シーソー機構付き遊具ベンチ。座ると揺れる楽しいベンチ。",
+      "hero_photos": [],
+      "variants": [
+        {"id": "seesaw-std", "name": "標準型", "dimensions": null, "weight_kg": null}
+      ],
+      "specs": {
+        "material": "構造用合板",
+        "finish": "屋外用塗装",
+        "note": "遊べるベンチ"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "VUILD Place Lab", "project_id": null, "type": "制作", "location": "秋葉原", "date": "2023", "photo": null}
+      ],
+      "cost": {"rental_price": null, "production_price": null, "note": null},
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["ベンチ","遊具","屋外"],
+      "edited": false
+    },
+    {
+      "id": "pingpong-table",
+      "name": "卓球台",
+      "name_en": "Ping Pong Table",
+      "series": null,
+      "description": "CNC加工の木製卓球台。分解・組立可能。",
+      "hero_photos": [],
+      "variants": [
+        {"id": "pingpong-std", "name": "標準型", "dimensions": null, "weight_kg": null}
+      ],
+      "specs": {
+        "material": "構造用合板",
+        "finish": "ウレタン塗装",
+        "note": "分解・組立可能"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "VUILD Place Lab", "project_id": null, "type": "制作", "location": "秋葉原", "date": "2023", "photo": null}
+      ],
+      "cost": {"rental_price": null, "production_price": null, "note": null},
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["テーブル","遊具"],
+      "edited": false
+    },
+    {
+      "id": "denzai-stool",
+      "name": "電材スツール",
+      "name_en": "Denzai Stool",
+      "series": null,
+      "description": "電設資材（電線管・ジョイント）を構造に活用したスツール。",
+      "hero_photos": [],
+      "variants": [
+        {"id": "denzai-std", "name": "標準型", "dimensions": null, "weight_kg": null}
+      ],
+      "specs": {
+        "material": "電設資材 + 合板座面",
+        "finish": "素地",
+        "note": "電線管・ジョイントを構造に活用"
+      },
+      "hardware_ids": [],
+      "deployment_history": [
+        {"project_name": "VUILD Place Lab", "project_id": null, "type": "制作", "location": "秋葉原", "date": "2023", "photo": null}
+      ],
+      "cost": {"rental_price": null, "production_price": null, "note": null},
+      "documents": {"estimate_pdfs": [], "model_3dm": null},
+      "tags": ["スツール","電設資材"],
+      "edited": false
+    }
+  ]
+}

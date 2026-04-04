@@ -4,656 +4,265 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VUILD — Project Hub</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
-
-  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-  :root {
-    --bg: #fafaf8;
-    --surface: #ffffff;
-    --surface-2: #f5f4f0;
-    --text-primary: #111111;
-    --text-secondary: #666666;
-    --text-tertiary: #999999;
-    --border: #e8e6e1;
-    --border-light: #f0eee9;
-    --accent-green: #2d5a27;
-    --accent-green-light: #e8f2e6;
-    --accent-wood: #8b6914;
-    --accent-wood-light: #f5f0e0;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
-    --shadow-lg: 0 12px 40px rgba(0,0,0,0.1);
-    --radius: 8px;
-    --radius-lg: 16px;
-    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  body {
-    font-family: 'Inter', 'Noto Sans JP', -apple-system, sans-serif;
-    background: var(--bg); color: var(--text-primary);
-    line-height: 1.7; -webkit-font-smoothing: antialiased;
-  }
-
-  .global-header {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-light);
-  }
-  .header-inner {
-    max-width: 1440px; margin: 0 auto; padding: 0 48px;
-    height: 64px; display: flex; align-items: center;
-  }
-  .brand { display: flex; align-items: center; gap: 16px; }
-  .brand-logo { font-size: 11px; letter-spacing: 4px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; }
-  .brand-divider { width: 1px; height: 20px; background: var(--border); }
-  .brand-title { font-size: 15px; font-weight: 600; color: var(--text-primary); }
-
-  .nav-bar { background: var(--surface); border-bottom: 1px solid var(--border-light); }
-  .nav-inner { max-width: 1440px; margin: 0 auto; padding: 0 48px; display: flex; }
-  .nav-tab {
-    padding: 16px 20px; font-size: 13px; font-weight: 500; color: var(--text-tertiary);
-    cursor: pointer; border-bottom: 2px solid transparent; transition: var(--transition);
-    user-select: none;
-  }
-  .nav-tab:hover { color: var(--text-secondary); }
-  .nav-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
-  .nav-tab .count {
-    display: inline-block; background: var(--surface-2); font-size: 10px;
-    padding: 1px 6px; border-radius: 10px; margin-left: 6px; color: var(--text-tertiary);
-  }
-
-  .content-area { max-width: 1440px; margin: 0 auto; padding: 32px 48px 80px; }
-  .view { display: none; }
-  .view.active { display: block; }
-  .section-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
-  .section-desc { font-size: 13px; color: var(--text-tertiary); margin-bottom: 28px; }
-
-  /* === PROJECT CARDS === */
-  .project-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px;
-  }
-  .project-card {
-    background: var(--surface); border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
-    overflow: hidden; transition: var(--transition);
-    cursor: pointer; text-decoration: none; color: inherit; display: block;
-  }
-  .project-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
-  .project-card.disabled { opacity: 0.55; cursor: default; }
-  .project-card.disabled:hover { box-shadow: var(--shadow-sm); transform: none; }
-
-  .project-visual {
-    height: 180px; position: relative; overflow: hidden;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .project-visual svg { width: 100%; height: 100%; }
-  .project-badge {
-    position: absolute; top: 14px; left: 14px;
-    font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px;
-  }
-  .project-badge.active { background: var(--accent-green-light); color: var(--accent-green); }
-  .project-badge.completed { background: var(--surface-2); color: var(--text-tertiary); }
-  .project-badge.planning { background: #e3f2fd; color: #1565c0; }
-
-  .project-body { padding: 20px 24px; }
-  .project-body h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
-  .project-body .pid { font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px; }
-  .project-stats { display: flex; gap: 20px; }
-  .pstat .pval { font-size: 18px; font-weight: 700; }
-  .pstat .plabel { font-size: 10px; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; }
-
-  .project-footer {
-    padding: 12px 24px; border-top: 1px solid var(--border-light);
-    display: flex; align-items: center; justify-content: space-between;
-    font-size: 11px; color: var(--text-tertiary);
-  }
-  .avatars { display: flex; }
-  .avatar {
-    width: 24px; height: 24px; border-radius: 50%;
-    background: var(--surface-2); border: 2px solid var(--surface);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 9px; font-weight: 700; color: var(--text-secondary);
-    margin-left: -6px;
-  }
-  .avatar:first-child { margin-left: 0; }
-
-  /* === GLOBAL HARDWARE === */
-  .hw-search {
-    width: 100%; padding: 10px 18px; border: 1px solid var(--border);
-    border-radius: var(--radius); font-size: 13px; background: var(--surface);
-    font-family: inherit; margin-bottom: 16px;
-  }
-  .hw-search:focus { outline: none; border-color: var(--text-secondary); }
-  .filter-row { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-  .filter-chip {
-    padding: 7px 18px; border-radius: 100px; border: 1px solid var(--border);
-    background: var(--surface); font-size: 12px; font-weight: 500;
-    cursor: pointer; transition: var(--transition); font-family: inherit; color: var(--text-secondary);
-  }
-  .filter-chip:hover { border-color: var(--text-secondary); color: var(--text-primary); }
-  .filter-chip.active { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
-
-  .hw-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;
-  }
-  .hw-card {
-    background: var(--surface); border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
-    overflow: hidden; transition: var(--transition);
-  }
-  .hw-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-  .hw-card-visual {
-    height: 140px; background: var(--surface-2);
-    display: flex; align-items: center; justify-content: center;
-    position: relative; overflow: hidden;
-  }
-  .hw-card-visual img { width: 100%; height: 100%; object-fit: contain; padding: 12px; }
-  .hw-card-visual .hw-ptag {
-    position: absolute; bottom: 8px; right: 8px;
-    font-size: 9px; font-weight: 600; padding: 3px 8px; border-radius: 4px;
-    background: rgba(0,0,0,0.6); color: #fff;
-  }
-  .hw-card-body { padding: 14px 18px; }
-  .hw-card-body h4 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
-  .hw-card-body .hw-meta { font-size: 11px; color: var(--text-tertiary); line-height: 1.6; }
-
-  /* === FURNITURE === */
-  .furniture-grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 28px;
-  }
-  .furn-card {
-    background: var(--surface); border-radius: var(--radius-lg);
-    border: 1px solid var(--border-light); box-shadow: var(--shadow-sm);
-    overflow: hidden; transition: var(--transition); cursor: pointer;
-  }
-  .furn-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
-  .furn-card-img {
-    height: 220px; background: var(--surface-2); overflow: hidden;
-    position: relative;
-  }
-  .furn-card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .furn-card-img .furn-tag {
-    position: absolute; top: 12px; left: 12px;
-    font-size: 10px; font-weight: 600; padding: 4px 12px; border-radius: 100px;
-    background: var(--accent-wood-light); color: var(--accent-wood);
-  }
-  .furn-card-body { padding: 20px 24px; }
-  .furn-card-body h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 4px; }
-  .furn-card-body .furn-sub { font-size: 12px; color: var(--text-tertiary); margin-bottom: 14px; }
-  .furn-variants {
-    display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
-  }
-  .furn-variant-chip {
-    font-size: 10px; padding: 3px 10px; border-radius: 100px;
-    background: var(--surface-2); color: var(--text-secondary); font-weight: 500;
-  }
-  .furn-card-stats { display: flex; gap: 20px; }
-  .furn-card-footer {
-    padding: 12px 24px; border-top: 1px solid var(--border-light);
-    font-size: 11px; color: var(--text-tertiary);
-    display: flex; justify-content: space-between;
-  }
-
-  /* Furniture detail modal */
-  .furn-modal-overlay {
-    display: none; position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
-    align-items: center; justify-content: center; padding: 24px;
-  }
-  .furn-modal-overlay.open { display: flex; }
-  .furn-modal {
-    background: var(--surface); border-radius: var(--radius-lg);
-    max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto;
-    box-shadow: var(--shadow-lg);
-  }
-  .furn-modal-header {
-    padding: 28px 32px 0; display: flex; justify-content: space-between; align-items: flex-start;
-  }
-  .furn-modal-header h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-  .furn-modal-close {
-    width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-    background: var(--surface); cursor: pointer; font-size: 18px;
-    display: flex; align-items: center; justify-content: center; color: var(--text-secondary);
-    flex-shrink: 0;
-  }
-  .furn-modal-close:hover { background: var(--surface-2); }
-  .furn-modal-body { padding: 20px 32px 32px; }
-  .furn-modal-gallery {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
-    margin-bottom: 24px;
-  }
-  .furn-modal-gallery img {
-    width: 100%; height: 160px; object-fit: cover; border-radius: var(--radius);
-    border: 1px solid var(--border-light);
-  }
-  .furn-detail-section { margin-bottom: 20px; }
-  .furn-detail-section h4 {
-    font-size: 12px; font-weight: 600; color: var(--text-tertiary);
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;
-  }
-  .furn-detail-table {
-    width: 100%; border-collapse: collapse; font-size: 13px;
-  }
-  .furn-detail-table td {
-    padding: 8px 12px; border-bottom: 1px solid var(--border-light);
-  }
-  .furn-detail-table td:first-child {
-    font-weight: 600; color: var(--text-secondary); width: 140px;
-  }
-
-  @media (max-width: 768px) {
-    .header-inner, .nav-inner, .content-area { padding-left: 20px; padding-right: 20px; }
-    .project-grid, .hw-grid, .furniture-grid { grid-template-columns: 1fr; }
-    .furn-modal { margin: 12px; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="global-header">
+<header class="global-header">
   <div class="header-inner">
     <div class="brand">
       <span class="brand-logo">VUILD</span>
       <div class="brand-divider"></div>
       <span class="brand-title">Project Hub</span>
     </div>
+    <span id="sync-badge" class="sync-badge" style="display:none"></span>
   </div>
-</div>
+</header>
 
-<div class="nav-bar">
+<nav class="nav-bar">
   <div class="nav-inner">
-    <div class="nav-tab active" data-view="projects">案件リスト <span class="count" id="projectCount">0</span></div>
-    <div class="nav-tab" data-view="furniture">VUILD furniture <span class="count" id="furnitureCount">0</span></div>
-    <div class="nav-tab" data-view="hardware">全案件の金物 <span class="count" id="globalHwCount">0</span></div>
+    <button class="nav-tab active" data-tab="projects">案件 <span class="count" id="count-projects">0</span></button>
+    <button class="nav-tab" data-tab="furniture">VUILD furniture <span class="count" id="count-furniture">0</span></button>
+    <button class="nav-tab" data-tab="materials">素材・金物 <span class="count" id="count-materials">0</span></button>
   </div>
-</div>
+</nav>
 
-<div class="content-area">
+<main class="content-area">
 
-<div class="view active" id="view-projects">
-  <div class="section-title">案件リスト</div>
-  <div class="section-desc">案件をクリックすると、図面プレビュー・金物カタログ・BOM・ナレッジを確認できます</div>
-  <div class="project-grid" id="projectGrid"></div>
-</div>
+  <!-- ============ 案件タブ ============ -->
+  <section class="view active" id="view-projects">
+    <h1 class="section-title">案件リスト</h1>
+    <p class="section-desc">案件をクリックすると、写真・使用素材・ナレッジ・コストを確認できます</p>
+    <div id="project-filters"></div>
+    <div class="card-grid project-grid" id="project-grid"></div>
+  </section>
 
-<div class="view" id="view-furniture">
-  <div class="section-title">VUILD furniture</div>
-  <div class="section-desc">案件横断で導入してきた家具プロダクト — 新案件の提案時にすぐ参照できるカタログ</div>
-  <div class="furniture-grid" id="furnitureGrid"></div>
-</div>
+  <!-- ============ furnitureタブ ============ -->
+  <section class="view" id="view-furniture">
+    <h1 class="section-title">VUILD furniture</h1>
+    <p class="section-desc">案件横断で導入してきた家具プロダクト — シリーズ別カタログ</p>
+    <div id="furniture-filters"></div>
+    <div class="card-grid furniture-grid" id="furniture-grid"></div>
+  </section>
 
-<div class="view" id="view-hardware">
-  <div class="section-title">全案件の金物</div>
-  <div class="section-desc">全プロジェクトの金物を横断検索 — 過去に使った金物を別案件でも再利用</div>
-  <input type="text" class="hw-search" id="globalHwSearch" placeholder="金物を検索（品名・品番・メーカー・案件名）..." oninput="renderGlobalHw()">
-  <div class="filter-row" id="globalFilterRow"></div>
-  <div class="hw-grid" id="globalHwGrid"></div>
-</div>
+  <!-- ============ 素材・金物タブ ============ -->
+  <section class="view" id="view-materials">
+    <h1 class="section-title">素材・金物</h1>
+    <p class="section-desc">全案件で使用した素材・金物を横断検索</p>
+    <input type="text" class="search-input" id="material-search" placeholder="品名・品番・メーカーで検索...">
+    <div id="material-filters"></div>
 
-</div>
-
-<!-- Furniture detail modal -->
-<div class="furn-modal-overlay" id="furnModal">
-  <div class="furn-modal">
-    <div class="furn-modal-header">
-      <div>
-        <h2 id="furnModalTitle"></h2>
-        <div style="font-size:13px;color:var(--text-tertiary);margin-top:4px" id="furnModalSub"></div>
-      </div>
-      <button class="furn-modal-close" onclick="closeFurnModal()">&times;</button>
+    <div id="materials-section-hw" style="margin-bottom:48px">
+      <h2 class="sub-title">什器系金物</h2>
+      <div class="card-grid material-grid" id="material-grid-hw"></div>
     </div>
-    <div class="furn-modal-body" id="furnModalBody"></div>
-  </div>
-</div>
 
+    <div id="materials-section-arch">
+      <h2 class="sub-title">建築系素材</h2>
+      <div class="card-grid material-grid" id="material-grid-arch"></div>
+      <p class="empty-state" id="arch-empty" style="display:none">建築系素材はまだ登録されていません</p>
+    </div>
+
+    <div style="margin-top:48px">
+      <h2 class="sub-title">検討中の候補</h2>
+      <div class="card-grid material-grid" id="candidate-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="common.js"></script>
 <script>
-const projects = [
-  {
-    id:"hitonomori_wallshelf", name:"曲面壁面什器", pid:"#1141",
-    client:"人の森 ライブラリースペース", status:"active",
-    path:"projects/hitonomori_wallshelf/index.html",
-    color:"#e8e5de", members:["金子","黒部"],
-    stats:{hardware:0, knowledge:5, bom:"-"}, updated:"2026-04-02"
-  },
-  {
-    id:"baum_mobile", name:"BAUM 移動式什器", pid:"#3040",
-    client:"資生堂 BAUM", status:"active",
-    path:"projects/baum_mobile/index.html",
-    color:"#d8e0d4", members:["金子","黒部","向田"],
-    stats:{hardware:9, knowledge:10, bom:"-"}, updated:"2026-04-03"
-  },
-  {
-    id:"tokyo_rooftop", name:"屋上庭園PJ", pid:"#1127",
-    client:"東京建物", status:"active",
-    path:"projects/tokyo_rooftop/index.html",
-    color:"#d4d8dc", members:["金子","黒部","杉山"],
-    stats:{hardware:0, knowledge:5, bom:"-"}, updated:"2026-04-02"
-  },
-  {
-    id:"pan_kitchen", name:"セルフビルドキッチン", pid:"#1125",
-    client:"Panasonic 門真新棟", status:"completed",
-    path:"projects/pan_kitchen/index.html",
-    color:"#e0dbd2", members:["金子","黒部","向田","杉山"],
-    stats:{hardware:0, knowledge:6, bom:"-"}, updated:"2026-04-02"
-  }
-];
+// Portal is at root level
+DataLoader.basePath = '';
 
-const furnitureProducts = [
-  {
-    id: "town-unit",
-    name: "タウンユニット",
-    sub: "Town Unit — 角型・カーブ型の組合せ屋外ユニット家具",
-    thumbnail: "furniture-photos/town-unit/rakuten.jpg",
-    variants: ["角型 900","角型 1200","角型 1800","カーブ型"],
-    cases: 6,
-    records: [
-      { project: "楽天 Optimism 2023", type: "レンタル", location: "横浜みなとみらい", photo: "furniture-photos/town-unit/rakuten.jpg" },
-      { project: "楽天 Optimism 2024", type: "レンタル", location: "横浜みなとみらい", photo: "furniture-photos/town-unit/rakuten.jpg" },
-      { project: "名古屋 久屋大通", type: "制作+設置", location: "名古屋市", photo: "furniture-photos/town-unit/nagoya.jpg" },
-      { project: "野毛町 まちづくり", type: "制作", location: "横浜市", photo: "furniture-photos/town-unit/yokohama.jpg" },
-      { project: "UR赤羽台", type: "レンタル", location: "東京都北区", photo: "furniture-photos/town-unit/vpl.jpg" },
-      { project: "横浜ネイチャーウィーク 2025", type: "レンタル", location: "横浜", photo: "furniture-photos/yokohama-nw/main.jpg" }
-    ],
-    specs: {
-      material: "構造用合板 24mm",
-      finish: "屋外用ウレタン塗装",
-      weight: "約40-80kg（サイズによる）",
-      note: "組立式・フォークリフト搬入可"
-    },
-    photos: [
-      "furniture-photos/town-unit/rakuten.jpg",
-      "furniture-photos/town-unit/nagoya.jpg",
-      "furniture-photos/town-unit/vpl.jpg",
-      "furniture-photos/town-unit/yokohama.jpg",
-      "furniture-photos/yokohama-nw/main.jpg",
-      "furniture-photos/yokohama-nw/detail.jpg"
-    ]
-  },
-  {
-    id: "shiba-cube",
-    name: "芝キューブ",
-    sub: "Shiba Cube — 天面に人工芝を張ったベンチ/テーブルユニット",
-    thumbnail: "furniture-photos/shiba-cube/main.jpg",
-    variants: ["Type A (600)","Type B (900)","Type C (1200)","Type D (1500)","Type E (L型)","Type F (コーナー)","Type G (ハイ)"],
-    cases: 2,
-    records: [
-      { project: "PAN 門真新棟", type: "制作", location: "大阪府門真市", photo: "furniture-photos/shiba-cube/main.jpg" },
-      { project: "丸の内ストリートパーク", type: "レンタル", location: "東京都千代田区", photo: "furniture-photos/shiba-cube/detail.jpg" }
-    ],
-    specs: {
-      material: "構造用合板 24mm + 人工芝",
-      finish: "屋外用塗装 + 人工芝接着",
-      weight: "約25-50kg（サイズによる）",
-      note: "7種のバリエーションで自由にレイアウト"
-    },
-    photos: [
-      "furniture-photos/shiba-cube/main.jpg",
-      "furniture-photos/shiba-cube/detail.jpg"
-    ]
-  },
-  {
-    id: "namunami-bench",
-    name: "ナミナミベンチ",
-    sub: "Naminami Bench — CNC加工による有機的な曲面ベンチ",
-    thumbnail: "furniture-photos/namunami-bench/onomichi.jpg",
-    variants: ["標準型","ロング型"],
-    cases: 1,
-    records: [
-      { project: "尾道倶楽部 FFE", type: "制作", location: "広島県尾道市", photo: "furniture-photos/namunami-bench/onomichi.jpg" }
-    ],
-    specs: {
-      material: "構造用合板 積層",
-      finish: "ウレタン塗装",
-      weight: "約30kg",
-      note: "5軸CNC加工による曲面形状"
-    },
-    photos: [
-      "furniture-photos/namunami-bench/onomichi.jpg",
-      "furniture-photos/namunami-bench/main.jpg"
-    ]
-  },
-  {
-    id: "seesaw-bench",
-    name: "シーソーベンチ",
-    sub: "Seesaw Bench — シーソー機構付き遊具ベンチ",
-    thumbnail: null,
-    variants: ["標準型"],
-    cases: 1,
-    records: [
-      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
-    ],
-    specs: {
-      material: "構造用合板",
-      finish: "屋外用塗装",
-      weight: "-",
-      note: "遊べるベンチ"
-    },
-    photos: []
-  },
-  {
-    id: "pingpong-table",
-    name: "卓球台",
-    sub: "Ping Pong Table — CNC加工の木製卓球台",
-    thumbnail: null,
-    variants: ["標準型"],
-    cases: 1,
-    records: [
-      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
-    ],
-    specs: {
-      material: "構造用合板",
-      finish: "ウレタン塗装",
-      weight: "-",
-      note: "分解・組立可能"
-    },
-    photos: []
-  },
-  {
-    id: "denzai-stool",
-    name: "電材スツール",
-    sub: "Denzai Stool — 電設資材を活用したスツール",
-    thumbnail: null,
-    variants: ["標準型"],
-    cases: 1,
-    records: [
-      { project: "VUILD Place Lab", type: "制作", location: "秋葉原", photo: null }
-    ],
-    specs: {
-      material: "電設資材 + 合板座面",
-      finish: "素地",
-      weight: "-",
-      note: "電線管・ジョイントを構造に活用"
-    },
-    photos: []
-  }
-];
+// ============ State ============
+let projectFilter = 'すべて';
+let furnitureFilter = 'すべて';
+let materialTypeFilter = 'すべて';
 
-const globalHardware = [
-  {name:"規格型平蝶番 穴あき",code:"61111094",maker:"TAKIGEN",price:389,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono61111094-180730-02.jpg"},
-  {name:"アルミアングル AA30304",code:"86193774",maker:"光",price:1428,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono86193774-180314-02.jpg"},
-  {name:"ステンレスCツマミ HL",code:"76012745",maker:"アトムリビンテック",price:1099,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono76012745-200423-02.jpg"},
-  {name:"AS下部レール 引戸金物",code:"09423477",maker:"アトムリビンテック",price:2858,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono09423477-080408-02.jpg"},
-  {name:"シリンダープッシュ錠 L-303-KA",code:"02291582",maker:"ジョー・プリンス竹下",price:1538,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono02291582-221006-02.jpg"},
-  {name:"AGRスライドローラーミニタイプ3号",code:"006613",maker:"アトムリビンテック",price:550,cat:"金物・金具",project:"BAUM移動式什器",pid:"#3040",img:"https://direct.atomlt.com/upload/save_image/10122118_50780a9472257.jpg"},
-  {name:"ウルトララスト エッグシェル 0.95L",code:"90817132",maker:"PPG",price:7700,cat:"塗装・仕上げ",project:"BAUM移動式什器",pid:"#3040",img:"https://baseec-img-mng.akamaized.net/images/item/origin/aaf7df27f26fd61d7bbc7cfa37896665.jpg?imformat=generic&q=90&im=Resize,width=640,type=normal"},
-  {name:"水性サンディングシーラー 4kg",code:"28534767",maker:"和信ペイント",price:9898,cat:"塗装・仕上げ",project:"BAUM移動式什器",pid:"#3040",img:"https://jp.images-monotaro.com/Monotaro3/pi/full/mono28534767-230525-02.jpg"},
-];
+// ============ Projects ============
+async function renderProjects() {
+  const data = await DataLoader.load('projects');
+  const projects = data.projects || data;
+  document.getElementById('count-projects').textContent = projects.length;
 
-// Tab switching
-document.querySelectorAll('.nav-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById('view-' + tab.dataset.view).classList.add('active');
-  });
-});
+  // Filter chips
+  const categories = ['すべて', ...new Set(projects.map(p => p.category).filter(Boolean))];
+  document.getElementById('project-filters').innerHTML = `
+    <div class="filter-chips">
+      ${categories.map(c => `<button class="chip${c === projectFilter ? ' active' : ''}"
+        onclick="projectFilter='${c}';renderProjects()">${c}</button>`).join('')}
+    </div>`;
 
-// Projects
-function renderProjects() {
-  document.getElementById('projectGrid').innerHTML = projects.map(p => {
-    const label = {active:'設計中',completed:'完了',planning:'計画中'}[p.status];
-    const tag = p.path ? `<a href="${p.path}" class="project-card">` : `<div class="project-card disabled">`;
-    const endTag = p.path ? '</a>' : '</div>';
-    return `${tag}
-      <div class="project-visual" style="background:${p.color}">
-        <svg viewBox="0 0 400 200" style="opacity:0.25">
-          <rect x="80" y="30" width="240" height="140" rx="4" fill="none" stroke="#333" stroke-width="1.5"/>
-          <line x1="80" y1="80" x2="320" y2="80" stroke="#333" stroke-width="1"/>
-          <line x1="80" y1="120" x2="320" y2="120" stroke="#333" stroke-width="1"/>
-          <line x1="200" y1="80" x2="200" y2="170" stroke="#333" stroke-width="1"/>
-          <circle cx="110" cy="175" r="8" fill="none" stroke="#333" stroke-width="1.5"/>
-          <circle cx="290" cy="175" r="8" fill="none" stroke="#333" stroke-width="1.5"/>
-        </svg>
-        <span class="project-badge ${p.status}">${label}</span>
-      </div>
-      <div class="project-body">
-        <h3>${p.name}</h3>
-        <div class="pid">${p.pid} ・ ${p.client}</div>
-        <div class="project-stats">
-          <div class="pstat"><div class="pval">${p.stats.hardware}</div><div class="plabel">金物</div></div>
-          <div class="pstat"><div class="pval">${p.stats.knowledge}</div><div class="plabel">ナレッジ</div></div>
-          <div class="pstat"><div class="pval">${p.stats.bom}</div><div class="plabel">原価</div></div>
-        </div>
-      </div>
-      <div class="project-footer">
-        <div class="avatars">${p.members.map(m=>`<div class="avatar">${m[0]}</div>`).join('')}</div>
-        <span>更新: ${p.updated}</span>
-      </div>
-    ${endTag}`;
-  }).join('');
-  document.getElementById('projectCount').textContent = projects.length;
-}
+  // Filter
+  const filtered = projectFilter === 'すべて'
+    ? projects
+    : projects.filter(p => p.category === projectFilter);
 
-// Furniture
-function renderFurniture() {
-  document.getElementById('furnitureGrid').innerHTML = furnitureProducts.map(f => {
-    const imgHtml = f.thumbnail
-      ? `<img src="${f.thumbnail}" onerror="this.style.display='none'">`
-      : `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-tertiary);font-size:14px">写真準備中</div>`;
+  // Render cards
+  document.getElementById('project-grid').innerHTML = filtered.map(p => {
+    const status = getStatusLabel(p.status);
+    const heroImg = (p.hero_photos && p.hero_photos[0]);
+    const thumbHtml = heroImg
+      ? `<img src="${heroImg}" alt="${esc(p.name)}" loading="lazy">`
+      : `<div class="thumb-placeholder"><span>${esc(p.pid || '')}</span></div>`;
     return `
-    <div class="furn-card" onclick="openFurnModal('${f.id}')">
-      <div class="furn-card-img">
-        ${imgHtml}
-        <span class="furn-tag">${f.cases} 案件で導入</span>
-      </div>
-      <div class="furn-card-body">
-        <h3>${f.name}</h3>
-        <div class="furn-sub">${f.sub}</div>
-        <div class="furn-variants">
-          ${f.variants.map(v => `<span class="furn-variant-chip">${v}</span>`).join('')}
+      <a href="projects/${p.id}/index.html" class="card project-card">
+        <div class="card-thumb">${thumbHtml}</div>
+        <div class="card-body">
+          <span class="badge badge-${p.status}">${status}</span>
+          <h3>${esc(p.name)}</h3>
+          <p class="card-sub">${esc(p.pid)} — ${esc(p.client)}</p>
+          <div class="card-tags">
+            ${(p.tags || []).slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join('')}
+          </div>
         </div>
-        <div class="furn-card-stats">
-          <div class="pstat"><div class="pval">${f.variants.length}</div><div class="plabel">バリエーション</div></div>
-          <div class="pstat"><div class="pval">${f.cases}</div><div class="plabel">導入実績</div></div>
-          <div class="pstat"><div class="pval">${f.photos.length}</div><div class="plabel">写真</div></div>
+        <div class="card-footer">
+          <div class="avatars">${(p.team || []).map(m =>
+            `<span class="avatar" title="${esc(m.name)}">${esc(m.name[0])}</span>`).join('')}
+          </div>
+          <span class="card-date">${p.updated_at || ''}</span>
         </div>
-      </div>
-      <div class="furn-card-footer">
-        <span>${f.specs.material}</span>
-        <span>${f.specs.finish}</span>
-      </div>
-    </div>`;
-  }).join('');
-  document.getElementById('furnitureCount').textContent = furnitureProducts.length;
+      </a>`;
+  }).join('') || '<p class="empty-state">該当する案件がありません</p>';
 }
 
-function openFurnModal(id) {
-  const f = furnitureProducts.find(p => p.id === id);
-  if (!f) return;
-  document.getElementById('furnModalTitle').textContent = f.name;
-  document.getElementById('furnModalSub').textContent = f.sub;
+// ============ Furniture ============
+async function renderFurniture() {
+  const data = await DataLoader.load('furniture');
+  const furniture = data.furniture || data;
+  document.getElementById('count-furniture').textContent = furniture.length;
 
-  let html = '';
-
-  // Gallery
-  if (f.photos.length > 0) {
-    html += `<div class="furn-modal-gallery">
-      ${f.photos.map(p => `<img src="${p}" onerror="this.style.display='none'">`).join('')}
+  // Series filter
+  const series = ['すべて', ...new Set(furniture.map(f => f.series).filter(Boolean))];
+  document.getElementById('furniture-filters').innerHTML = `
+    <div class="filter-chips">
+      ${series.map(s => `<button class="chip${s === furnitureFilter ? ' active' : ''}"
+        onclick="furnitureFilter='${s}';renderFurniture()">${s}</button>`).join('')}
     </div>`;
+
+  const filtered = furnitureFilter === 'すべて'
+    ? furniture
+    : furniture.filter(f => f.series === furnitureFilter);
+
+  document.getElementById('furniture-grid').innerHTML = filtered.map(f => {
+    const heroImg = (f.hero_photos && f.hero_photos[0]);
+    const thumbHtml = heroImg
+      ? `<img src="${heroImg}" alt="${esc(f.name)}" loading="lazy">`
+      : `<div class="thumb-placeholder"><span>${esc(f.name_en || f.name)}</span></div>`;
+    const variantCount = (f.variants || []).length;
+    const caseCount = (f.deployment_history || []).length;
+    return `
+      <a href="furniture/${f.id}/index.html" class="card furniture-card">
+        <div class="card-thumb">
+          ${thumbHtml}
+          <span class="card-overlay-tag">${caseCount} 案件で導入</span>
+        </div>
+        <div class="card-body">
+          ${f.series ? `<span class="tag tag-wood">${esc(f.series)}</span>` : ''}
+          <h3>${esc(f.name)}</h3>
+          <p class="card-sub">${esc(f.name_en || '')} — ${esc(f.description || '')}</p>
+          <div class="variant-chips">
+            ${(f.variants || []).map(v => `<span class="variant-chip">${esc(v.name)}</span>`).join('')}
+          </div>
+          <div class="card-stats">
+            <div class="stat"><span class="stat-val">${variantCount}</span><span class="stat-label">バリエーション</span></div>
+            <div class="stat"><span class="stat-val">${caseCount}</span><span class="stat-label">導入実績</span></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span>${esc(f.specs?.material || '')}</span>
+          <span>${esc(f.specs?.finish || '')}</span>
+        </div>
+      </a>`;
+  }).join('') || '<p class="empty-state">該当するプロダクトがありません</p>';
+}
+
+// ============ Materials ============
+async function renderMaterials() {
+  const data = await DataLoader.load('materials');
+  const materials = data.materials || [];
+  const candidates = data.candidates || [];
+  const search = (document.getElementById('material-search')?.value || '').toLowerCase();
+
+  document.getElementById('count-materials').textContent = materials.length + candidates.length;
+
+  // Category filter
+  const cats = ['すべて', ...new Set(materials.map(m => m.category).filter(Boolean))];
+  document.getElementById('material-filters').innerHTML = `
+    <div class="filter-chips">
+      ${cats.map(c => `<button class="chip${c === materialTypeFilter ? ' active' : ''}"
+        onclick="materialTypeFilter='${c}';renderMaterials()">${c}</button>`).join('')}
+    </div>`;
+
+  function matchSearch(m) {
+    if (!search) return true;
+    return (m.name + (m.product_code || '') + (m.maker || '') + (m.category || '') + (m.specs || '')).toLowerCase().includes(search);
   }
 
-  // Specs
-  html += `<div class="furn-detail-section">
-    <h4>仕様</h4>
-    <table class="furn-detail-table">
-      <tr><td>素材</td><td>${f.specs.material}</td></tr>
-      <tr><td>仕上げ</td><td>${f.specs.finish}</td></tr>
-      <tr><td>重量</td><td>${f.specs.weight}</td></tr>
-      <tr><td>備考</td><td>${f.specs.note}</td></tr>
-    </table>
-  </div>`;
+  function matchFilter(m) {
+    if (materialTypeFilter === 'すべて') return true;
+    return m.category === materialTypeFilter;
+  }
 
-  // Variants
-  html += `<div class="furn-detail-section">
-    <h4>バリエーション</h4>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      ${f.variants.map(v => `<span class="furn-variant-chip" style="font-size:12px;padding:6px 14px">${v}</span>`).join('')}
-    </div>
-  </div>`;
+  // Furniture hardware (什器系)
+  const hwItems = materials.filter(m => m.type === 'furniture_hardware' && matchSearch(m) && matchFilter(m));
+  document.getElementById('material-grid-hw').innerHTML = hwItems.map(m => renderMaterialCardHTML(m)).join('')
+    || '<p class="empty-state">該当する什器系金物がありません</p>';
 
-  // Records
-  html += `<div class="furn-detail-section">
-    <h4>導入実績</h4>
-    <table class="furn-detail-table">
-      <tr style="font-weight:600;color:var(--text-tertiary);font-size:11px;text-transform:uppercase;letter-spacing:1px">
-        <td>案件</td><td>形態</td><td>場所</td>
-      </tr>
-      ${f.records.map(r => `<tr><td style="font-weight:500">${r.project}</td><td>${r.type}</td><td>${r.location}</td></tr>`).join('')}
-    </table>
-  </div>`;
+  // Architectural (建築系)
+  const archItems = materials.filter(m => m.type === 'architectural' && matchSearch(m) && matchFilter(m));
+  document.getElementById('material-grid-arch').innerHTML = archItems.map(m => renderMaterialCardHTML(m)).join('');
+  document.getElementById('arch-empty').style.display = archItems.length === 0 ? 'block' : 'none';
 
-  document.getElementById('furnModalBody').innerHTML = html;
-  document.getElementById('furnModal').classList.add('open');
-}
-
-function closeFurnModal() {
-  document.getElementById('furnModal').classList.remove('open');
-}
-
-document.getElementById('furnModal').addEventListener('click', function(e) {
-  if (e.target === this) closeFurnModal();
-});
-
-// Global Hardware
-let gwFilter = 'すべて';
-function renderGlobalHw() {
-  const search = document.getElementById('globalHwSearch').value.toLowerCase();
-  const cats = ['すべて', ...new Set(globalHardware.map(h=>h.cat))];
-  const pids = ['全案件', ...new Set(globalHardware.map(h=>h.pid))];
-
-  document.getElementById('globalFilterRow').innerHTML =
-    cats.map(c=>`<button class="filter-chip ${c===gwFilter?'active':''}" onclick="gwFilter='${c}';renderGlobalHw()">${c}</button>`).join('') +
-    '<span style="width:1px;height:24px;background:var(--border);margin:0 4px"></span>' +
-    pids.map(p=>`<button class="filter-chip ${p===gwFilter?'active':''}" onclick="gwFilter='${p}';renderGlobalHw()">${p}</button>`).join('');
-
-  const filtered = globalHardware.filter(h=>{
-    if(gwFilter!=='すべて' && gwFilter!=='全案件' && h.cat!==gwFilter && h.pid!==gwFilter) return false;
-    if(search && !(h.name+h.code+h.maker+h.project+h.cat).toLowerCase().includes(search)) return false;
-    return true;
-  });
-
-  document.getElementById('globalHwCount').textContent = globalHardware.length;
-  document.getElementById('globalHwGrid').innerHTML = filtered.map(h=>`
-    <div class="hw-card">
-      <div class="hw-card-visual">
-        ${h.img?`<img src="${h.img}" onerror="this.style.display='none'">`:'<span style="font-size:32px;color:var(--text-tertiary)">&#9881;</span>'}
-        <span class="hw-ptag">${h.pid} ${h.project}</span>
+  // Candidates
+  const candFiltered = candidates.filter(c => matchSearch(c));
+  document.getElementById('candidate-grid').innerHTML = candFiltered.map(c => `
+    <div class="card material-card candidate">
+      <div class="card-thumb-sm">
+        ${c.thumbnail_url ? `<img src="${c.thumbnail_url}" alt="${esc(c.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="thumb-placeholder-sm">?</div>'}
       </div>
-      <div class="hw-card-body">
-        <h4>${h.name}</h4>
-        <div class="hw-meta">${h.code||'-'} / ${h.maker||'-'}${h.price?' / ¥'+h.price.toLocaleString():''}</div>
+      <div class="card-body">
+        <span class="badge badge-pending">検討中</span>
+        <h3>${esc(c.name)}</h3>
+        <p class="card-meta">${esc(c.maker || '-')} / ${esc(c.category || '')}</p>
+        <p class="card-price">${formatPrice(c.price)}</p>
+        <p class="card-meta">${esc(c.posted_by || '')} — ${c.posted_at || ''}</p>
+        ${c.product_url ? `<a href="${c.product_url}" target="_blank" rel="noopener" class="ext-link">商品ページ ↗</a>` : ''}
       </div>
     </div>
-  `).join('') || '<div style="text-align:center;color:var(--text-tertiary);padding:40px">該当なし</div>';
+  `).join('') || '<p class="empty-state">検討中の候補はありません</p>';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  renderProjects();
-  renderFurniture();
-  renderGlobalHw();
+function renderMaterialCardHTML(m) {
+  const statusBadge = m.status === 'adopted' ? '<span class="badge badge-adopted">採用</span>' : '';
+  return `
+    <div class="card material-card">
+      <div class="card-thumb-sm">
+        ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="thumb-placeholder-sm">&#9881;</div>'}
+      </div>
+      <div class="card-body">
+        ${statusBadge}
+        <h3>${esc(m.name)}</h3>
+        <p class="card-meta">${esc(m.product_code || '-')} / ${esc(m.maker || '-')}</p>
+        <p class="card-price">${formatPrice(m.price)}</p>
+        <p class="card-meta card-specs">${esc(m.specs || '')}</p>
+        ${m.product_url ? `<a href="${m.product_url}" target="_blank" rel="noopener" class="ext-link">商品ページ ↗</a>` : ''}
+      </div>
+    </div>`;
+}
+
+// ============ Init ============
+document.addEventListener('DOMContentLoaded', async () => {
+  initTabs();
+  await Promise.all([renderProjects(), renderFurniture(), renderMaterials()]);
+
+  // Search input
+  const searchInput = document.getElementById('material-search');
+  if (searchInput) {
+    searchInput.addEventListener('input', () => renderMaterials());
+  }
 });
 </script>
 </body>

@@ -1,0 +1,1130 @@
+/* ============================================================
+   VUILD Project Hub — Shared Stylesheet
+   Design ref: emarf.co / tecture.jp / vuild.co.jp/projects
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. DESIGN TOKENS (CSS Custom Properties)
+   ------------------------------------------------------------ */
+:root {
+  /* — Colors — */
+  --color-bg:          #fafaf8;
+  --color-surface:     #ffffff;
+  --color-text:        #111111;
+  --color-secondary:   #666666;
+  --color-tertiary:    #999999;
+  --color-border:      #e8e6e1;
+  --color-border-light:#f0eee9;
+  --color-accent-green:#2d5a27;
+  --color-wood:        #8b6914;
+  --color-edit-blue:   #4A90D9;
+  --color-overlay:     rgba(0, 0, 0, 0.45);
+
+  /* — Typography — */
+  --font-family:       "Inter", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-hero:         48px;
+  --font-h1:           28px;
+  --font-h2:           20px;
+  --font-h3:           15px;
+  --font-body:         14px;
+  --font-caption:      12px;
+  --font-micro:        10px;
+  --line-height:       1.7;
+  --letter-spacing:    0.01em;
+
+  /* — Spacing (8px grid) — */
+  --sp-2:   4px;
+  --sp-4:   8px;
+  --sp-8:  16px;
+  --sp-12: 24px;
+  --sp-16: 32px;
+  --sp-24: 48px;
+  --sp-32: 64px;
+  --sp-48: 96px;
+
+  /* — Layout — */
+  --max-width:         1440px;
+  --content-padding:   48px;
+
+  /* — Radius — */
+  --radius-sm:  8px;
+  --radius-md: 16px;
+
+  /* — Shadows — */
+  --shadow-sm:  0  1px  3px rgba(0, 0, 0, 0.06);
+  --shadow-md:  0  4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg:  0 12px 32px rgba(0, 0, 0, 0.12);
+
+  /* — Transition — */
+  --ease: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+
+/* ------------------------------------------------------------
+   2. RESET & BASE
+   ------------------------------------------------------------ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-body);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+img { display: block; max-width: 100%; height: auto; }
+a   { color: inherit; text-decoration: none; }
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+ul, ol { list-style: none; }
+
+
+/* ------------------------------------------------------------
+   3. LAYOUT CONTAINER
+   ------------------------------------------------------------ */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+}
+
+
+/* ------------------------------------------------------------
+   4. GLOBAL HEADER (sticky, blur backdrop)
+   ------------------------------------------------------------ */
+.header,
+.global-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(250, 250, 248, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 56px;
+  padding: 0 var(--content-padding);
+}
+
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__brand,
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-8);
+}
+
+.brand-logo {
+  font-size: 11px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  color: var(--color-tertiary);
+  text-transform: uppercase;
+}
+
+.header__divider,
+.brand-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--color-border);
+}
+
+.header__title,
+.brand-title {
+  font-size: var(--font-h3);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+
+/* ------------------------------------------------------------
+   5. NAV BAR / TABS
+   ------------------------------------------------------------ */
+.nav,
+.nav-bar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-12);
+  padding: 0 var(--content-padding);
+  overflow-x: auto;
+}
+
+.nav-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--content-padding);
+  display: flex;
+  gap: 0;
+}
+
+.nav__tab,
+.nav-tab {
+  position: relative;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-tertiary);
+  white-space: nowrap;
+  transition: color var(--ease);
+  border-bottom: 2px solid transparent;
+}
+
+.nav__tab:hover,
+.nav-tab:hover { color: var(--color-text); }
+
+.nav__tab.is-active,
+.nav__tab.active,
+.nav-tab.active {
+  color: var(--color-text);
+  border-bottom-color: var(--color-text);
+}
+
+.nav-tab .count {
+  display: inline-block;
+  background: var(--color-bg);
+  font-size: var(--font-micro);
+  padding: 1px 6px;
+  border-radius: 10px;
+  margin-left: 4px;
+  color: var(--color-tertiary);
+}
+
+
+/* ------------------------------------------------------------
+   6. SYNC BADGE
+   ------------------------------------------------------------ */
+.sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 3px 10px;
+  font-size: var(--font-caption);
+  font-weight: 600;
+  color: var(--color-edit-blue);
+  background: rgba(74, 144, 217, 0.1);
+  border: 1px solid rgba(74, 144, 217, 0.25);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.sync-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-edit-blue);
+}
+
+
+/* ------------------------------------------------------------
+   7. CONTENT AREA
+   ------------------------------------------------------------ */
+.content,
+.content-area {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--sp-16) var(--content-padding) var(--sp-48);
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+.sub-title {
+  font-size: var(--font-h3);
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin-bottom: var(--sp-8);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+
+/* ------------------------------------------------------------
+   8. SECTION TITLE & DESCRIPTION
+   ------------------------------------------------------------ */
+.section-title {
+  font-size: var(--font-h2);
+  font-weight: 700;
+  margin-bottom: var(--sp-4);
+}
+
+.section-desc {
+  font-size: var(--font-body);
+  color: var(--color-secondary);
+  margin-bottom: var(--sp-12);
+}
+
+
+/* ------------------------------------------------------------
+   9. HERO TITLE
+   ------------------------------------------------------------ */
+.hero-title {
+  font-size: var(--font-hero);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+
+/* ------------------------------------------------------------
+   10. SEARCH INPUT
+   ------------------------------------------------------------ */
+.search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  max-width: 420px;
+  padding: 8px 14px;
+  font-size: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+.search:focus-within {
+  border-color: var(--color-text);
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+}
+
+.search__icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--color-tertiary);
+}
+
+.search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font: inherit;
+  background: transparent;
+}
+
+.search__input::placeholder { color: var(--color-tertiary); }
+
+
+/* ------------------------------------------------------------
+   11. FILTER CHIPS
+   ------------------------------------------------------------ */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 14px;
+  font-size: var(--font-caption);
+  font-weight: 500;
+  color: var(--color-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--ease);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.chip:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
+.chip.is-active {
+  background: var(--color-text);
+  border-color: var(--color-text);
+  color: #fff;
+}
+
+
+/* ------------------------------------------------------------
+   12. CARD GRID (shared)
+   ------------------------------------------------------------ */
+.card-grid {
+  display: grid;
+  gap: var(--sp-12);
+}
+
+.card-grid--projects,
+.project-grid {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.card-grid--furniture,
+.furniture-grid {
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+
+.card-grid--materials,
+.material-grid {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+
+/* ------------------------------------------------------------
+   13. PROJECT CARD (photo-dominant)
+   ------------------------------------------------------------ */
+.card {
+  position: relative;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--ease), box-shadow var(--ease);
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card__photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-border-light);
+}
+
+.card__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--ease);
+}
+
+.card:hover .card__photo img {
+  transform: scale(1.03);
+}
+
+.card__body {
+  padding: var(--sp-8);
+}
+
+.card__title {
+  font-size: var(--font-h3);
+  font-weight: 600;
+  margin-bottom: var(--sp-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card__meta {
+  font-size: var(--font-caption);
+  color: var(--color-secondary);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.card__status {
+  position: absolute;
+  top: var(--sp-4);
+  left: var(--sp-4);
+  padding: 2px 10px;
+  font-size: var(--font-micro);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: var(--color-accent-green);
+  border-radius: 999px;
+}
+
+
+/* --- Portal card classes (used in index.html) --- */
+.card.project-card,
+.card.furniture-card,
+.card.material-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--color-border-light);
+}
+
+.card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--ease);
+}
+
+.card:hover .card-thumb img { transform: scale(1.03); }
+
+.card-thumb .thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-h2);
+  font-weight: 700;
+  color: var(--color-tertiary);
+  background: var(--color-border-light);
+}
+
+.card-thumb-sm {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-thumb-sm img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.thumb-placeholder-sm {
+  font-size: 28px;
+  color: var(--color-tertiary);
+}
+
+.card-body {
+  padding: 16px 20px;
+  flex: 1;
+}
+
+.card-body h3 {
+  font-size: var(--font-h3);
+  font-weight: 700;
+  margin-bottom: 2px;
+  letter-spacing: -0.3px;
+}
+
+.card-sub {
+  font-size: var(--font-caption);
+  color: var(--color-tertiary);
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-meta {
+  font-size: 11px;
+  color: var(--color-tertiary);
+  line-height: 1.5;
+}
+
+.card-specs {
+  margin-top: 4px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-price {
+  font-size: var(--font-body);
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.card-overlay-tag {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  padding: 3px 10px;
+  font-size: var(--font-micro);
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0,0,0,0.6);
+  border-radius: 999px;
+}
+
+.card-stats {
+  display: flex;
+  gap: 20px;
+  margin-top: 12px;
+}
+
+.stat .stat-val {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.stat .stat-label {
+  font-size: var(--font-micro);
+  color: var(--color-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-footer {
+  padding: 10px 20px;
+  border-top: 1px solid var(--color-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-tertiary);
+}
+
+.card-date { font-size: 11px; color: var(--color-tertiary); }
+
+.avatars { display: flex; }
+.avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--color-bg); border: 2px solid var(--color-surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; color: var(--color-secondary);
+  margin-left: -6px;
+}
+.avatar:first-child { margin-left: 0; }
+
+.variant-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.ext-link {
+  font-size: 11px;
+  color: var(--color-edit-blue);
+  text-decoration: none;
+}
+.ext-link:hover { text-decoration: underline; }
+
+/* Badge variants */
+.badge-active { background: rgba(45,90,39,0.1); color: var(--color-accent-green); }
+.badge-completed { background: var(--color-bg); color: var(--color-tertiary); }
+.badge-planning { background: rgba(74,144,217,0.1); color: var(--color-edit-blue); }
+.badge-adopted { background: rgba(45,90,39,0.1); color: var(--color-accent-green); }
+.badge-pending { background: rgba(139,105,20,0.1); color: var(--color-wood); }
+
+.tag-wood { color: var(--color-wood); border-color: rgba(139,105,20,0.25); background: rgba(139,105,20,0.06); }
+
+.material-card.candidate { border-left: 3px solid var(--color-wood); }
+
+.search-input {
+  width: 100%;
+  max-width: 480px;
+  padding: 10px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-body);
+  font-family: var(--font-family);
+  background: var(--color-surface);
+  margin-bottom: var(--sp-8);
+  transition: border-color var(--ease);
+}
+.search-input:focus { outline: none; border-color: var(--color-text); }
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--sp-12);
+}
+
+.edit-dot { color: var(--color-edit-blue); font-size: 8px; }
+
+.empty-state {
+  text-align: center;
+  color: var(--color-tertiary);
+  padding: 40px 20px;
+  font-size: var(--font-body);
+}
+
+/* ------------------------------------------------------------
+   14. FURNITURE CARD (variant chips + series tag)
+   ------------------------------------------------------------ */
+.card--furniture .card__series {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--sp-4);
+  padding: 2px 10px;
+  font-size: var(--font-micro);
+  font-weight: 600;
+  color: #fff;
+  background: var(--color-wood);
+  border-radius: 999px;
+}
+
+.card__variants {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: var(--sp-4);
+}
+
+.variant-chip {
+  padding: 2px 8px;
+  font-size: var(--font-micro);
+  font-weight: 500;
+  color: var(--color-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+
+/* ------------------------------------------------------------
+   15. MATERIAL / HARDWARE CARD (smaller, thumbnail + meta)
+   ------------------------------------------------------------ */
+.card--material .card__photo {
+  aspect-ratio: 3 / 2;
+}
+
+.card--material .card__body {
+  padding: var(--sp-4) var(--sp-8);
+}
+
+.card--material .card__title {
+  font-size: var(--font-body);
+}
+
+
+/* ------------------------------------------------------------
+   16. TAGS (small rounded pills)
+   ------------------------------------------------------------ */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: var(--font-micro);
+  font-weight: 500;
+  color: var(--color-secondary);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+}
+
+.tag--green  { color: var(--color-accent-green); border-color: rgba(45, 90, 39, 0.25); background: rgba(45, 90, 39, 0.06); }
+.tag--wood   { color: var(--color-wood);         border-color: rgba(139, 105, 20, 0.25); background: rgba(139, 105, 20, 0.06); }
+.tag--blue   { color: var(--color-edit-blue);    border-color: rgba(74, 144, 217, 0.25); background: rgba(74, 144, 217, 0.06); }
+
+
+/* ------------------------------------------------------------
+   17. PHOTO SLIDER (CSS scroll-snap)
+   ------------------------------------------------------------ */
+.photo-slider {
+  display: flex;
+  gap: var(--sp-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: var(--sp-4);
+}
+
+.photo-slider::-webkit-scrollbar { display: none; }
+
+.photo-slider__item {
+  flex: 0 0 auto;
+  width: 80%;
+  max-width: 720px;
+  scroll-snap-align: start;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-border-light);
+}
+
+.photo-slider__item img {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.photo-slider__dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: var(--sp-4);
+}
+
+.photo-slider__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-border);
+  transition: background var(--ease);
+}
+
+.photo-slider__dot.is-active {
+  background: var(--color-text);
+}
+
+
+/* ------------------------------------------------------------
+   18. INFO TABLE (label / value pairs — project detail)
+   ------------------------------------------------------------ */
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table tr {
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.info-table th,
+.info-table td {
+  padding: var(--sp-4) 0;
+  font-size: var(--font-body);
+  text-align: left;
+  vertical-align: top;
+}
+
+.info-table th {
+  width: 160px;
+  font-weight: 500;
+  color: var(--color-tertiary);
+  white-space: nowrap;
+  padding-right: var(--sp-8);
+}
+
+.info-table td {
+  color: var(--color-text);
+}
+
+
+/* ------------------------------------------------------------
+   19. KNOWLEDGE ENTRIES (timeline, type badges)
+   ------------------------------------------------------------ */
+.knowledge-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-8);
+}
+
+.knowledge-entry {
+  position: relative;
+  padding-left: var(--sp-12);
+  border-left: 2px solid var(--color-border);
+}
+
+.knowledge-entry::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: 2px solid var(--color-bg);
+}
+
+.knowledge-entry__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-2);
+}
+
+.knowledge-entry__date {
+  font-size: var(--font-caption);
+  color: var(--color-tertiary);
+}
+
+.knowledge-entry__body {
+  font-size: var(--font-body);
+  color: var(--color-secondary);
+  line-height: var(--line-height);
+}
+
+/* Type badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  font-size: var(--font-micro);
+  font-weight: 600;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge--progress { color: var(--color-accent-green); background: rgba(45, 90, 39, 0.1); }
+.badge--trouble  { color: #b44d1e;                   background: rgba(180, 77, 30, 0.1); }
+.badge--howto    { color: var(--color-edit-blue);     background: rgba(74, 144, 217, 0.1); }
+.badge--spec     { color: var(--color-wood);          background: rgba(139, 105, 20, 0.1); }
+
+
+/* ------------------------------------------------------------
+   20. MODAL OVERLAY
+   ------------------------------------------------------------ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ease);
+}
+
+.modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  position: relative;
+  width: 90%;
+  max-width: 960px;
+  max-height: 90vh;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  overflow-y: auto;
+  transform: translateY(16px);
+  transition: transform var(--ease);
+}
+
+.modal-overlay.is-open .modal {
+  transform: translateY(0);
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--sp-8);
+  right: var(--sp-8);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--color-tertiary);
+  background: var(--color-bg);
+  border-radius: 50%;
+  transition: color var(--ease), background var(--ease);
+  z-index: 1;
+}
+
+.modal__close:hover {
+  color: var(--color-text);
+  background: var(--color-border);
+}
+
+
+/* ------------------------------------------------------------
+   21. EDIT MODE INDICATORS
+   ------------------------------------------------------------ */
+.editable {
+  position: relative;
+  transition: background var(--ease);
+}
+
+.editable:hover {
+  background: rgba(74, 144, 217, 0.04);
+}
+
+.editable__icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  color: var(--color-edit-blue);
+  opacity: 0;
+  transition: opacity var(--ease);
+}
+
+.editable:hover .editable__icon { opacity: 1; }
+
+.is-edited {
+  border-left: 3px solid var(--color-edit-blue);
+  padding-left: var(--sp-4);
+  background: rgba(74, 144, 217, 0.03);
+}
+
+
+/* ------------------------------------------------------------
+   22. BACK BUTTON
+   ------------------------------------------------------------ */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-4) 0;
+  font-size: var(--font-body);
+  font-weight: 500;
+  color: var(--color-secondary);
+  transition: color var(--ease);
+}
+
+.back-btn:hover { color: var(--color-text); }
+
+.back-btn__arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform var(--ease);
+}
+
+.back-btn:hover .back-btn__arrow {
+  transform: translateX(-3px);
+}
+
+
+/* ------------------------------------------------------------
+   23. EMPTY STATE
+   ------------------------------------------------------------ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-48) var(--sp-12);
+  text-align: center;
+}
+
+.empty-state__icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--sp-8);
+  color: var(--color-tertiary);
+  opacity: 0.5;
+}
+
+.empty-state__title {
+  font-size: var(--font-h3);
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin-bottom: var(--sp-2);
+}
+
+.empty-state__text {
+  font-size: var(--font-body);
+  color: var(--color-tertiary);
+  max-width: 360px;
+}
+
+
+/* ------------------------------------------------------------
+   24. UTILITY CLASSES
+   ------------------------------------------------------------ */
+.text-secondary  { color: var(--color-secondary); }
+.text-tertiary   { color: var(--color-tertiary); }
+.text-caption    { font-size: var(--font-caption); }
+.text-micro      { font-size: var(--font-micro); }
+.font-bold       { font-weight: 700; }
+.font-medium     { font-weight: 500; }
+.flex            { display: flex; }
+.flex-col        { flex-direction: column; }
+.items-center    { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-4           { gap: var(--sp-4); }
+.gap-8           { gap: var(--sp-8); }
+.gap-12          { gap: var(--sp-12); }
+.mt-8            { margin-top: var(--sp-8); }
+.mt-12           { margin-top: var(--sp-12); }
+.mt-16           { margin-top: var(--sp-16); }
+.mb-8            { margin-bottom: var(--sp-8); }
+.mb-12           { margin-bottom: var(--sp-12); }
+.mb-16           { margin-bottom: var(--sp-16); }
+
+
+/* ------------------------------------------------------------
+   25. RESPONSIVE — max 768px
+   ------------------------------------------------------------ */
+@media (max-width: 768px) {
+  :root {
+    --content-padding: 16px;
+    --font-hero: 32px;
+    --font-h1:   22px;
+    --font-h2:   17px;
+  }
+
+  .header { padding: 0 var(--content-padding); }
+  .nav    { padding: 0 var(--content-padding); gap: var(--sp-8); }
+
+  .card-grid--projects,
+  .card-grid--furniture,
+  .card-grid--materials {
+    grid-template-columns: 1fr;
+  }
+
+  .info-table th {
+    display: block;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  .info-table td {
+    display: block;
+    padding-top: var(--sp-2);
+  }
+
+  .photo-slider__item {
+    width: 92%;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: 100vh;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    margin-top: auto;
+  }
+
+  .knowledge-entry {
+    padding-left: var(--sp-8);
+  }
+}
