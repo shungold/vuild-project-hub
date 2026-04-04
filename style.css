@@ -1192,6 +1192,13 @@ ul, ol { list-style: none; }
   line-height: 1.8;
 }
 
+.detail-section-sub {
+  font-size: var(--font-caption);
+  color: var(--color-tertiary);
+  margin-top: -12px;
+  margin-bottom: var(--sp-8);
+}
+
 /* --- Sidebar Spec Card --- */
 .detail-sidebar {
   position: sticky;

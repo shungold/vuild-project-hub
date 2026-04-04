@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VUILD — Project Detail</title>
-<link rel="stylesheet" href="../../style.css?v=3">
+<link rel="stylesheet" href="../../style.css?v=4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -44,15 +44,16 @@
         <div class="detail-gallery" id="detail-gallery"></div>
       </div>
 
-      <!-- Furniture -->
+      <!-- VUILD Furniture -->
       <div class="detail-section" id="section-furniture" style="display:none">
         <h2 class="detail-section-title">VUILD FURNITURE</h2>
         <div class="detail-furniture-grid" id="detail-furniture"></div>
       </div>
 
-      <!-- Materials / Hardware -->
+      <!-- Architectural Materials (建築系素材・金物のみ) -->
       <div class="detail-section" id="section-materials" style="display:none">
-        <h2 class="detail-section-title">MATERIALS / HARDWARE</h2>
+        <h2 class="detail-section-title">MATERIALS</h2>
+        <p class="detail-section-sub">建築・内装に使われた素材・金物</p>
         <div style="overflow-x:auto">
           <table class="material-table" id="detail-materials">
             <thead>
@@ -63,7 +64,7 @@
         </div>
       </div>
 
-      <!-- Knowledge -->
+      <!-- Design Knowledge (設計系ナレッジのみ) -->
       <div class="detail-section" id="section-knowledge" style="display:none">
         <h2 class="detail-section-title">KNOWLEDGE</h2>
         <div class="knowledge-timeline" id="detail-knowledge"></div>
@@ -72,12 +73,19 @@
 
     <!-- Sidebar -->
     <div class="detail-sidebar">
+      <!-- Project Info -->
       <div class="spec-card">
         <div class="spec-card-header">
           <h3>Project Info</h3>
           <span class="badge" id="spec-status"></span>
         </div>
         <div class="spec-card-body" id="spec-body"></div>
+      </div>
+
+      <!-- Cost -->
+      <div class="spec-card" style="margin-top:16px" id="cost-card" style="display:none">
+        <div class="spec-card-header"><h3>Cost</h3></div>
+        <div class="spec-card-body" id="cost-body"></div>
       </div>
 
       <!-- Team -->
@@ -98,12 +106,11 @@
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<script src="../../common.js?v=3"></script>
+<script src="../../common.js?v=4"></script>
 <script>
 DataLoader.basePath = '../../';
 const BASE = DataLoader.basePath;
 
-// Get project ID from folder name
 const pathParts = location.pathname.split('/').filter(Boolean);
 const projectId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
 
@@ -125,11 +132,9 @@ async function init() {
     }
 
     document.title = `VUILD — ${project.name}`;
-
-    // Header
     document.getElementById('header-title').textContent = project.name;
 
-    // Hero
+    // ── Hero ──
     const heroEl = document.getElementById('detail-hero');
     if (project.hero_photos && project.hero_photos.length) {
       heroEl.innerHTML = `
@@ -147,22 +152,23 @@ async function init() {
         </div>`;
     }
 
-    // Description
-    document.getElementById('detail-description').textContent = project.description || '（説明はまだ登録されていません）';
+    // ── Description ──
+    document.getElementById('detail-description').textContent =
+      project.description || '（説明はまだ登録されていません）';
 
-    // Status badge
+    // ── Status badge ──
     const statusEl = document.getElementById('spec-status');
     statusEl.textContent = getStatusLabel(project.status);
     statusEl.className = 'badge badge-' + (project.status || '');
 
-    // Spec card
+    // ── Spec card ──
     const specs = [
       ['案件番号', project.pid],
       ['クライアント', project.client],
       ['カテゴリ', project.category],
       ['所在地', project.location],
       ['構造', project.structure],
-      ['面積', project.area_sqm ? project.area_sqm + ' m²' : null],
+      ['面積', project.area_sqm ? project.area_sqm + ' m\u00B2' : null],
       ['竣工', project.completion_date],
       ['最終更新', project.updated_at]
     ].filter(([,v]) => v);
@@ -174,7 +180,24 @@ async function init() {
       </div>`
     ).join('');
 
-    // Team
+    // ── Cost card (プロジェクト予算) ──
+    const costCard = document.getElementById('cost-card');
+    const co = project.cost_overview || {};
+    if (co.total) {
+      costCard.style.display = '';
+      const costRows = [
+        ['プロジェクト予算', formatPrice(co.total)],
+      ];
+      if (co.design_fee) costRows.push(['設計費', formatPrice(co.design_fee)]);
+      if (co.fabrication_fee) costRows.push(['制作費', formatPrice(co.fabrication_fee)]);
+      document.getElementById('cost-body').innerHTML = costRows.map(([l,v]) =>
+        `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${v}</span></div>`
+      ).join('');
+    } else {
+      costCard.style.display = 'none';
+    }
+
+    // ── Team ──
     document.getElementById('detail-team').innerHTML = (project.team || []).map(m =>
       `<div class="team-member">
         <div class="team-avatar">${esc(m.name[0])}</div>
@@ -183,12 +206,12 @@ async function init() {
       </div>`
     ).join('');
 
-    // Tags
+    // ── Tags ──
     document.getElementById('detail-tags').innerHTML = (project.tags || []).map(t =>
       `<span class="tag">${esc(t)}</span>`
     ).join('');
 
-    // Photos (hero_photos + gallery_photos)
+    // ── Photos ──
     const allPhotos = [
       ...(project.hero_photos || []),
       ...(project.gallery_photos || [])
@@ -202,7 +225,7 @@ async function init() {
       ).join('');
     }
 
-    // Furniture
+    // ── VUILD Furniture cards → furniture detail へリンク ──
     const furnitureItems = (furnData.furniture || []).filter(f =>
       (project.furniture_ids || []).includes(f.id)
     );
@@ -223,14 +246,14 @@ async function init() {
       }).join('');
     }
 
-    // Materials
-    const materialItems = (matData.materials || []).filter(m =>
-      (project.material_ids || []).includes(m.id)
+    // ── Materials: 建築系(architectural)のみ表示 ──
+    const archMaterials = (matData.materials || []).filter(m =>
+      (project.material_ids || []).includes(m.id) && m.type === 'architectural'
     );
-    if (materialItems.length > 0) {
+    if (archMaterials.length > 0) {
       document.getElementById('section-materials').style.display = '';
       document.getElementById('detail-materials').querySelector('tbody').innerHTML =
-        materialItems.map(m => `
+        archMaterials.map(m => `
           <tr>
             <td class="mat-name">${esc(m.name)}</td>
             <td>${esc(m.product_code || '-')}</td>
@@ -241,13 +264,13 @@ async function init() {
         ).join('');
     }
 
-    // Knowledge
-    const knowledgeItems = (knowData.entries || []).filter(k =>
-      k.project_id === projectId || k.linked_id === projectId
+    // ── Knowledge: 設計系(design)のみ表示 ──
+    const designKnowledge = (knowData.entries || []).filter(k =>
+      (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design'
     );
-    if (knowledgeItems.length > 0) {
+    if (designKnowledge.length > 0) {
       document.getElementById('section-knowledge').style.display = '';
-      document.getElementById('detail-knowledge').innerHTML = knowledgeItems.map(k => {
+      document.getElementById('detail-knowledge').innerHTML = designKnowledge.map(k => {
         const info = getKnowledgeTypeInfo(k.type);
         return `
           <div class="knowledge-entry">
@@ -268,7 +291,6 @@ async function init() {
   }
 }
 
-// Lightbox
 function openLightbox(src) {
   document.getElementById('lightbox-img').src = src;
   document.getElementById('lightbox').classList.add('is-open');
@@ -276,10 +298,7 @@ function openLightbox(src) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('is-open');
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeLightbox();
-});
-
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
