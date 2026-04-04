@@ -98,8 +98,8 @@
 DataLoader.basePath = '../../';
 const B = DataLoader.basePath;
 
-const pathParts = location.pathname.split('/').filter(Boolean);
-const projectId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+const pathParts = location.pathname.replace(/\/index\.html$/, '').split('/').filter(Boolean);
+const projectId = pathParts[pathParts.length - 1];
 
 // --- Tab switching ---
 function initDetailTabs() {

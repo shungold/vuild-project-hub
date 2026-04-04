@@ -29,10 +29,17 @@
     <p class="detail-sub" id="furn-sub"></p>
   </div>
 
-  <!-- Main Photo (Rhino axonometric / product photo) -->
+  <!-- Photo + Pin Side Panel -->
   <div class="detail-photo-area" id="photo-area" style="display:none">
-    <div class="detail-photo-main" id="photo-main" onclick="openLightbox(this.querySelector('img')?.src)"></div>
-    <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+    <div class="pin-layout" id="pin-layout">
+      <div>
+        <div class="detail-photo-main" id="photo-main"></div>
+        <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+      </div>
+      <div class="pin-side-panel" id="pin-side-panel">
+        <div class="psp-label">写真のピンをクリックすると金物の詳細が表示されます</div>
+      </div>
+    </div>
   </div>
 
   <!-- Two-column -->
@@ -89,8 +96,8 @@
 DataLoader.basePath = '../../';
 const B = DataLoader.basePath;
 
-const pathParts = location.pathname.split('/').filter(Boolean);
-const furnitureId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+const pathParts = location.pathname.replace(/\/index\.html$/, '').split('/').filter(Boolean);
+const furnitureId = pathParts[pathParts.length - 1];
 
 function initDetailTabs() {
   document.querySelectorAll('.detail-tab').forEach(tab => {
@@ -104,13 +111,53 @@ function initDetailTabs() {
   });
 }
 
-function setMainPhoto(src) {
+let _furnPhotoPins = [];
+let _furnMatData = null;
+
+function setMainPhoto(src, photoIndex) {
   const main = document.getElementById('photo-main');
-  main.innerHTML = `<img src="${src}" alt="">`;
-  main.onclick = () => openLightbox(src);
+  const idx = photoIndex || 0;
+  const pinsForPhoto = _furnPhotoPins.filter(p => p.photo_index === idx);
+  let pinsHtml = pinsForPhoto.map((pin, i) =>
+    `<div class="photo-pin" style="left:${pin.x}%;top:${pin.y}%" onclick="event.stopPropagation();showFurnPinDetail(${idx},${i})">
+      <div class="pin-dot"></div>
+    </div>`
+  ).join('');
+
+  main.innerHTML = `<div class="pin-photo-container">
+    <img src="${src}" alt="" onclick="openLightbox('${src}')">
+    ${pinsHtml}
+  </div>`;
+  main.onclick = null;
   document.querySelectorAll('.detail-photo-thumb').forEach(t => {
     t.classList.toggle('is-active', t.dataset.src === src);
   });
+  document.getElementById('pin-side-panel').innerHTML =
+    '<div class="psp-label">写真のピンをクリックすると金物の詳細が表示されます</div>';
+}
+
+function showFurnPinDetail(photoIdx, pinIdx) {
+  const pin = _furnPhotoPins.filter(p => p.photo_index === photoIdx)[pinIdx];
+  if (!pin) return;
+  const panel = document.getElementById('pin-side-panel');
+  const allMats = [...((_furnMatData||{}).materials||[]), ...((_furnMatData||{}).candidates||[])];
+  const m = allMats.find(x => x.id === pin.id);
+  if (m) {
+    const href = B + 'materials/' + m.id + '/index.html';
+    panel.innerHTML = `
+      <div class="psp-label">Hardware Detail</div>
+      ${m.thumbnail_url ? '<div class="psp-thumb"><img src="' + m.thumbnail_url + '" alt=""></div>' : ''}
+      <h3>${esc(m.name)}</h3>
+      <div class="psp-meta">${esc(m.maker || '')} &middot; ${esc(m.product_code || '')}</div>
+      <div style="font-size:18px;font-weight:700;margin:4px 0">${formatPrice(m.price)}</div>
+      <div class="psp-specs">${esc(m.specs || '')}</div>
+      <div class="psp-links">
+        ${m.product_url ? '<a href="' + m.product_url + '" target="_blank">商品ページ &nearr;</a>' : ''}
+        <a href="${href}">金物詳細ページ &rarr;</a>
+      </div>`;
+  } else {
+    panel.innerHTML = `<div class="psp-label">${esc(pin.label || '')}</div>`;
+  }
 }
 
 async function init() {
@@ -135,15 +182,17 @@ async function init() {
     document.getElementById('furn-sub').textContent =
       [item.series, item.category, item.name_en].filter(Boolean).join(' — ');
 
-    // --- Photos ---
+    // --- Photos with pins ---
+    _furnMatData = matData;
+    _furnPhotoPins = item.photo_pins || [];
     const photos = [...(item.hero_photos || []), ...(item.gallery_photos || [])];
     if (photos.length) {
       document.getElementById('photo-area').style.display = '';
-      setMainPhoto(B + photos[0]);
+      setMainPhoto(B + photos[0], 0);
       if (photos.length > 1) {
-        document.getElementById('photo-thumbs').innerHTML = photos.map(src =>
-          `<div class="detail-photo-thumb${src === photos[0] ? ' is-active' : ''}"
-               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}')">
+        document.getElementById('photo-thumbs').innerHTML = photos.map((src, i) =>
+          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}"
+               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
             <img src="${B}${src}" alt="" loading="lazy">
           </div>`
         ).join('');
@@ -285,9 +334,9 @@ async function init() {
           </a>
         `).join('') + '</div>';
       }
-      // 候補(candidates)
+      // 候補(candidates) — furniture_idで紐づけ
       const candidates = (matData.candidates || []).filter(c =>
-        c.project_id === (item.id === 'baum-yatai' ? 'baum_mobile' : ''));
+        c.furniture_id === furnitureId);
       if (candidates.length) {
         hwHtml += '<h3 class="sub-title" style="margin-top:24px">検討中の候補</h3>';
         hwHtml += '<div class="hw-card-grid">' + candidates.map(c => `

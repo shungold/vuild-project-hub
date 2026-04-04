@@ -198,6 +198,13 @@
       "weight_kg": null,
       "hero_photos": ["photos/placeholders/axo-baum.svg"],
       "gallery_photos": ["photos/projects/baum_mobile/complete-01.jpg","photos/projects/baum_mobile/complete-02.jpg","photos/projects/baum_mobile/complete-03.jpg"],
+      "photo_pins": [
+        {"photo_index": 1, "x": 25, "y": 75, "id": "HW_009", "label": "509 トレーラー（ホイール）"},
+        {"photo_index": 1, "x": 50, "y": 35, "id": "HW_008", "label": "水性サンディングシーラー"},
+        {"photo_index": 1, "x": 75, "y": 55, "id": "HW_005", "label": "シリンダープッシュ錠"},
+        {"photo_index": 2, "x": 40, "y": 45, "id": "HW_004", "label": "AS下部レール"},
+        {"photo_index": 3, "x": 65, "y": 50, "id": "HW_009", "label": "509 トレーラー（ホイール）"}
+      ],
       "specs": {"material": "檜・シナ合板（CNC加工）", "finish": "BAUMグリーン塗装 + ルビオピュア", "note": "引き戸・シンク・看板一体型"},
       "hardware_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
       "production_cost": 118778,

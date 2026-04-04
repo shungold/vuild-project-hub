@@ -56,8 +56,8 @@
 DataLoader.basePath = '../../';
 const B = DataLoader.basePath;
 
-const pathParts = location.pathname.split('/').filter(Boolean);
-const materialId = pathParts[pathParts.length - 2] || pathParts[pathParts.length - 1];
+const pathParts = location.pathname.replace(/\/index\.html$/, '').split('/').filter(Boolean);
+const materialId = pathParts[pathParts.length - 1];
 
 async function init() {
   try {

@@ -116,7 +116,7 @@ async function renderProjects() {
           <span class="badge badge-${p.status}">${status}</span>
           <h3>${esc(p.name)}</h3>
           <p class="card-sub">${esc(p.pid)} — ${esc(p.client)}</p>
-          ${(p.cost_overview && p.cost_overview.total) ? '<div class="card-cost">' + formatPrice(p.cost_overview.total) + '</div>' : ''}
+          ${(p.cost_overview && p.cost_overview.total) ? '<div class="card-cost">' + formatPrice(p.cost_overview.total) + '</div>' : '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>'}
           <div class="card-tags">
             ${(p.tags || []).slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join('')}
           </div>
@@ -175,7 +175,7 @@ async function renderFurniture() {
     html += `<h2 class="sub-title">${esc(groupName)}</h2>`;
     html += `<div class="card-grid material-grid">`;
     html += items.map(f => `
-      <div class="card material-card">
+      <a href="furniture/${f.id}/index.html" class="card material-card" style="text-decoration:none">
         <div class="card-thumb-sm">
           ${(f.hero_photos && f.hero_photos[0])
             ? `<img src="${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'">`
@@ -184,9 +184,9 @@ async function renderFurniture() {
         <div class="card-body">
           <h3>${esc(f.name)}</h3>
           <p class="card-meta">${f.dimensions ? esc(f.dimensions) : ''} ${f.weight_kg ? '/ ' + f.weight_kg + 'kg' : ''}</p>
-          <p class="card-meta">${esc(f.specs?.material || '')}</p>
+          ${f.production_cost ? '<div class="card-cost">' + formatPrice(f.production_cost) + '</div>' : '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>'}
         </div>
-      </div>`).join('');
+      </a>`).join('');
     html += `</div>`;
   }
 
