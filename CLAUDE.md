@@ -85,8 +85,11 @@ fixture-drawing-previewer/
 {
   id: "K001",
   type: "progress|trouble|howto|spec",
+  scope: "design|production",  // ← 表示先を決定するフィールド
   title: "タイトル",
   content: "内容",
+  project_id: "案件ID",
+  furniture_id: "furnitureID",
   posted_by: "名前",
   channel: "#チャンネル名",
   channel_id: "CXXXXXXXXXX",
@@ -95,6 +98,15 @@ fixture-drawing-previewer/
   slack_url: ""
 }
 ```
+
+#### ナレッジ scope 振り分けルール
+
+| scope | 表示先 | 内容の例 |
+|-------|--------|---------|
+| `design` | 案件ページのみ | クライアント要件、敷地条件、設計判断、予算・コスト交渉、搬入・施工計画、運用方法、全体スケジュール |
+| `production` | furnitureページのみ | 加工方法、素材選定、CNC設定、組立手順、塗装仕上げ、トラブルシュート、金物取付、品質管理 |
+
+**判断基準**: 「この知見は他の案件でこのfurnitureを使うときに再利用できるか？」→ Yes なら `production`、No（この案件固有の話）なら `design`
 
 ### 4. Slackスタンプのマッピング
 - ✅ (white_check_mark) → hardwareCatalog に登録

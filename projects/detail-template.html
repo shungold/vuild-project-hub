@@ -292,9 +292,9 @@ async function init() {
       (project.furniture_ids || []).includes(f.id));
     const archMaterials = (matData.materials || []).filter(m =>
       (project.material_ids || []).includes(m.id) && m.type === 'architectural');
-    // 案件ページ: project_idが一致する全ナレッジを表示（scope不問）
+    // 案件ページ: design scopeのみ表示（production → furnitureページ）
     const projectKnowledge = (knowData.entries || []).filter(k =>
-      k.project_id === projectId || k.linked_id === projectId);
+      (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design');
     // 参考資料: 紐づくfurnitureのdocumentsを集約
     const allDocuments = [];
     furnitureItems.forEach(f => {
