@@ -69,6 +69,7 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
@@ -78,6 +79,7 @@ body {
   letter-spacing: var(--letter-spacing);
   color: var(--color-text);
   background: var(--color-bg);
+  overflow-x: hidden;
 }
 
 img { display: block; max-width: 100%; height: auto; }
