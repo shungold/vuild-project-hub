@@ -116,6 +116,7 @@ async function renderProjects() {
           <span class="badge badge-${p.status}">${status}</span>
           <h3>${esc(p.name)}</h3>
           <p class="card-sub">${esc(p.pid)} — ${esc(p.client)}</p>
+          ${(p.cost_overview && p.cost_overview.total) ? '<div class="card-cost">' + formatPrice(p.cost_overview.total) + '</div>' : ''}
           <div class="card-tags">
             ${(p.tags || []).slice(0, 3).map(t => `<span class="tag">${esc(t)}</span>`).join('')}
           </div>

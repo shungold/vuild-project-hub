@@ -205,8 +205,9 @@
         "檜角材+穴あけ加工": 118778
       },
       "documents": [
-        {"label": "見積書 — 市川屋（檜角材+穴あけ）", "type": "estimate", "note": "118,778円(税込) / 背割と丸穴の干渉確認中"},
-        {"label": "丸棒単価メモ", "type": "memo", "note": "市川屋 ¥6,000/本(1200mm) 納期1週間 → サイト購入の方が安い"}
+        {"label": "見積書 — 市川屋（檜角材+穴あけ）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774411800000000", "note": "118,778円(税込) / 背割と丸穴の干渉確認中"},
+        {"label": "丸棒単価メモ", "type": "memo", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774498200000000", "note": "市川屋 ¥6,000/本(1200mm) 納期1週間 → サイト購入の方が安い"},
+        {"label": "AUTOESTIMATOR概算", "type": "estimate", "url": "https://aiestimate-production.up.railway.app/", "note": "概算見積ツール"}
       ],
       "tags": ["屋台","移動式","ポップアップ","BAUM"],
       "edited": false

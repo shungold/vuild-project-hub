@@ -29,10 +29,17 @@
     <p class="detail-sub" id="project-sub"></p>
   </div>
 
-  <!-- Main Photo + Thumbnails -->
+  <!-- Photo + Pin Side Panel -->
   <div class="detail-photo-area" id="photo-area" style="display:none">
-    <div class="detail-photo-main" id="photo-main" onclick="openLightbox(this.querySelector('img')?.src)"></div>
-    <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+    <div class="pin-layout" id="pin-layout">
+      <div>
+        <div class="detail-photo-main" id="photo-main"></div>
+        <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+      </div>
+      <div class="pin-side-panel" id="pin-side-panel">
+        <div class="psp-label">写真のピンをクリックすると詳細が表示されます</div>
+      </div>
+    </div>
   </div>
 
   <!-- Two-column: Main + Sidebar -->
@@ -107,37 +114,74 @@ function initDetailTabs() {
   });
 }
 
-// --- Photo switching with pins ---
+// --- Photo switching with pins + side panel ---
 let _currentPhotoIndex = 0;
 let _photoPins = [];
+let _matData = null;
+let _furnData = null;
 
 function setMainPhoto(src, photoIndex) {
   _currentPhotoIndex = photoIndex != null ? photoIndex : 0;
   const main = document.getElementById('photo-main');
-  // Build pin-enabled photo
   const pinsForPhoto = _photoPins.filter(p => p.photo_index === _currentPhotoIndex);
-  let pinsHtml = pinsForPhoto.map(pin => {
-    const linkBase = B + (pin.type === 'furniture' ? 'furniture/' : 'materials/');
-    const href = linkBase + pin.id + '/index.html';
-    return `<div class="photo-pin" style="left:${pin.x}%;top:${pin.y}%">
+  let pinsHtml = pinsForPhoto.map((pin, i) =>
+    `<div class="photo-pin" style="left:${pin.x}%;top:${pin.y}%" onclick="event.stopPropagation();showPinDetail(${_currentPhotoIndex},${i})">
       <div class="pin-dot"></div>
-      <div class="pin-popup">
-        <h4>${esc(pin.label)}</h4>
-        <p>${pin.type === 'furniture' ? 'VUILD furniture' : '素材・金物'}</p>
-        <a href="${href}">詳細を見る &rarr;</a>
-      </div>
-    </div>`;
-  }).join('');
+    </div>`
+  ).join('');
 
   main.innerHTML = `<div class="pin-photo-container">
     <img src="${src}" alt="" onclick="openLightbox('${src}')">
     ${pinsHtml}
   </div>`;
-  main.onclick = null; // handled by img onclick
+  main.onclick = null;
 
   document.querySelectorAll('.detail-photo-thumb').forEach(t => {
     t.classList.toggle('is-active', t.dataset.src === src);
   });
+
+  // Reset side panel
+  document.getElementById('pin-side-panel').innerHTML =
+    '<div class="psp-label">写真のピンをクリックすると詳細が表示されます</div>';
+}
+
+function showPinDetail(photoIdx, pinIdx) {
+  const pin = _photoPins.filter(p => p.photo_index === photoIdx)[pinIdx];
+  if (!pin) return;
+  const panel = document.getElementById('pin-side-panel');
+
+  if (pin.type === 'material') {
+    const allMats = [...((_matData||{}).materials||[]), ...((_matData||{}).candidates||[])];
+    const m = allMats.find(x => x.id === pin.id);
+    if (m) {
+      const href = B + 'materials/' + m.id + '/index.html';
+      panel.innerHTML = `
+        <div class="psp-label">Hardware Detail</div>
+        ${m.thumbnail_url ? '<div class="psp-thumb"><img src="' + m.thumbnail_url + '" alt=""></div>' : ''}
+        <h3>${esc(m.name)}</h3>
+        <div class="psp-meta">${esc(m.maker || '')} &middot; <a href="${m.product_url || '#'}" target="_blank">商品ページ</a></div>
+        <div style="font-size:18px;font-weight:700;margin:4px 0">${formatPrice(m.price)}</div>
+        <div class="psp-specs">${esc(m.specs || '')}</div>
+        <div class="psp-links"><a href="${href}">金物詳細ページ &rarr;</a></div>`;
+      return;
+    }
+  }
+  if (pin.type === 'furniture') {
+    const f = ((_furnData||{}).furniture||[]).find(x => x.id === pin.id);
+    if (f) {
+      const href = B + 'furniture/' + f.id + '/index.html';
+      const thumb = f.hero_photos && f.hero_photos[0] ? B + f.hero_photos[0] : '';
+      panel.innerHTML = `
+        <div class="psp-label">VUILD Furniture</div>
+        ${thumb ? '<div class="psp-thumb"><img src="' + thumb + '" alt=""></div>' : ''}
+        <h3>${esc(f.name)}</h3>
+        <div class="psp-meta">${esc(f.dimensions || '')} &middot; ${esc(f.specs?.material || '')}</div>
+        <div class="psp-specs">${esc(f.description || '')}</div>
+        <div class="psp-links"><a href="${href}">furniture詳細 &rarr;</a></div>`;
+      return;
+    }
+  }
+  panel.innerHTML = `<div class="psp-label">${esc(pin.label)}</div>`;
 }
 
 async function init() {
@@ -161,6 +205,10 @@ async function init() {
     document.getElementById('project-name').textContent = project.name;
     document.getElementById('project-sub').textContent =
       [project.pid, project.client, project.location].filter(Boolean).join(' — ');
+
+    // --- Store data for pin panel ---
+    _matData = matData;
+    _furnData = furnData;
 
     // --- Photos with pins ---
     _photoPins = project.photo_pins || [];

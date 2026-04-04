@@ -45,21 +45,22 @@
         <p class="detail-description" id="furn-description"></p>
       </div>
 
-      <!-- Case Studies (導入事例) — always visible above tabs -->
-      <div class="detail-section" id="section-cases" style="display:none">
-        <h2 class="detail-section-title">Case Studies</h2>
-        <div class="detail-furniture-grid" id="furn-cases"></div>
-      </div>
-
       <!-- Tabs -->
       <div class="detail-tabs" id="detail-tabs"></div>
 
       <!-- Tab Panels -->
       <div id="tab-panels">
         <div class="detail-tab-panel" id="panel-drawings"></div>
-        <div class="detail-tab-panel" id="panel-cost"></div>
-        <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-estimate"></div>
+        <div class="detail-tab-panel" id="panel-actual"></div>
         <div class="detail-tab-panel" id="panel-hardware"></div>
+        <div class="detail-tab-panel" id="panel-knowledge"></div>
+      </div>
+
+      <!-- Case Studies (導入事例) — ページ最下部、箇条書き -->
+      <div class="detail-section" id="section-cases" style="display:none;margin-top:32px">
+        <h2 class="detail-section-title">Case Studies</h2>
+        <ul class="case-list" id="furn-cases"></ul>
       </div>
     </div>
 
@@ -184,145 +185,159 @@ async function init() {
       `<span class="tag">${esc(t)}</span>`
     ).join('');
 
-    // --- Case Studies ---
-    const cases = (projData.projects || []).filter(p =>
-      (p.furniture_ids || []).includes(furnitureId));
-    if (cases.length) {
-      document.getElementById('section-cases').style.display = '';
-      document.getElementById('furn-cases').innerHTML = cases.map(p => {
-        const thumb = (p.hero_photos && p.hero_photos[0])
-          ? `<img src="${B}${p.hero_photos[0]}" alt="${esc(p.name)}" loading="lazy">`
-          : `<div style="font-size:18px;color:var(--color-tertiary)">${esc(p.pid || p.name[0])}</div>`;
-        return `<a href="${B}projects/${p.id}/index.html" class="furniture-link-card">
-          <div class="flc-thumb">${thumb}</div>
-          <div class="flc-body"><h4>${esc(p.name)}</h4><p>${esc(p.pid)} — ${esc(p.client)}</p></div>
-        </a>`;
-      }).join('');
-    }
-
     // --- Build Tabs ---
     const hwItems = (matData.materials || []).filter(m =>
-      (item.hardware_ids || []).includes(m.id) && m.type === 'furniture_hardware');
+      (item.hardware_ids || []).includes(m.id));
     const prodKnowledge = (knowData.entries || []).filter(k =>
       k.furniture_id === furnitureId && k.scope === 'production');
     const hasDrawings = item.drawings && item.drawings.length;
     const hasCost = item.production_cost;
-
     const hasDocs = item.documents && item.documents.length;
-    const tabs = [];
-    if (hasDrawings) tabs.push({ id: 'drawings', label: '図面', count: item.drawings.length });
-    // コストタブは常に表示（BOMインポート機能があるため）
-    tabs.push({ id: 'cost', label: 'コスト', count: null });
-    if (hwItems.length) tabs.push({ id: 'hardware', label: '金物・パーツ', count: hwItems.length });
-    if (prodKnowledge.length) tabs.push({ id: 'knowledge', label: 'ナレッジ', count: prodKnowledge.length });
 
-    if (tabs.length) {
-      document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
-        `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
-          ${t.label}${t.count != null ? '<span class="tab-count">' + t.count + '</span>' : ''}
-        </button>`
-      ).join('');
-      document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
-      initDetailTabs();
-    }
+    // Always show: 図面, 見積, 実績, 金物, ナレッジ
+    const tabs = [
+      { id: 'drawings', label: '図面', count: hasDrawings ? item.drawings.length : 0 },
+      { id: 'estimate', label: '見積', count: null },
+      { id: 'actual', label: '実績', count: null },
+      { id: 'hardware', label: '金物・パーツ', count: hwItems.length },
+      { id: 'knowledge', label: 'ナレッジ', count: prodKnowledge.length }
+    ];
 
-    // --- Drawings panel ---
-    if (hasDrawings) {
-      document.getElementById('panel-drawings').innerHTML =
-        '<div class="detail-gallery">' + item.drawings.map(d =>
+    document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
+      `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
+        ${t.label}${t.count != null ? '<span class="tab-count">' + t.count + '</span>' : ''}
+      </button>`
+    ).join('');
+    document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
+    initDetailTabs();
+
+    // --- 図面 panel (空でも表示) ---
+    document.getElementById('panel-drawings').innerHTML = hasDrawings
+      ? '<div class="detail-gallery">' + item.drawings.map(d =>
           `<div class="detail-gallery-item" onclick="openLightbox('${B}${d.src}')">
             <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
-          </div>`
-        ).join('') + '</div>';
-    }
+          </div>`).join('') + '</div>'
+      : '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
 
-    // --- Cost panel (BOMインポート + 原価 + 参考資料) ---
+    // --- 見積 panel (AUTOESTIMATOR D&D) ---
+    document.getElementById('panel-estimate').innerHTML = `
+      <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
+        AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
+        <input type="file" id="bom-file" accept=".json">
+      </div>
+      <div id="bom-result"></div>`;
+    initBomImport(hwItems);
+
+    // --- 実績 panel (手入力原価 + 参考資料) ---
     {
-      let costHtml = '';
-
-      // BOM D&D Import zone
-      costHtml += `
-        <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
-          AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
-          <input type="file" id="bom-file" accept=".json">
-        </div>
-        <div id="bom-result"></div>`;
-
-      // Existing cost data
+      let actualHtml = '';
       if (hasCost) {
-        costHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px;margin-top:16px"><div class="spec-card-header"><h3>Production Cost (手入力)</h3></div><div class="spec-card-body">';
-        costHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
+        actualHtml += '<div class="spec-card" style="max-width:400px;margin-bottom:16px"><div class="spec-card-header"><h3>Production Cost</h3></div><div class="spec-card-body">';
+        actualHtml += `<div class="spec-row"><span class="spec-label">生産原価</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>`;
         if (item.cost_breakdown) {
           for (const [k, v] of Object.entries(item.cost_breakdown)) {
-            costHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+            actualHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
           }
         }
-        costHtml += '</div></div>';
+        actualHtml += '</div></div>';
       }
-
-      // Documents
       if (hasDocs) {
-        costHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin:16px 0 8px">参考資料</h3>';
-        costHtml += '<div class="doc-list">';
+        actualHtml += '<h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--color-tertiary);margin:16px 0 8px">参考資料</h3><div class="doc-list">';
         const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
-        costHtml += item.documents.map(d => `
-          <div class="doc-item">
+        actualHtml += item.documents.map(d => {
+          const url = d.url || '#';
+          return `<a href="${url}" target="_blank" class="doc-item" style="text-decoration:none">
             <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
             <div><div class="doc-label">${esc(d.label)}</div>${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}</div>
-          </div>`).join('');
-        costHtml += '</div>';
+          </a>`;
+        }).join('');
+        actualHtml += '</div>';
       }
-
-      document.getElementById('panel-cost').innerHTML = costHtml;
-
-      // BOM import logic
-      initBomImport(hwItems);
+      if (!hasCost && !hasDocs) {
+        actualHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>';
+      }
+      document.getElementById('panel-actual').innerHTML = actualHtml;
     }
 
-    // --- Hardware panel (サムネ付きカード → 金物詳細ページへ) ---
-    if (hwItems.length) {
-      document.getElementById('panel-hardware').innerHTML =
-        '<div class="hw-card-grid">' + hwItems.map(m => `
+    // --- Hardware panel (カテゴリ分類 + カード) ---
+    {
+      const cats = {};
+      hwItems.forEach(m => {
+        const cat = m.category || 'その他';
+        if (!cats[cat]) cats[cat] = [];
+        cats[cat].push(m);
+      });
+      let hwHtml = '';
+      for (const [cat, items] of Object.entries(cats)) {
+        hwHtml += `<h3 class="sub-title">${esc(cat)}</h3>`;
+        hwHtml += '<div class="hw-card-grid">' + items.map(m => `
           <a href="${B}materials/${m.id}/index.html" class="hw-card">
             <div class="hw-card-thumb">
               ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
             </div>
             <div class="hw-card-body">
+              ${m.status === 'adopted' ? '<span class="badge badge-adopted" style="margin-bottom:4px">採用</span>' : ''}
               <h4>${esc(m.name)}</h4>
-              <div class="hw-meta">${esc(m.maker || '')} / ${esc(m.product_code || '')}</div>
+              <div class="hw-meta">${esc(m.product_code || '')} / ${esc(m.maker || '')}</div>
               <div class="hw-price">${formatPrice(m.price)}</div>
               ${m.specs ? '<div class="hw-meta">' + esc(m.specs) + '</div>' : ''}
             </div>
           </a>
         `).join('') + '</div>';
+      }
+      // 候補(candidates)
+      const candidates = (matData.candidates || []).filter(c =>
+        c.project_id === (item.id === 'baum-yatai' ? 'baum_mobile' : ''));
+      if (candidates.length) {
+        hwHtml += '<h3 class="sub-title" style="margin-top:24px">検討中の候補</h3>';
+        hwHtml += '<div class="hw-card-grid">' + candidates.map(c => `
+          <a href="${c.product_url || '#'}" target="_blank" class="hw-card" style="border-left:3px solid var(--color-wood)">
+            <div class="hw-card-thumb">
+              ${c.thumbnail_url ? `<img src="${c.thumbnail_url}" alt="${esc(c.name)}" loading="lazy">` : '<div class="hw-icon">?</div>'}
+            </div>
+            <div class="hw-card-body">
+              <span class="badge badge-pending" style="margin-bottom:4px">検討中</span>
+              <h4>${esc(c.name)}</h4>
+              <div class="hw-meta">${esc(c.maker || '')} / ${esc(c.product_code || '')}</div>
+              <div class="hw-price">${formatPrice(c.price)}</div>
+              <div class="hw-meta">${esc(c.posted_by || '')} ${c.posted_at || ''}</div>
+            </div>
+          </a>
+        `).join('') + '</div>';
+      }
+      document.getElementById('panel-hardware').innerHTML = hwHtml || '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">金物はまだ登録されていません</p>';
     }
 
-    // --- Knowledge panel (カード化 + 画像 + Slackリンク) ---
-    if (prodKnowledge.length) {
-      document.getElementById('panel-knowledge').innerHTML =
-        '<div class="hw-card-grid">' + prodKnowledge.map(k => {
-          const info = getKnowledgeTypeInfo(k.type);
-          const imgs = k.images || [];
-          const imgHtml = imgs.length
-            ? `<div class="know-images">${imgs.map(img => {
-                const src = img.startsWith('photos/') ? B + img : img;
-                return `<div class="know-img-thumb" onclick="openLightbox('${src}')"><img src="${src}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--color-tertiary)\\'>DL待</div>'"></div>`;
-              }).join('')}</div>`
-            : '';
-          const slackHtml = k.slack_url
-            ? `<a href="${k.slack_url}" target="_blank" class="know-slack-link">\u{1F4AC} Slackで見る</a>`
-            : '';
-          return `<div class="know-card">
-            <div class="know-card-header">
-              <span class="badge badge--${k.type}">${info.label}</span>
-              <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
-            </div>
-            <h4>${esc(k.title)}</h4>
-            <p>${esc(k.content || '')}</p>
-            ${imgHtml}
-            <div class="know-author">${esc(k.posted_by || '')} ${slackHtml}</div>
-          </div>`;
-        }).join('') + '</div>';
+    // --- Knowledge panel (カード + クリックでモーダル) ---
+    {
+      // Store knowledge data for modal
+      window._knowledgeData = prodKnowledge;
+      let knowHtml = '<div class="hw-card-grid">' + prodKnowledge.map((k, idx) => {
+        const info = getKnowledgeTypeInfo(k.type);
+        const imgs = k.images || [];
+        const imgCount = imgs.length;
+        return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
+          <div class="know-card-header">
+            <span class="badge badge--${k.type}">${info.label}</span>
+            <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
+          </div>
+          <h4>${esc(k.title)}</h4>
+          <p>${esc(k.content || '')}</p>
+          ${imgCount ? '<div style="font-size:10px;color:var(--color-edit-blue);margin-top:4px">\u{1F4F7} ' + imgCount + '枚の画像</div>' : ''}
+          <div class="know-author">${esc(k.posted_by || '')}</div>
+        </div>`;
+      }).join('') + '</div>';
+      document.getElementById('panel-knowledge').innerHTML = knowHtml;
+    }
+
+    // --- Case Studies (箇条書き、ページ最下部) ---
+    const cases = (projData.projects || []).filter(p =>
+      (p.furniture_ids || []).includes(furnitureId));
+    if (cases.length) {
+      document.getElementById('section-cases').style.display = '';
+      document.getElementById('furn-cases').innerHTML = cases.map(p =>
+        `<li><a href="${B}projects/${p.id}/index.html">${esc(p.name)}</a><span class="case-meta">${esc(p.pid)} — ${esc(p.client)} — ${esc(p.location || '')}</span></li>`
+      ).join('');
     }
 
   } catch (e) {
@@ -457,6 +472,33 @@ function renderBom(data, hwItems) {
   document.getElementById('bom-dropzone').style.display = 'none';
 }
 
+// --- Knowledge Modal ---
+function openKnowledgeModal(idx) {
+  const k = window._knowledgeData[idx];
+  if (!k) return;
+  const info = getKnowledgeTypeInfo(k.type);
+  const imgs = k.images || [];
+  const imgsHtml = imgs.length ? `<div class="know-modal-images">${imgs.map(img => {
+    const src = img.startsWith('photos/') ? B + img : img;
+    return `<img src="${src}" alt="" onclick="openLightbox('${src}')" loading="lazy">`;
+  }).join('')}</div>` : '';
+  const modal = document.createElement('div');
+  modal.className = 'know-modal-overlay is-open';
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `<div class="know-modal">
+    <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+    <span class="badge badge--${k.type}">${info.label}</span>
+    <h2>${esc(k.title)}</h2>
+    <div class="know-modal-content">${esc(k.content || '')}</div>
+    ${imgsHtml}
+    <div class="know-modal-footer">
+      <span>${esc(k.posted_by || '')} — ${formatDate(k.date)}</span>
+      ${k.slack_url ? '<a href="' + k.slack_url + '" target="_blank" style="color:var(--color-edit-blue)">\u{1F4AC} Slackで見る</a>' : ''}
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
 function openLightbox(src) {
   if (!src) return;
   document.getElementById('lightbox-img').src = src;
@@ -465,7 +507,12 @@ function openLightbox(src) {
 function closeLightbox() {
   document.getElementById('lightbox').classList.remove('is-open');
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+    document.querySelectorAll('.know-modal-overlay').forEach(m => m.remove());
+  }
+});
 document.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
