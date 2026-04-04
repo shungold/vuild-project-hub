@@ -248,6 +248,9 @@ async function init() {
       PinEditor.init('furniture', furnitureId, _furnPhotoPins,
         allHwForPins.map(m => ({ type: 'material', id: m.id, label: m.name }))
       );
+      // Reload pins from localStorage (includes user edits)
+      _furnPhotoPins = PinEditor.loadPins(_furnPhotoPins);
+      if (photos.length) setMainPhoto(B + photos[0], 0);
       document.getElementById('pin-editor-bar').style.display = '';
     }
 
@@ -567,6 +570,20 @@ function openKnowledgeModal(idx) {
     </div>
   </div>`;
   document.body.appendChild(modal);
+}
+
+// Called by PinEditor after pin add/delete to refresh pin display
+function refreshCurrentPhoto() {
+  const photos = [];
+  document.querySelectorAll('.detail-photo-thumb[data-src]').forEach(t => {
+    photos.push(t.dataset.src);
+  });
+  const idx = photos.findIndex(s => document.querySelector('.detail-photo-thumb.is-active')?.dataset.src === s);
+  const currentIdx = idx >= 0 ? idx : 0;
+  if (photos[currentIdx]) {
+    _furnPhotoPins = PinEditor.pins || _furnPhotoPins;
+    setMainPhoto(photos[currentIdx], currentIdx);
+  }
 }
 
 function openLightbox(src) {

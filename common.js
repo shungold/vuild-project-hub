@@ -691,20 +691,51 @@ const PinEditor = {
     const [linkedType, linkedId] = select.value.split(':');
     const label = labelInput.value || select.options[select.selectedIndex].text.replace(/^\[.\] /, '');
 
+    // Save to local pins array + localStorage
+    const newPin = {
+      photo_index: this.currentPhotoIndex, x, y,
+      type: linkedType, id: linkedId, label
+    };
+    this.pins.push(newPin);
+    this.savePins();
+
+    // Record for Claude sync
     WebEditor.addPin(this.entityType, this.entityId, this.currentPhotoIndex, x, y, linkedType, linkedId, label);
 
-    // Close dialog
+    // Close dialog & refresh photo to show pin
     document.querySelector('.know-modal-overlay')?.remove();
+    if (typeof refreshCurrentPhoto === 'function') refreshCurrentPhoto();
+  },
 
-    // Visual feedback
-    const container = document.querySelector('.pin-photo-container');
-    if (container) {
-      const pin = document.createElement('div');
-      pin.className = 'photo-pin';
-      pin.style.cssText = `left:${x}%;top:${y}%`;
-      pin.innerHTML = '<div class="pin-dot" style="background:var(--color-edit-blue)"></div>';
-      container.appendChild(pin);
+  /** ピン削除 */
+  deletePin(photoIndex, pinIdx) {
+    const pinsForPhoto = this.pins.filter(p => p.photo_index === photoIndex);
+    const pin = pinsForPhoto[pinIdx];
+    if (!pin) return;
+    this.pins = this.pins.filter(p => p !== pin);
+    this.savePins();
+    WebEditor.removePin(this.entityType, this.entityId, photoIndex, pinIdx);
+    if (typeof refreshCurrentPhoto === 'function') refreshCurrentPhoto();
+  },
+
+  /** localStorageにピンを保存 */
+  savePins() {
+    const key = `vuild_pins_${this.entityType}_${this.entityId}`;
+    localStorage.setItem(key, JSON.stringify(this.pins));
+  },
+
+  /** localStorageからピンを読み込み（データのピンとマージ） */
+  loadPins(dataPins) {
+    const key = `vuild_pins_${this.entityType}_${this.entityId}`;
+    const saved = localStorage.getItem(key);
+    if (saved) {
+      try {
+        this.pins = JSON.parse(saved);
+        return this.pins;
+      } catch {}
     }
+    this.pins = [...dataPins];
+    return this.pins;
   }
 };
 

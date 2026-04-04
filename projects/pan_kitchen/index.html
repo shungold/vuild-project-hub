@@ -220,7 +220,7 @@ async function init() {
     _matData = matData;
     _furnData = furnData;
 
-    // --- Photos with pins ---
+    // --- Photos with pins (PinEditor.loadPins merges localStorage edits) ---
     _photoPins = project.photo_pins || [];
     const photos = [...(project.hero_photos || []), ...(project.gallery_photos || [])];
     document.getElementById('photo-area').style.display = '';
@@ -379,6 +379,9 @@ async function init() {
     ];
     if (pinLinkOptions.length) {
       PinEditor.init('project', projectId, _photoPins, pinLinkOptions);
+      // Reload pins from localStorage (includes user edits)
+      _photoPins = PinEditor.loadPins(_photoPins);
+      if (photos.length) setMainPhoto(B + photos[0], 0);
       document.getElementById('pin-editor-bar').style.display = '';
     }
 
@@ -397,6 +400,18 @@ async function init() {
     console.error(e);
     document.querySelector('.detail-container').innerHTML =
       '<p style="padding:40px;color:red">Error: ' + e.message + '</p>';
+  }
+}
+
+// Called by PinEditor after pin add/delete to refresh pin display
+function refreshCurrentPhoto() {
+  const photos = [];
+  document.querySelectorAll('.detail-photo-thumb[data-src]').forEach(t => {
+    photos.push(t.dataset.src);
+  });
+  if (photos[_currentPhotoIndex]) {
+    _photoPins = PinEditor.pins || _photoPins;
+    setMainPhoto(photos[_currentPhotoIndex], _currentPhotoIndex);
   }
 }
 
