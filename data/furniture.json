@@ -179,7 +179,7 @@
       "dimensions": "W1800×D500×H450",
       "weight_kg": 30,
       "hero_photos": ["photos/placeholders/axo-namunami.svg"],
-      "gallery_photos": ["photos/furniture/namunami-bench/onomichi.jpg"],
+      "gallery_photos": ["photos/furniture/namunami-bench/onomichi-11.jpg","photos/furniture/namunami-bench/onomichi-14.jpg","photos/furniture/namunami-bench/onomichi-15.jpg","photos/furniture/namunami-bench/onomichi-05.jpg","photos/furniture/namunami-bench/onomichi-06.jpg","photos/furniture/namunami-bench/onomichi.jpg"],
       "specs": {"material": "構造用合板 積層", "finish": "ウレタン塗装", "note": "5軸CNC加工による曲面形状"},
       "hardware_ids": [],
       "tags": ["ベンチ","CNC","曲面","5軸"],
