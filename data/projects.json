@@ -32,7 +32,7 @@
       "material_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
       "slack_channel_id": "C09V70VFF96",
       "slack_channel_name": "#3040_baum移動式什器",
-      "cost_overview": {"total": null, "estimate_pdf": null},
+      "cost_overview": {"total": 3582700, "design_fee": 1000000, "fabrication_fee": 2582700, "estimate_date": "2026-03-19", "estimate_source": "260319_概算見積もり_BAUM移動型什器"},
       "tags": ["什器","移動式","ポップアップ","BAUM","檜","シナ合板"],
       "updated_at": "2026-04-03",
       "edited": false

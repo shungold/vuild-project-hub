@@ -29,6 +29,13 @@
     <p class="detail-sub" id="furn-sub"></p>
   </div>
 
+  <!-- Pin Editor Bar -->
+  <div class="pin-editor-bar" id="pin-editor-bar" style="display:none">
+    <span>ピン編集モード</span>
+    <button class="pin-edit-toggle" id="pin-edit-toggle" onclick="PinEditor.toggle()">編集ON</button>
+    <span style="font-size:10px;color:var(--color-tertiary)">写真をクリックしてピンを追加</span>
+  </div>
+
   <!-- Photo + Pin Side Panel -->
   <div class="detail-photo-area" id="photo-area" style="display:none">
     <div class="pin-layout" id="pin-layout">
@@ -233,6 +240,16 @@ async function init() {
     document.getElementById('furn-tags').innerHTML = (item.tags || []).map(t =>
       `<span class="tag">${esc(t)}</span>`
     ).join('');
+
+    // --- Pin Editor init ---
+    const allHwForPins = (matData.materials || []).filter(m =>
+      (item.hardware_ids || []).includes(m.id));
+    if (allHwForPins.length) {
+      PinEditor.init('furniture', furnitureId, _furnPhotoPins,
+        allHwForPins.map(m => ({ type: 'material', id: m.id, label: m.name }))
+      );
+      document.getElementById('pin-editor-bar').style.display = '';
+    }
 
     // --- Build Tabs ---
     const hwItems = (matData.materials || []).filter(m =>

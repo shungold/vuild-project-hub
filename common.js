@@ -608,6 +608,107 @@ const WebEditor = {
 };
 
 /* ============================================================
+   8. Pin Editor — 写真上のピン編集
+   ============================================================ */
+const PinEditor = {
+  isEditing: false,
+  entityType: null,
+  entityId: null,
+  currentPhotoIndex: 0,
+  pins: [],
+  linkOptions: [], // [{type, id, label}]
+
+  /** 編集モードの初期化 */
+  init(entityType, entityId, pins, linkOptions) {
+    this.entityType = entityType;
+    this.entityId = entityId;
+    this.pins = [...pins];
+    this.linkOptions = linkOptions;
+  },
+
+  /** 編集モードのトグル */
+  toggle() {
+    this.isEditing = !this.isEditing;
+    const container = document.querySelector('.pin-photo-container');
+    if (container) {
+      container.classList.toggle('pin-editor-mode', this.isEditing);
+    }
+    const btn = document.getElementById('pin-edit-toggle');
+    if (btn) btn.classList.toggle('is-active', this.isEditing);
+
+    if (this.isEditing) {
+      // Add click handler on photo to add pins
+      const img = document.querySelector('.pin-photo-container img');
+      if (img) {
+        img.style.cursor = 'crosshair';
+        img._pinClickHandler = e => {
+          const rect = img.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+          const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+          this.showAddPinDialog(parseFloat(x), parseFloat(y));
+        };
+        img.addEventListener('click', img._pinClickHandler);
+      }
+    } else {
+      const img = document.querySelector('.pin-photo-container img');
+      if (img && img._pinClickHandler) {
+        img.removeEventListener('click', img._pinClickHandler);
+        img.style.cursor = 'pointer';
+      }
+    }
+  },
+
+  /** ピン追加ダイアログ */
+  showAddPinDialog(x, y) {
+    const options = this.linkOptions.map(o =>
+      `<option value="${o.type}:${o.id}">${o.type === 'furniture' ? '[F] ' : '[M] '}${o.label}</option>`
+    ).join('');
+
+    const dialog = document.createElement('div');
+    dialog.className = 'know-modal-overlay is-open';
+    dialog.onclick = e => { if (e.target === dialog) dialog.remove(); };
+    dialog.innerHTML = `<div class="know-modal" style="max-width:360px;padding:20px">
+      <h2 style="font-size:16px;margin-bottom:12px">ピンを追加</h2>
+      <p style="font-size:12px;color:var(--color-tertiary);margin-bottom:8px">位置: (${x}%, ${y}%)</p>
+      <select id="pin-link-select" style="width:100%;padding:8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin-bottom:8px">
+        <option value="">リンク先を選択...</option>
+        ${options}
+      </select>
+      <input id="pin-label-input" type="text" placeholder="ラベル（任意）" style="width:100%;padding:8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin-bottom:12px">
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button onclick="this.closest('.know-modal-overlay').remove()" style="padding:6px 14px;font-size:12px;border:1px solid var(--color-border);border-radius:4px;cursor:pointer;background:var(--color-surface)">キャンセル</button>
+        <button onclick="PinEditor.confirmAdd(${x},${y})" style="padding:6px 14px;font-size:12px;background:var(--color-text);color:#fff;border:none;border-radius:4px;cursor:pointer">追加</button>
+      </div>
+    </div>`;
+    document.body.appendChild(dialog);
+  },
+
+  /** ピン追加確定 */
+  confirmAdd(x, y) {
+    const select = document.getElementById('pin-link-select');
+    const labelInput = document.getElementById('pin-label-input');
+    if (!select.value) return;
+    const [linkedType, linkedId] = select.value.split(':');
+    const label = labelInput.value || select.options[select.selectedIndex].text.replace(/^\[.\] /, '');
+
+    WebEditor.addPin(this.entityType, this.entityId, this.currentPhotoIndex, x, y, linkedType, linkedId, label);
+
+    // Close dialog
+    document.querySelector('.know-modal-overlay')?.remove();
+
+    // Visual feedback
+    const container = document.querySelector('.pin-photo-container');
+    if (container) {
+      const pin = document.createElement('div');
+      pin.className = 'photo-pin';
+      pin.style.cssText = `left:${x}%;top:${y}%`;
+      pin.innerHTML = '<div class="pin-dot" style="background:var(--color-edit-blue)"></div>';
+      container.appendChild(pin);
+    }
+  }
+};
+
+/* ============================================================
    初期化: ページ読み込み時にバッジ + 同期バーを更新
    ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {

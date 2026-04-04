@@ -29,6 +29,13 @@
     <p class="detail-sub" id="project-sub"></p>
   </div>
 
+  <!-- Pin Editor Bar -->
+  <div class="pin-editor-bar" id="pin-editor-bar" style="display:none">
+    <span>ピン編集モード</span>
+    <button class="pin-edit-toggle" id="pin-edit-toggle" onclick="PinEditor.toggle()">編集ON</button>
+    <span style="font-size:10px;color:var(--color-tertiary)">写真をクリックしてピンを追加</span>
+  </div>
+
   <!-- Photo + Pin Side Panel -->
   <div class="detail-photo-area" id="photo-area" style="display:none">
     <div class="pin-layout" id="pin-layout">
@@ -362,6 +369,17 @@ async function init() {
             <div class="know-author">${esc(k.posted_by || '')} ${slackHtml}</div>
           </div>`;
         }).join('') + '</div>';
+    }
+
+    // --- Pin Editor init ---
+    const pinLinkOptions = [
+      ...furnitureItems.map(f => ({ type: 'furniture', id: f.id, label: f.name })),
+      ...(matData.materials || []).filter(m => (project.material_ids || []).includes(m.id))
+        .map(m => ({ type: 'material', id: m.id, label: m.name }))
+    ];
+    if (pinLinkOptions.length) {
+      PinEditor.init('project', projectId, _photoPins, pinLinkOptions);
+      document.getElementById('pin-editor-bar').style.display = '';
     }
 
     // --- Drawings panel ---

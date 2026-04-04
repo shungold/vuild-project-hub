@@ -69,6 +69,28 @@
       <h2 class="sub-title">検討中の候補</h2>
       <div class="card-grid material-grid" id="candidate-grid"></div>
     </div>
+
+    <!-- Slack Scan Rules + Rescan -->
+    <div style="margin-top:48px;padding:24px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-sm)">
+      <h2 class="sub-title">Slackスタンプルール</h2>
+      <p style="font-size:12px;color:var(--color-tertiary);margin-bottom:12px">金物スレッドで以下のスタンプを押すと、次回スキャン時に自動分類されます</p>
+      <table style="font-size:13px;width:100%;max-width:500px;border-collapse:collapse">
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x2705; white_check_mark</td><td>→ <strong>採用</strong>（金物カタログに登録）</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x1F50D; mag</td><td>→ <strong>検討中</strong>（候補に追加）</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x274C; x</td><td>→ <strong>不採用</strong>（候補から除外）</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x1F4B0; moneybag</td><td>→ <strong>発注済み</strong></td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x1F4DD; memo</td><td>→ ナレッジ（経過メモ）</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x26A0;&#xFE0F; warning</td><td>→ ナレッジ（トラブル）</td></tr>
+        <tr style="border-bottom:1px solid var(--color-border-light)"><td style="padding:6px 0">&#x1F4A1; bulb</td><td>→ ナレッジ（ハウツー）</td></tr>
+        <tr><td style="padding:6px 0">&#x1F6A9; flag</td><td>→ ナレッジ（仕様決定）</td></tr>
+      </table>
+      <div style="margin-top:16px">
+        <button onclick="requestRescan()" class="model-dl-btn" style="background:var(--color-text);color:#fff;border-color:var(--color-text)">
+          &#x1F504; 再スキャン依頼
+        </button>
+        <span id="rescan-status" style="font-size:11px;color:var(--color-tertiary);margin-left:8px"></span>
+      </div>
+    </div>
   </section>
 
 </main>
@@ -267,6 +289,25 @@ function renderMaterialCardHTML(m) {
         <p class="card-meta card-specs">${esc(m.specs || '')}</p>
       </div>
     </a>`;
+}
+
+// ============ Rescan ============
+function requestRescan() {
+  const request = {
+    type: 'rescan_request',
+    timestamp: new Date().toISOString(),
+    channels: [
+      { id: 'C09V70VFF96', name: '#3040_baum移動式什器' },
+      { id: 'C0AFAFBC8AH', name: '#1141_人の森' },
+      { id: 'C09D1N2CEM8', name: '#1127_東京建物' },
+      { id: 'C09455EDRJN', name: '#1125_pan門真' },
+      { id: 'C05AYV4KG3E', name: '#393_楽天optimism' },
+      { id: 'C07K02J6SUE', name: '#3035_尾道' }
+    ]
+  };
+  WebEditor.addChange('rescan_request', request);
+  document.getElementById('rescan-status').textContent =
+    '依頼済み — 次回Claudeセッションで「再スキャンして」と伝えてください';
 }
 
 // ============ Init ============
