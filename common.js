@@ -17,7 +17,7 @@ const DataLoader = {
   async load(collection) {
     if (this.cache[collection]) return this.cache[collection];
 
-    const url = this.basePath + 'data/' + collection + '.json';
+    const url = this.basePath + 'data/' + collection + '.json?v=' + Date.now();
     try {
       const res = await fetch(url);
       if (!res.ok) throw new Error(`${url}: ${res.status}`);
