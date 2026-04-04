@@ -141,6 +141,7 @@
         {"name": "木村玲大", "role": "制作"}
       ],
       "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve"],
+      "deployment_note": "H360/H720/H1080の3高さモジュール+カーブ型を組み合わせて約15m×10mのキッズゾーン構築。2023年・2024年の2回実施。",
       "material_ids": [],
       "slack_channel_id": "C05AYV4KG3E",
       "slack_channel_name": "#393_楽天optimism",
