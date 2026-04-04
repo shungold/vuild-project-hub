@@ -176,7 +176,7 @@
       "description": "CNC加工による有機的な曲面ベンチ。5軸CNC加工で木材を積層し、流れるような形状を実現。",
       "dimensions": "W1800×D500×H450",
       "weight_kg": 30,
-      "hero_photos": ["photos/furniture/namunami-bench/main.jpg"],
+      "hero_photos": ["photos/furniture/namunami-bench/onomichi.jpg"],
       "specs": {"material": "構造用合板 積層", "finish": "ウレタン塗装", "note": "5軸CNC加工による曲面形状"},
       "hardware_ids": [],
       "tags": ["ベンチ","CNC","曲面","5軸"],

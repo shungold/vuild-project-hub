@@ -123,7 +123,7 @@
       "structure": "木造（CNC加工）",
       "description": "楽天グループの大規模イベント「Rakuten Optimism」のキッズゾーン・ブース設計制作。TECH & GREEN（木×テクノロジー）をコンセプトに、親子で楽しめる木製遊具・家具を約15m×10mの空間に展開。2023年・2024年の2回実施。来場者数 日1万〜1.5万人。",
       "hero_photos": ["photos/projects/rakuten_optimism/hero.jpg"],
-      "gallery_photos": ["photos/furniture/town-unit/rakuten.jpg", "photos/furniture/town-unit/yokohama.jpg"],
+      "gallery_photos": [],
       "team": [
         {"name": "黒部駿人", "role": "設計ディレクション"},
         {"name": "沼田汐里", "role": "設計"},
@@ -153,8 +153,8 @@
       "area_sqm": null,
       "structure": "木造（CNC加工）",
       "description": "千光寺山荘リニューアルプロジェクト。ホテル・リゾート施設のFFE（家具・什器・備品）設計制作。屋上テラスのファイヤーピット周りのシーティングやナミナミベンチなど、尾道の景観に溶け込む木製家具を提供。",
-      "hero_photos": ["photos/projects/onomichi_club/hero.jpg"],
-      "gallery_photos": ["photos/furniture/namunami-bench/onomichi.jpg", "photos/furniture/namunami-bench/main.jpg"],
+      "hero_photos": ["photos/furniture/namunami-bench/onomichi.jpg"],
+      "gallery_photos": [],
       "team": [
         {"name": "宇都宮純", "role": "PM"},
         {"name": "黒部駿人", "role": "設計ディレクション"},
