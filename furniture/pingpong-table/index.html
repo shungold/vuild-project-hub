@@ -171,6 +171,14 @@ async function init() {
       badge.style.display = '';
     }
 
+    // --- 3D Model download ---
+    if (item.model_url) {
+      document.getElementById('furn-tags').insertAdjacentHTML('beforebegin',
+        `<a href="${B}${item.model_url}" download class="model-dl-btn" style="margin-bottom:8px;width:100%;justify-content:center">
+          \u{1F4E6} 3Dモデル (.3dm) をダウンロード
+        </a>`);
+    }
+
     // --- Tags ---
     document.getElementById('furn-tags').innerHTML = (item.tags || []).map(t =>
       `<span class="tag">${esc(t)}</span>`
@@ -271,11 +279,11 @@ async function init() {
       initBomImport(hwItems);
     }
 
-    // --- Hardware panel (サムネ付きカード) ---
+    // --- Hardware panel (サムネ付きカード → 金物詳細ページへ) ---
     if (hwItems.length) {
       document.getElementById('panel-hardware').innerHTML =
         '<div class="hw-card-grid">' + hwItems.map(m => `
-          <${m.product_url ? 'a href="' + m.product_url + '" target="_blank" rel="noopener"' : 'div'} class="hw-card">
+          <a href="${B}materials/${m.id}/index.html" class="hw-card">
             <div class="hw-card-thumb">
               ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
             </div>
@@ -285,7 +293,7 @@ async function init() {
               <div class="hw-price">${formatPrice(m.price)}</div>
               ${m.specs ? '<div class="hw-meta">' + esc(m.specs) + '</div>' : ''}
             </div>
-          </${m.product_url ? 'a' : 'div'}>
+          </a>
         `).join('') + '</div>';
     }
 

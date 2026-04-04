@@ -14,7 +14,13 @@
       "area_sqm": null,
       "structure": "木造（CNC加工）",
       "description": "資生堂BAUMブランドのポップアップ用移動式什器。引き戸収納、シンク、サイン看板を一体化した木製ワゴン。檜・シナ合板をCNC加工し、BAUMグリーンで塗装。",
-      "hero_photos": [],
+      "hero_photos": ["photos/placeholders/axo-baum.svg"],
+      "photo_pins": [
+        {"photo_index": 0, "x": 50, "y": 55, "type": "furniture", "id": "baum-yatai", "label": "BAUM 移動式什器"},
+        {"photo_index": 0, "x": 73, "y": 82, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
+        {"photo_index": 0, "x": 30, "y": 45, "type": "material", "id": "HW_001", "label": "規格型平蝶番"},
+        {"photo_index": 0, "x": 60, "y": 30, "type": "material", "id": "HW_007", "label": "ウルトララスト塗料"}
+      ],
       "team": [
         {"name": "金子俊耶", "role": "設計"},
         {"name": "黒部駿人", "role": "設計"},

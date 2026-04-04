@@ -107,11 +107,34 @@ function initDetailTabs() {
   });
 }
 
-// --- Photo switching ---
-function setMainPhoto(src) {
+// --- Photo switching with pins ---
+let _currentPhotoIndex = 0;
+let _photoPins = [];
+
+function setMainPhoto(src, photoIndex) {
+  _currentPhotoIndex = photoIndex != null ? photoIndex : 0;
   const main = document.getElementById('photo-main');
-  main.innerHTML = `<img src="${src}" alt="">`;
-  main.onclick = () => openLightbox(src);
+  // Build pin-enabled photo
+  const pinsForPhoto = _photoPins.filter(p => p.photo_index === _currentPhotoIndex);
+  let pinsHtml = pinsForPhoto.map(pin => {
+    const linkBase = B + (pin.type === 'furniture' ? 'furniture/' : 'materials/');
+    const href = linkBase + pin.id + '/index.html';
+    return `<div class="photo-pin" style="left:${pin.x}%;top:${pin.y}%">
+      <div class="pin-dot"></div>
+      <div class="pin-popup">
+        <h4>${esc(pin.label)}</h4>
+        <p>${pin.type === 'furniture' ? 'VUILD furniture' : '素材・金物'}</p>
+        <a href="${href}">詳細を見る &rarr;</a>
+      </div>
+    </div>`;
+  }).join('');
+
+  main.innerHTML = `<div class="pin-photo-container">
+    <img src="${src}" alt="" onclick="openLightbox('${src}')">
+    ${pinsHtml}
+  </div>`;
+  main.onclick = null; // handled by img onclick
+
   document.querySelectorAll('.detail-photo-thumb').forEach(t => {
     t.classList.toggle('is-active', t.dataset.src === src);
   });
@@ -139,15 +162,16 @@ async function init() {
     document.getElementById('project-sub').textContent =
       [project.pid, project.client, project.location].filter(Boolean).join(' — ');
 
-    // --- Photos ---
+    // --- Photos with pins ---
+    _photoPins = project.photo_pins || [];
     const photos = [...(project.hero_photos || []), ...(project.gallery_photos || [])];
     if (photos.length) {
       document.getElementById('photo-area').style.display = '';
-      setMainPhoto(B + photos[0]);
+      setMainPhoto(B + photos[0], 0);
       if (photos.length > 1) {
-        document.getElementById('photo-thumbs').innerHTML = photos.map(src =>
-          `<div class="detail-photo-thumb${src === photos[0] ? ' is-active' : ''}"
-               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}')">
+        document.getElementById('photo-thumbs').innerHTML = photos.map((src, i) =>
+          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}"
+               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
             <img src="${B}${src}" alt="" loading="lazy">
           </div>`
         ).join('');
@@ -241,11 +265,11 @@ async function init() {
         }).join('') + '</div>';
     }
 
-    // --- Materials panel (サムネ付きカード) ---
+    // --- Materials panel (サムネ付きカード → 金物詳細ページへ) ---
     if (archMaterials.length) {
       document.getElementById('panel-materials').innerHTML =
         '<div class="hw-card-grid">' + archMaterials.map(m => `
-          <${m.product_url ? 'a href="' + m.product_url + '" target="_blank" rel="noopener"' : 'div'} class="hw-card">
+          <a href="${B}materials/${m.id}/index.html" class="hw-card">
             <div class="hw-card-thumb">
               ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
             </div>
@@ -254,7 +278,7 @@ async function init() {
               <div class="hw-meta">${esc(m.maker || '')} / ${esc(m.product_code || '')}</div>
               <div class="hw-price">${formatPrice(m.price)}</div>
             </div>
-          </${m.product_url ? 'a' : 'div'}>
+          </a>
         `).join('') + '</div>';
     }
 
