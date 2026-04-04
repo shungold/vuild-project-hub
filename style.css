@@ -385,17 +385,17 @@ ul, ol { list-style: none; }
 
 .card-grid--projects,
 .project-grid {
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .card-grid--furniture,
 .furniture-grid {
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
 }
 
 .card-grid--materials,
 .material-grid {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(5, 1fr);
 }
 
 
@@ -1098,8 +1098,11 @@ ul, ol { list-style: none; }
 
   .card-grid--projects,
   .card-grid--furniture,
-  .card-grid--materials {
-    grid-template-columns: 1fr;
+  .card-grid--materials,
+  .project-grid,
+  .furniture-grid,
+  .material-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .info-table th {
