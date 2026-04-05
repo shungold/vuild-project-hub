@@ -53,6 +53,9 @@
   <div class="detail-grid">
     <div class="detail-main">
 
+      <!-- Year Tabs (楽天など年次案件用) -->
+      <div class="year-tabs" id="year-tabs" style="display:none"></div>
+
       <!-- Overview -->
       <div class="detail-section">
         <h2 class="detail-section-title">Overview</h2>
@@ -241,6 +244,62 @@ async function init() {
     document.getElementById('detail-description').textContent =
       project.description || '';
 
+    // --- Year Tabs (年次タブ) ---
+    let _activeYear = null;
+    const years = project.years || {};
+    const yearKeys = Object.keys(years).sort();
+    if (yearKeys.length > 1) {
+      _activeYear = yearKeys[yearKeys.length - 1]; // default to latest year
+      const ytEl = document.getElementById('year-tabs');
+      ytEl.style.display = '';
+      ytEl.innerHTML = yearKeys.map(y =>
+        `<button class="year-tab${y === _activeYear ? ' is-active' : ''}" data-year="${y}">
+          ${y}<span style="font-size:11px;font-weight:400;margin-left:4px;color:var(--color-tertiary)">${esc(years[y].label || '')}</span>
+        </button>`
+      ).join('');
+      ytEl.querySelectorAll('.year-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          _activeYear = btn.dataset.year;
+          ytEl.querySelectorAll('.year-tab').forEach(b => b.classList.remove('is-active'));
+          btn.classList.add('is-active');
+          rebuildForYear();
+        });
+      });
+    }
+
+    function getActiveFurnitureIds() {
+      if (_activeYear && years[_activeYear]) return years[_activeYear].furniture_ids || [];
+      return project.furniture_ids || [];
+    }
+
+    function rebuildForYear() {
+      const yFurnIds = getActiveFurnitureIds();
+      const yFurnItems = (furnData.furniture || []).filter(f => yFurnIds.includes(f.id));
+      // Update furniture panel
+      if (yFurnItems.length) {
+        document.getElementById('panel-furniture').innerHTML =
+          '<div class="detail-furniture-grid">' + yFurnItems.map(f => {
+            const thumb = (f.hero_photos && f.hero_photos[0])
+              ? `<img src="${B}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
+              : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
+            return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
+              <div class="flc-thumb">${thumb}</div>
+              <div class="flc-body">
+                <h4>${esc(f.name)}</h4>
+                <p>${esc(f.dimensions || '')}</p>
+              </div>
+            </a>`;
+          }).join('') + '</div>';
+      }
+      // Update year-specific info in spec card
+      if (_activeYear && years[_activeYear]) {
+        const y = years[_activeYear];
+        const yearInfo = document.getElementById('year-info');
+        if (yearInfo) yearInfo.innerHTML = `<div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
+          <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
+      }
+    }
+
     // --- Spec card ---
     const specs = [
       ['案件番号', project.pid],
@@ -250,9 +309,17 @@ async function init() {
       ['面積', project.area_sqm ? project.area_sqm + ' m\u00B2' : null],
       ['竣工', project.completion_date]
     ].filter(([,v]) => v);
-    document.getElementById('spec-body').innerHTML = specs.map(([l,v]) =>
+    let specHtml = specs.map(([l,v]) =>
       `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
     ).join('');
+    if (yearKeys.length > 1 && _activeYear && years[_activeYear]) {
+      const y = years[_activeYear];
+      specHtml += `<div id="year-info">
+        <div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
+        <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>
+      </div>`;
+    }
+    document.getElementById('spec-body').innerHTML = specHtml;
 
     const statusEl = document.getElementById('spec-status');
     statusEl.textContent = getStatusLabel(project.status);
@@ -273,8 +340,9 @@ async function init() {
     ).join('');
 
     // --- Build Tabs ---
+    const activeFurnIds = getActiveFurnitureIds();
     const furnitureItems = (furnData.furniture || []).filter(f =>
-      (project.furniture_ids || []).includes(f.id));
+      activeFurnIds.includes(f.id));
     const archMaterials = (matData.materials || []).filter(m =>
       (project.material_ids || []).includes(m.id) && m.type === 'architectural');
     const projectKnowledge = (knowData.entries || []).filter(k =>

@@ -125,7 +125,7 @@
       "client": "楽天グループ",
       "status": "completed",
       "category": "イベント",
-      "location": "パシフィコ横浜",
+      "location": "パシフィコ横浜 / 東京ビッグサイト",
       "completion_date": "2024-08",
       "area_sqm": 150,
       "structure": "木造（CNC加工）",
@@ -134,20 +134,39 @@
       "gallery_photos": ["photos/furniture/town-unit/rakuten.jpg","photos/furniture/town-unit/nagoya.jpg","photos/furniture/town-unit/yokohama.jpg","photos/furniture/town-unit/vpl.jpg"],
       "team": [
         {"name": "黒部駿人", "role": "設計ディレクション"},
-        {"name": "沼田汐里", "role": "設計"},
+        {"name": "沼田汐里", "role": "設計・運営"},
         {"name": "金子俊耶", "role": "設計"},
         {"name": "長岡勉", "role": "レビュー"},
         {"name": "宇都宮純", "role": "PM"},
-        {"name": "木村玲大", "role": "制作"}
+        {"name": "木村玲大", "role": "制作"},
+        {"name": "長尾和樹", "role": "加工・搬出"}
       ],
-      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve"],
-      "deployment_note": "H360/H720/H1080の3高さモジュール+カーブ型を組み合わせて約15m×10mのキッズゾーン構築。2023年・2024年の2回実施。",
+      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve", "circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "deployment_note": "2023: MOKU MOKU KIDS TOWN（パシフィコ横浜）。2024: MOKU MOKU KIDS OASIS（東京ビッグサイト西館）。",
       "material_ids": [],
       "slack_channel_id": "C05AYV4KG3E",
       "slack_channel_name": "#393_楽天optimism",
       "cost_overview": {"total": 23800000, "estimate_pdf": null},
-      "tags": ["イベント","ブース","キッズ","タウンユニット","楽天","横浜"],
-      "updated_at": "2026-04-04",
+      "years": {
+        "2023": {
+          "label": "MOKU MOKU KIDS TOWN",
+          "venue": "パシフィコ横浜",
+          "event_date": "2023-08-02〜06",
+          "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve"],
+          "gallery_photos": ["photos/furniture/town-unit/rakuten.jpg"],
+          "cost_overview": {"total": 6373390, "budget_note": "什器製作原価（税抜）: 材料費2,463,300 + 外注加工870,000 + VUILD加工2,125,390 + 組立750,000 + 金物45,700"}
+        },
+        "2024": {
+          "label": "MOKU MOKU KIDS OASIS",
+          "venue": "東京ビッグサイト 西館",
+          "event_date": "2024-08-01〜04",
+          "furniture_ids": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+          "gallery_photos": [],
+          "cost_overview": {"total": 6091818, "budget_note": "売上6,091,818円（売上原価947,379 + 労務費562,000）、営業利益率69%。楽天確定予算: 税抜750万円"}
+        }
+      },
+      "tags": ["イベント","ブース","キッズ","タウンユニット","楽天","横浜","ビッグサイト"],
+      "updated_at": "2026-04-05",
       "edited": false
     },
     {

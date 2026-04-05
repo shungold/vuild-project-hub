@@ -126,8 +126,9 @@ fixture-drawing-previewer/
 - [ ] 変更後、ポータル(index.html)のstatsを更新
 - [ ] git add → commit → push
 
-Slackスキャン時（「Slackスキャンして」で全て実行）:
-- [ ] 各チャンネルの🔩スレッドを読む
+#### 差分スキャン（「Slackスキャンして」）:
+- [ ] data/scan_state.json を読み、active チャンネルのみ対象にする
+- [ ] 各チャンネルの🔩スレッドを読む（last_scanned_ts 以降の新着のみ）
 - [ ] スレッド返信内のECリンクも必ずチェックする（チャンネル本文だけでなく）
 - [ ] スタンプに基づいてデータを分類（✅→採用、🔍→候補、❌→却下、💰→発注済み）
 - [ ] チャンネル本文からナレッジを自動判別（progress/trouble/howto/spec）
@@ -149,7 +150,26 @@ Slackスキャン時（「Slackスキャンして」で全て実行）:
   - 既に却下(status:"dismissed")されたURLも再追加しない
 - [ ] 各プロジェクトページに正しいデータを振り分け（CLAUDE.mdのチャンネル対応表に従う）
 - [ ] ポータル(index.html)のstatsを更新
+- [ ] scan_state.json の last_scanned_ts / last_scanned_at を更新
 - [ ] git push
+
+#### 初回スキャン（「初回スキャン {チャンネルID}」）:
+- [ ] Step 1: チャンネル全量読み → 構造分析（案件種別、furniture/建築工事の識別、年度分割検出）
+- [ ] Step 2: 質問フェーズ（「furniture N アイテム検出しました。この構成でOK？」）
+- [ ] Step 3: ユーザー確認後にデータ生成
+  - projects.json / furniture.json / materials.json / knowledge.json 更新
+  - 製作ドキュメント・案件ドキュメントをdraftで生成
+  - 写真特定（黒部さん優先）→ DLリスト提示
+  - scan_state.json にチャンネル登録
+  - HTMLページ生成（detail-templateコピー）→ commit & push
+- [ ] Step 4: WEB URLを提示して確認依頼
+
+#### アイテム検索（「{アイテム名}をスキャンして」）:
+- [ ] Slack横断検索（slack_search_public）でアイテム名を検索
+- [ ] スキャン済み / 未登録チャンネルを区別して表示
+- [ ] 各チャンネルからアイテム関連情報を抽出（仕様・数量・素材・金物・ナレッジ）
+- [ ] 現在のfurniture.jsonと比較、不足データを検出
+- [ ] 差分を一覧表示してユーザーに確認 → OKでWEB反映
 
 ### 6. Slack関連の設定
 
@@ -157,17 +177,45 @@ Slackスキャン時（「Slackスキャンして」で全て実行）:
 - 🔩 (nut_and_bolt) が含まれるメッセージ = 金物選定スレッドの親
 - そのスレッドの返信 = 金物候補
 
-スキャン対象チャンネル:
-- C0AFAFBC8AH (#1141_人の森_ライブラリースペース)
-- C09V70VFF96 (#3040_baum移動式什器)
-- C09D1N2CEM8 (#1127_東京建物_屋上庭園pj)
-- C09455EDRJN (#1125_pan_門真新棟6f7grセルフビルドキッチン開発)
+スキャン対象チャンネル（data/scan_state.json で管理）:
+- C0AFAFBC8AH (#1141_人の森_ライブラリースペース) → hitonomori_wallshelf
+- C09V70VFF96 (#3040_baum移動式什器) → baum_mobile
+- C09D1N2CEM8 (#1127_東京建物_屋上庭園pj) → tokyo_rooftop
+- C09455EDRJN (#1125_pan_門真新棟6f7grセルフビルドキッチン開発) → pan_kitchen
+- C05AYV4KG3E (#393_楽天optimism) → rakuten_optimism
+- C07K02J6SUE (#3035_尾道-千光寺山荘リニューアル) → onomichi_club
+- C06KR848J0M (#3009_富山県立山のリノベ案件) → toyama_tateyama
+- C086FBQ1EN4 (#3039_yokohamanarureweek2025) → yokohama_natureweek
+- C06DWBFG927 (#3006_野毛町公園pj) → nogecho_park
+- C07CPMPFB7X (#3028_ur赤羽台ws) → ur_akabane
 
 金物スレッドの message_ts:
 - C0AFAFBC8AH: 1775103698.252669
 - C09V70VFF96: 1775107906.358789
 - C09D1N2CEM8: 1775107921.787019
 - C09455EDRJN: 1775107926.902659
+
+### 6.1 スキャンロジック v2（3モード）
+
+| モード | トリガー | 動作 |
+|--------|---------|------|
+| **差分スキャン** | 「Slackスキャンして」 | scan_state.json の登録済みチャンネルの新着のみ読む |
+| **初回スキャン** | 「初回スキャン {チャンネルID}」 | 新チャンネル全量読み→構造分析→質問→データ生成 |
+| **アイテム検索** | 「{アイテム名}をスキャンして」 | Slack横断検索→チャンネル特定→照合→差分提案 |
+
+差分スキャンの仕組み:
+- `data/scan_state.json` で前回スキャン位置を管理
+- Slack APIの `oldest` パラメータで前回以降の新着のみ取得
+- `status: "completed"` かつ30日以上スキャンなし → 自動スキップ
+- 完了案件も明示指定すれば読める
+
+### 6.2 ドキュメント生成
+
+knowledge.json v3.0 のドキュメント機能:
+- **production_documents**: furnitureごとの製作手順書（素材/加工/組立/下地・塗装/搬送/トラブル・教訓）
+- **project_documents**: 案件ごとの振り返り資料（体制/現場条件/設計判断/コスト/施工計画/WS/外注/教訓）
+- ステータス: draft → published（担当者レビュー後）
+- UIはアコーディオン表示（furniture/projects の各detail-templateに実装済み）
 
 ### 7. GitHub
 - リポジトリ: shungold/vuild-project-hub

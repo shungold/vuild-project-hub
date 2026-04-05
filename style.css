@@ -2372,6 +2372,38 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   YEAR TABS (楽天など年次案件用)
+   ============================================================ */
+.year-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+}
+.year-tab {
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: var(--color-bg);
+  color: var(--color-secondary);
+  transition: all 0.2s;
+  border-right: 1px solid var(--color-border);
+}
+.year-tab:last-child { border-right: none; }
+.year-tab.is-active {
+  background: var(--color-text);
+  color: #fff;
+}
+.year-tab:hover:not(.is-active) {
+  background: var(--color-border-light);
+}
+
+/* ============================================================
    PRODUCTION / PROJECT DOCUMENT ACCORDION
    ============================================================ */
 .proddoc-card, .projdoc-card {

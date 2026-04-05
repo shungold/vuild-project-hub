@@ -69,6 +69,7 @@
         <div class="detail-tab-panel" id="panel-actual"></div>
         <div class="detail-tab-panel" id="panel-hardware"></div>
         <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-proddoc"></div>
       </div>
 
       <!-- Case Studies (導入事例) — ページ最下部、箇条書き -->
@@ -259,6 +260,8 @@ async function init() {
       (item.hardware_ids || []).includes(m.id));
     const prodKnowledge = (knowData.entries || []).filter(k =>
       k.furniture_id === furnitureId && k.scope === 'production');
+    const prodDocs = (knowData.production_documents || []).filter(d =>
+      d.furniture_id === furnitureId);
     const hasDrawings = item.drawings && item.drawings.length;
     const hasCost = item.production_cost;
     const hasDocs = item.documents && item.documents.length;
@@ -269,7 +272,8 @@ async function init() {
       { id: 'estimate', label: '見積', count: null },
       { id: 'actual', label: '実績', count: null },
       { id: 'hardware', label: '金物・パーツ', count: hwItems.length },
-      { id: 'knowledge', label: 'Knowledge', count: prodKnowledge.length }
+      { id: 'knowledge', label: 'Knowledge', count: prodKnowledge.length },
+      { id: 'proddoc', label: '製作ドキュメント', count: prodDocs.length }
     ];
 
     document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
@@ -477,6 +481,30 @@ async function init() {
         </div>`;
       }).join('') + '</div>';
       document.getElementById('panel-knowledge').innerHTML = knowHtml;
+    }
+
+    // --- 製作ドキュメント panel (アコーディオン) ---
+    {
+      let pdHtml = '';
+      if (prodDocs.length) {
+        prodDocs.forEach(doc => {
+          const statusBadge = doc.status === 'published'
+            ? '<span class="badge badge-adopted">公開</span>'
+            : '<span class="badge badge-pending">下書き</span>';
+          pdHtml += `<div class="proddoc-card">
+            <div class="proddoc-header">${statusBadge} <span style="font-size:11px;color:var(--color-tertiary)">生成日: ${doc.generated_at || '—'}</span></div>`;
+          (doc.sections || []).forEach(sec => {
+            pdHtml += `<details class="proddoc-section">
+              <summary class="proddoc-summary">${esc(sec.title)}</summary>
+              <div class="proddoc-content">${esc(sec.content || '未記入').replace(/\\n/g, '\n').replace(/\n/g, '<br>')}</div>
+            </details>`;
+          });
+          pdHtml += '</div>';
+        });
+      } else {
+        pdHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">製作ドキュメントはまだ生成されていません</p>';
+      }
+      document.getElementById('panel-proddoc').innerHTML = pdHtml;
     }
 
     // --- Case Studies (箇条書き、ページ最下部) ---
