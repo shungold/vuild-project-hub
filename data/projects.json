@@ -130,8 +130,8 @@
       "area_sqm": 150,
       "structure": "木造（CNC加工）",
       "description": "楽天グループの大規模イベント「Rakuten Optimism」のキッズゾーン・ブース設計制作。TECH & GREEN（木×テクノロジー）をコンセプトに、親子で楽しめる木製遊具・家具を約15m×10mの空間に展開。2023年・2024年の2回実施。来場者数 日1万〜1.5万人。",
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2023b-01.jpg"],
-      "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024a-05.jpg","photos/projects/rakuten_optimism/rakuten-2024b-01.jpg","photos/furniture/town-unit/rakuten.jpg"],
+      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg"],
+      "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-09.jpg","photos/projects/rakuten_optimism/rakuten-2023b-01.jpg","photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"],
       "team": [
         {"name": "黒部駿人", "role": "設計ディレクション"},
         {"name": "沼田汐里", "role": "設計・運営"},
@@ -159,7 +159,7 @@
           "venue": "パシフィコ横浜",
           "event_date": "2023-08-02〜06",
           "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve", "round-table", "ema-wall", "haizai-wall"],
-          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2023b-01.jpg","photos/projects/rakuten_optimism/rakuten-2023a-02.jpg","photos/projects/rakuten_optimism/rakuten-2023a-07.jpg","photos/furniture/town-unit/rakuten.jpg"],
+          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg","photos/projects/rakuten_optimism/rakuten-2023b-01.jpg","photos/projects/rakuten_optimism/rakuten-2023b-02.jpg","photos/projects/rakuten_optimism/rakuten-2023a-07.jpg","photos/projects/rakuten_optimism/rakuten-2023c-01.jpg","photos/projects/rakuten_optimism/rakuten-2023e-01.jpg","photos/projects/rakuten_optimism/rakuten-2023a-03.jpg"],
           "cost_overview": {"total": 6373390, "budget_note": "什器製作原価（税抜）: 材料費2,463,300 + 外注加工870,000 + VUILD加工2,125,390 + 組立750,000 + 金物45,700"}
         },
         "2024": {
@@ -167,7 +167,7 @@
           "venue": "東京ビッグサイト 西館",
           "event_date": "2024-08-01〜04",
           "furniture_ids": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
-          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024a-05.jpg","photos/projects/rakuten_optimism/rakuten-2024b-01.jpg","photos/projects/rakuten_optimism/rakuten-2024a-02.jpg","photos/projects/rakuten_optimism/rakuten-2024b-05.jpg"],
+          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-09.jpg","photos/projects/rakuten_optimism/rakuten-2024b-10.jpg","photos/projects/rakuten_optimism/rakuten-2024b-06.jpg","photos/projects/rakuten_optimism/rakuten-2024a-05.jpg","photos/projects/rakuten_optimism/rakuten-2024a-09.jpg","photos/projects/rakuten_optimism/rakuten-2024a-07.jpg","photos/projects/rakuten_optimism/rakuten-2024b-02.jpg"],
           "cost_overview": {"total": 6091818, "budget_note": "売上6,091,818円（売上原価947,379 + 労務費562,000）、営業利益率69%。楽天確定予算: 税抜750万円"}
         }
       },
