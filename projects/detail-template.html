@@ -70,6 +70,7 @@
         <div class="detail-tab-panel" id="panel-estimate"></div>
         <div class="detail-tab-panel" id="panel-actual"></div>
         <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-projdoc"></div>
       </div>
     </div>
 
@@ -278,6 +279,8 @@ async function init() {
       (project.material_ids || []).includes(m.id) && m.type === 'architectural');
     const projectKnowledge = (knowData.entries || []).filter(k =>
       (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design');
+    const projDocs = (knowData.project_documents || []).filter(d =>
+      d.project_id === projectId);
     // 参考資料: furnitureのdocumentsを集約
     const allDocuments = [];
     furnitureItems.forEach(f => {
@@ -298,6 +301,7 @@ async function init() {
     tabs.push({ id: 'estimate', label: '見積', count: estimateDocs.length || null });
     tabs.push({ id: 'actual', label: '実績', count: null });
     tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
+    tabs.push({ id: 'projdoc', label: '案件ドキュメント', count: projDocs.length });
 
     document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
       `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
@@ -452,6 +456,30 @@ async function init() {
     } else {
       document.getElementById('panel-knowledge').innerHTML =
         '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">案件レベルのナレッジ（scope: design）はまだ登録されていません。<br>制作に関するナレッジは各furnitureページに表示されます。</p>';
+    }
+
+    // --- 案件ドキュメント panel (アコーディオン) ---
+    {
+      let pdHtml = '';
+      if (projDocs.length) {
+        projDocs.forEach(doc => {
+          const statusBadge = doc.status === 'published'
+            ? '<span class="badge badge-adopted">公開</span>'
+            : '<span class="badge badge-pending">下書き</span>';
+          pdHtml += `<div class="projdoc-card">
+            <div class="projdoc-header">${statusBadge} <span style="font-size:11px;color:var(--color-tertiary)">生成日: ${doc.generated_at || '—'}</span></div>`;
+          (doc.sections || []).forEach(sec => {
+            pdHtml += `<details class="projdoc-section">
+              <summary class="projdoc-summary">${esc(sec.title)}</summary>
+              <div class="projdoc-content">${esc(sec.content || '未記入').replace(/\\n/g, '\n').replace(/\n/g, '<br>')}</div>
+            </details>`;
+          });
+          pdHtml += '</div>';
+        });
+      } else {
+        pdHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">案件ドキュメントはまだ生成されていません</p>';
+      }
+      document.getElementById('panel-projdoc').innerHTML = pdHtml;
     }
 
     // --- Pin Editor init ---

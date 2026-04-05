@@ -2370,3 +2370,59 @@ ul, ol { list-style: none; }
   .detail-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
   .detail-furniture-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 }
+
+/* ============================================================
+   PRODUCTION / PROJECT DOCUMENT ACCORDION
+   ============================================================ */
+.proddoc-card, .projdoc-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.proddoc-header, .projdoc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.proddoc-section, .projdoc-section {
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+.proddoc-summary, .projdoc-summary {
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  border-radius: 6px;
+}
+.proddoc-summary::before, .projdoc-summary::before {
+  content: '\25B6';
+  font-size: 9px;
+  color: var(--color-tertiary);
+  transition: transform 0.2s;
+}
+details[open] > .proddoc-summary::before,
+details[open] > .projdoc-summary::before {
+  transform: rotate(90deg);
+}
+.proddoc-summary::-webkit-details-marker,
+.projdoc-summary::-webkit-details-marker {
+  display: none;
+}
+.proddoc-content, .projdoc-content {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--color-secondary);
+  white-space: pre-wrap;
+}

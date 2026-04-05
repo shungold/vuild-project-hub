@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-04T12:00:00",
+  "last_updated": "2026-04-05T12:00:00",
   "projects": [
     {
       "id": "baum_mobile",
@@ -172,7 +172,7 @@
         {"name": "長尾和樹", "role": "制作"},
         {"name": "木村玲大", "role": "経理"}
       ],
-      "furniture_ids": ["namunami-bench"],
+      "furniture_ids": ["namunami-bench", "onomichi-bench-a", "onomichi-bench-b", "onomichi-cafe-table", "onomichi-partition"],
       "material_ids": [],
       "slack_channel_id": "C07K02J6SUE",
       "slack_channel_name": "#3035_尾道-千光寺山荘リニューアル",
@@ -265,6 +265,43 @@
       "cost_overview": {"total": null, "budget_note": "レンタル料＝レンタカー+ガソリン代程度"},
       "tags": ["WS","ファブラボ","タウンユニット","団地","UR","ShopBot"],
       "updated_at": "2026-04-04",
+      "edited": false
+    },
+    {
+      "id": "toyama_tateyama",
+      "name": "富山県立山 旧東谷保育所改修",
+      "pid": "#3009",
+      "client": "東谷活性化協議会",
+      "status": "completed",
+      "category": "リノベーション",
+      "location": "富山県中新川郡立山町谷口1-1",
+      "completion_date": "2026-03",
+      "area_sqm": null,
+      "structure": "木造（CNC加工 + 建築改修）",
+      "description": "旧東谷保育所を地域の交流拠点にリノベーション。可動式畳小上がり、キッチンユニット、スツール、収納棚をVUILDが設計製作。2/28搬入・什器組立、3/1にWSで住民と一緒に畳小上がりを組立・塗装。給排水・電気工事は地元業者。県補助金事業。",
+      "hero_photos": [],
+      "gallery_photos": [],
+      "team": [
+        {"name": "黒部駿人", "role": "PM・現場監督"},
+        {"name": "宇都宮潤", "role": "設計・予算管理"},
+        {"name": "西村俊貴", "role": "設計（キッチン・半円テーブル）"},
+        {"name": "杉山真道", "role": "加工・製作（ShopBot）"},
+        {"name": "沼田汐里", "role": "デザイン（初期）"},
+        {"name": "木村玲大", "role": "見積もり"}
+      ],
+      "furniture_ids": ["toyama-tatami", "toyama-stool", "toyama-kitchen", "toyama-shelf"],
+      "material_ids": [],
+      "slack_channel_id": "C06KR848J0M",
+      "slack_channel_name": "#3009_富山県立山のリノベ案件",
+      "cost_overview": {
+        "total": 4694800,
+        "design_fee": 1500000,
+        "fabrication_fee": 3194800,
+        "estimate_date": "2026-02",
+        "budget_note": "税込4,694,800円（材料組立費1,442,540 + 材料工事費1,533,620 + WS費1,718,640）。県補助金事業、3年計画の2期工事分"
+      },
+      "tags": ["リノベーション","WS","キッチン","畳","CNC","補助金","富山"],
+      "updated_at": "2026-04-05",
       "edited": false
     }
   ]

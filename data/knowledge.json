@@ -1,6 +1,174 @@
 {
-  "version": "2.5",
-  "last_updated": "2026-04-04T22:00:00",
+  "version": "3.0",
+  "last_updated": "2026-04-05T12:00:00",
+  "production_documents": [
+    {
+      "id": "PD001",
+      "furniture_id": "onomichi-bench-a",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "座面: ラワン合板（ルーバー構成、藍染仕上げ）\n脚: スギ無垢材 30mm（プレーナー仕上げ特一等、2000×180×t30mm）\n購入先: 津の国屋（2,350円/枚、9枚発注）"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC切削（座面パネル・脚部）\nCAMデータ: 長尾が作成\n注意: 角部の欠けが発生しやすい → バッファ材を見込むこと"},
+        {"key": "assembly", "title": "組立", "content": "竜骨+脚: ビス斜め打ち接合\n補強: Lアングルで真ん中脚-梁間を補強（梁材の割れ対策）\n接合金物: cabineo8 M6\n座面ルーバー: ボンド固定\n脚裏: カグスベール貼り（現場で）"},
+        {"key": "finishing", "title": "下地・塗装", "content": "1. 切削 → タブ取り・パテ修正\n2. 研磨・糸面・バリ取り\n3. 表小口塗装（キシラデひのき）\n4. 240or400研磨\n5. 二度目塗装（キシラデクリア）\n6. ウレタン塗装（仕上げ）\n\n工数目安: 見積10人工 → 実績40人工（大幅超過に注意）\n再製作8台分: 27.5〜30人工"},
+        {"key": "shipping", "title": "搬送", "content": "JITBOX + 2tゲート車で海老名→尾道\nベルト10〜15本で固定、ウレタン端材で緩衝\n再製作分: 3/12 17:00出荷 → 3/14 11:00尾道着\n返送: JITBOX 27,200円（尾道→海老名）"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- Aタイプのミラー形状8台が不足（2/19に発覚）→ 図面段階で左右ミラーの数量確認を徹底\n- 梁材にスギ無垢の割れ発生 → 含水率チェック、Lアングル補強を標準化\n- 塗装工数が見積の4倍に → 工数見積時に塗装工程の実績ベースで算出すべき\n- 再製作コスト: オレンジ負担45万（3台分）+ VUILD負担（5台分）"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD002",
+      "furniture_id": "onomichi-bench-b",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "ベンチAと同素材\n座面: ラワン合板（ルーバー構成、藍染仕上げ）\n脚: スギ無垢材 30mm"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC切削\nベンチAのロングバージョン、左右ミラーペアで1セット"},
+        {"key": "assembly", "title": "組立", "content": "ベンチAと同工法\ncabineo8 M6接合、Lアングル補強\nカグスベール脚裏貼り"},
+        {"key": "finishing", "title": "下地・塗装", "content": "ベンチAと同工程\nキシラデひのき → 研磨 → キシラデクリア → ウレタン塗装"},
+        {"key": "shipping", "title": "搬送", "content": "ベンチAと同梱で搬送"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 2/20施工初日に組立完了、ホテル来訪者から「素晴らしいベンチ」と好評\n- A+Bの請求: 3末締め4末払い"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD003",
+      "furniture_id": "onomichi-cafe-table",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "天板: ラワン合板（キシラデ仕上げ、色=中間色）\n天板下地: MDF 24mm、R18面取り\n脚: 丸脚3本（リブ付き）、60角\nコンセント: 両端脚に各2箇所配置（合計約8箇所）"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC加工（小西さん担当）\n天板3分割で加工\n脚・構造部材もCNC\nテーブル脚組立: 1/30開始"},
+        {"key": "assembly", "title": "組立", "content": "天板3分割 → 現場にて裏面よりボルトジョイント\nドーナツ型位置出し治具で天板アラインメント\nコンセント配線: 真ん中脚から両端脚へルーティング"},
+        {"key": "finishing", "title": "下地・塗装", "content": "天板: ラワンにキシラデ塗装（ガン吹き）\nウレタン塗装: 衣川さん（山梨の外注）\n佐川2tチャーター 約5万円（海老名→山梨 衣川ウレタン）"},
+        {"key": "shipping", "title": "搬送", "content": "海老名→衣川ウレタン（山梨）→尾道\n最終搬入: JITBOX（27,200円 返送含む）\n天板3分割で搬入可"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 現場で高さが5mm違う箇所あり → パッキンで水平調整\n- テーブル+パーティション合計40万円（諸経費込）で請求\n- 原価目標20万円（ラワン+キシラデ+クリアガン吹き仕様で達成）"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD004",
+      "furniture_id": "onomichi-partition",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "パネル: ラワン合板（ShopBot CNC加工）\nフレーム: ポストカード差し込み用削り込みフレーム（宇都宮設計）\nけんどん部分: ダボカット"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC切削\nUV印刷: 金子がUVプリンターで実施（海老名工場）\n印刷スケジュール: サンプル1/30、本印刷2/4"},
+        {"key": "assembly", "title": "組立", "content": "フレーム構造にパネルをけんどん式で取り付け\n鍵付き（吉岡さんに引き渡し）"},
+        {"key": "finishing", "title": "下地・塗装", "content": "キシラデ塗装 + UV印刷によるグラフィック"},
+        {"key": "shipping", "title": "搬送", "content": "カフェテーブルと同梱で尾道へ搬送"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 当初の曲面デザインで割れ（わ）が発生 → ShopBotポケット加工精度と材料ロット差が原因\n- フラット/ストレートに設計変更してリスク回避\n- テーブル+パーティション合計40万で請求（2末締め3末払い）"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD005",
+      "furniture_id": "toyama-tatami",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "構造: ShopBot CNC加工合板\n畳: 12枚購入（10枚本番 + 2枚モック用）\nアジャスター入り（レベル調整用）"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC加工（VUILD鎌倉工房、杉山担当）\n900mm角モジュール × 12台\n11台はタブ取りまでの状態で出荷（WS用）\n1台は試作/モック"},
+        {"key": "assembly", "title": "組立", "content": "ビスボンド併用\n11台はWS（3/1）で住民と一緒に組立・塗装\nWS大盛況、地域の人も多数参加"},
+        {"key": "finishing", "title": "下地・塗装", "content": "オイル塗装 / クリア塗装\nWS参加者が塗装にも参加"},
+        {"key": "shipping", "title": "搬送", "content": "4tウイングゲート車（カインズ・ロジ）\n2/27出荷（鎌倉→富山）\n2/28搬入"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 高さ: 当初300〜350で議論、最終H330に決定\n- 単価72,000円に修正（当初40万円は高すぎとの指摘）\n- WS形式は住民の愛着形成に非常に効果的"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD006",
+      "furniture_id": "toyama-stool",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "シナ合板（ラワン芯）24mm\n合板4枚で10脚取り（1枚で約3脚）"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC加工（杉山担当）\nCDMスツール系デザイン\n当初ダイニングチェアの予定をスツールに変更（420,000円の減額）"},
+        {"key": "assembly", "title": "組立", "content": "ビスボンド併用\n組立・塗装済みの完成品で納品（WSではなく事前完成）"},
+        {"key": "finishing", "title": "下地・塗装", "content": "クリア / オイル塗装"},
+        {"key": "shipping", "title": "搬送", "content": "畳小上がりと同梱で搬送（4tウイングゲート車）"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- ダイニングチェア→スツール変更で大幅コスト削減\n- カインズのスツールを参考にしたCDM系デザインで生産効率UP"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD007",
+      "furniture_id": "toyama-kitchen",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "天板上層: シナ合板共芯 t24mm（杉皮塗装）\n天板下層: シナ合板共芯 t18mm\nボックス・巾木: メラミン化粧合板 t18mm（ランバーコア合板両面メラミン練付）\n- ダークグリーン板: 表面ベージュ系/裏面白系\n- 薄いグリーン板: 両面白系\nコンセント等付属品: 黒で統一"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC加工\n西村さん担当（キッチン・半円テーブル設計）\n半円テーブル天板: 1800mm角で固定した状態で塗装に渡す"},
+        {"key": "assembly", "title": "組立", "content": "Cabineo8 M6金物で接合\nBOX-C底板は脱着可能（点検口対応）\nスライド丁番使用\n仲子さん（現地大工）が組立・コーキング協力\n仲子さん施工費: 91,400円（税抜）"},
+        {"key": "finishing", "title": "下地・塗装", "content": "天板・木口: 杉皮塗装（しゅうへいさん担当）"},
+        {"key": "shipping", "title": "搬送", "content": "4tウイングゲート車で鎌倉→富山"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "設備:\n- IH: MITSUBISHI CS-T322BFR ユーロブラック（65cm幅・3口・単相200V）\n- シンク: エクレアキッチン Eシンク エッジ W823（38,500円税込）\n- 換気扇: TOOLBOX750（長岡建築手配）\n- 給湯器: プロパンガス接続\n\n注意点:\n- BOX底板の点検口は必須（配管アクセス）\n- 電気工事で250V 30A IH用コンセント必要"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PD008",
+      "furniture_id": "toyama-shelf",
+      "status": "draft",
+      "sections": [
+        {"key": "material", "title": "素材", "content": "ShopBot CNC加工合板\n棚板: 20mm厚\n裏板: シナ12mm\nキャップ: 当初フォーンブラウン（RAL8007）→ 最終的に黒に変更"},
+        {"key": "machining", "title": "加工", "content": "ShopBot CNC加工（黒部・杉山担当、加工スレッド1）\n扉付き仕様に途中変更あり"},
+        {"key": "assembly", "title": "組立", "content": "Cabineo金物で接合\n下部ローラー: 黒（塩ビまたはアルミ）\n背面にシナ12mmで裏板を埋める"},
+        {"key": "finishing", "title": "下地・塗装", "content": "オイル塗装 / 杉皮塗装"},
+        {"key": "shipping", "title": "搬送", "content": "他什器と同梱で4tウイングゲート車搬送"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 扉付きへの仕様変更が途中で発生 → 初期段階で扉の有無を確定させるべき\n- レール色は什器全体のトーンに合わせて黒で統一"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    }
+  ],
+  "project_documents": [
+    {
+      "id": "PJD001",
+      "project_id": "onomichi_club",
+      "status": "draft",
+      "sections": [
+        {"key": "team", "title": "クライアント・体制", "content": "クライアント: 瀬戸内ブランドコーポレーション（via オレンジ / 吉岡さん）\nVUILD PM: 宇都宮淳\n設計ディレクション: 黒部駿人\n設計・UV印刷・金物: 金子俊耶\n制作リード（ShopBot/組立/塗装/現場施工）: 長尾和樹\n構造設計・カフェテーブル加工: 小西陽二\nデザインディレクション: 長岡勉\n平面図・テーブル三面図: 小泉秀一郎\n塗装アドバイザー: 花田康史\n施工段取り・現場対応: 浦上卓司\n経理: 木村玲大\n外注:\n- 衣川さん: ウレタン塗装（山梨）\n- 羽山さん: 塗装"},
+        {"key": "site", "title": "現場条件", "content": "場所: 広島県尾道市 千光寺山荘（ホテル・リゾート施設）\n搬入: JITBOX + 2tゲート車\n搬入経路: 海老名工場 → 尾道\n制約: ホテル営業中のため施工日程が限定的"},
+        {"key": "decisions", "title": "設計判断", "content": "- ベンチA/Bのサイズ・コストが異なるため別furnitureとして管理\n- カフェテーブル天板はシナ合板+染色 → ラワン+キシラデに変更（コスト削減）\n- パーティションの曲面デザイン → 割れ発生のためフラットに変更\n- 設計費: 当初200万 → スコープ縮小で120万に減額"},
+        {"key": "cost", "title": "コスト・契約", "content": "設計費: 120万円（当初200万から減額）\nベンチA: 15万円/台 × 15台 = 225万\nベンチB: 30万円/台 × 2台 = 60万\nテーブル+パーティション: 40万円（諸経費込）\n再製作（8台）: オレンジ負担45万 + VUILD負担分\n\n支払スケジュール:\n- テーブル・パーティション: 2末締め/3末払い\n- A+Bベンチ+オレンジ45万: 3末締め/4末払い\n- 着手金: 2/5入金"},
+        {"key": "execution", "title": "施工計画", "content": "2025/2/20-21: 現地施工（2日間）\n- Day1: ベンチB組立完了\n- Day2: 全アイテム設置完了\n2/23: 黒部さん竣工写真撮影\n\n再製作分:\n- 3/11: ウレタン塗装まで完了\n- 3/12 17:00: 出荷\n- 3/14 11:00: 尾道着・入替完了\n- 3/17: 旧ベンチ8台が海老名に返却"},
+        {"key": "ws", "title": "WS運営", "content": "該当なし（この案件はWS形式ではない）"},
+        {"key": "vendors", "title": "外注・協力", "content": "衣川さん（山梨）: ウレタン塗装\n羽山さん: 塗装\n佐川急便: 2tチャーター 約5万円（海老名→山梨）\nJITBOX: 27,200円（尾道↔海老名）"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- ミラー形状の数量確認不足で8台再製作が発生（2/19発覚）→ 図面段階で左右ミラーの数量を必ずダブルチェック\n- 塗装工数が見積の4倍（10人工→40人工）→ 塗装工程は実績ベースで見積もるべき\n- スギ無垢材の割れ → 含水率チェックとLアングル補強を標準仕様に\n- パーティション曲面で割れ発生 → ShopBotポケット加工+材料ロット差が原因、リスクある形状は避ける"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    },
+    {
+      "id": "PJD002",
+      "project_id": "toyama_tateyama",
+      "status": "draft",
+      "sections": [
+        {"key": "team", "title": "クライアント・体制", "content": "発注者: 東谷活性化協議会（窓口: 緒方さん）\n予算: 県補助金（富山県）\nVUILD PM/現場監督: 黒部駿人\n設計・予算管理: 宇都宮潤\n設計（キッチン・半円テーブル）: 西村俊貴\n加工・製作（ShopBot）: 杉山真道\nデザイン（初期）: 沼田汐里\n見積: 木村玲大\n\nローカルアーキテクト: 水野桂子（水野建築研究所）— 実施設計・施工監理\n現地大工: 仲子さん（キッチン組立、コーキング）\n水道工事: 佐藤配管\n電気工事: 堀田さん\n工務店: 長岡建築（松井さん）\n窓: YKK（広浜建材）"},
+        {"key": "site", "title": "現場条件", "content": "場所: 富山県中新川郡立山町谷口1-1（旧東谷保育所）\n搬入: 4tウイングゲート車（カインズ・ロジ）で鎌倉→富山\n建物: 旧保育所の改修、一部シロアリ被害あり\nインフラ: プロパンガス、電気（250V 30A IH用追加必要）\n給湯: プロパンガスボンベ→給湯器接続（緒方さん手配）"},
+        {"key": "decisions", "title": "設計判断", "content": "- 屋台WS中止 → コスト削減\n- ダイニングチェア → スツールに変更（420,000円減額）\n- 床再仕上中止 → コスト削減\n- キッチンBOX底板を脱着可能に（配管点検口）\n- 収納棚に途中で扉追加\n- 畳小上がり高さ: 300/350議論の末H330に決定\n- VUILDが製作した置き式のものは全てfurniture（キッチンも含む）"},
+        {"key": "cost", "title": "コスト・契約", "content": "全体予算: 3年計画で最大970万円\n\n1期工事（設計）: 189万円（税別）\n2期工事（制作・施工）: 105万円（税別）\n\n支払経費内訳（2期）:\n1. 材料組立費（畳小上がり・スツール・半円テーブル等）: 1,442,540円（税込）\n2. 材料工事費（キッチン・収納棚・給排水繋ぎ込み等）: 1,533,620円（税込）\n3. WS費（什器組立・管理指導費等）: 1,718,640円（税込）\n合計: 4,694,800円（税込）\n\n当初見積（水野さん）: 4,040,000円\n削減後: 3,491,900円 → 最終VUILD連結: 4,268,000円（税別）\n\n仲子さん施工費: 91,400円（税抜）"},
+        {"key": "execution", "title": "施工計画", "content": "1月中: 製作期間（ShopBot加工 at VUILD鎌倉）\n2/27: 什器出荷（4tウイングゲート車）\n2/28: 搬入 + 什器組立 + 電気・給排水工事\n3/1: WS実施（大盛況）\n3/2: 佐藤配管による給排水接続、給湯ガス開栓\n3/3: 水道・排水・給湯・電気配線すべて完了\n3/16: 黒部さん竣工写真撮影\n3/23: 売上報告"},
+        {"key": "ws", "title": "WS運営", "content": "3/1実施: 住民参加型の什器組立・塗装ワークショップ\n畳小上がり11台をWSで住民と一緒に組立・塗装\n大盛況、地域の人も多数参加\n住民の愛着形成に非常に効果的だった"},
+        {"key": "vendors", "title": "外注・協力", "content": "水野建築研究所（水野桂子さん）: ローカルアーキテクト、実施設計・施工監理\n仲子さん: 現地大工（キッチン造作、コーキング）91,400円\n佐藤配管: 水道工事（給排水接続）\n堀田さん: 電気工事（配線、コンセント、250V 30A IH用）\n長岡建築（松井さん）: 地元工務店（換気扇手配等）\nYKK（広浜建材）: 窓アルミパネル\nしゅうへいさん: 杉皮塗装\nカインズ・ロジ: 4tウイングゲート車搬送"},
+        {"key": "lessons", "title": "トラブル・教訓", "content": "- 補助金事業のため予算管理が厳格、県への報告書類が必要\n- 地元業者（大工・配管・電気）との連携が重要、水野さんがハブ役\n- WS形式は住民の愛着形成に非常に効果的 → 地方案件で積極採用すべき\n- シロアリ被害の確認は初期段階で必須\n- キッチンの設備選定（IH・シンク・換気扇）は早期に確定させないと電気工事に影響"}
+      ],
+      "source_knowledge_ids": [],
+      "generated_at": "2026-04-05",
+      "reviewed_by": null
+    }
+  ],
   "entries": [
     {"id":"K001","project_id":"baum_mobile","furniture_id":"baum-yatai","scope":"production","type":"progress","title":"3/31 進捗と確認事項","content":"キャスター取付完了、パイプも固定完了、車輪も問題なし。\nLアングル仮止め完了、バラシの後に両面テープを入れて完全固定の予定。\n天板取付完了、2カ所手動で鬼目を仕込んだ位置が合わないので調整必要。\n引き戸は調整により問題なく取付完了、鍵も問題なし。\n扉のマグネット取付完了、取っ手は部品待ち。","posted_by":"向田 涼哉","channel":"#3040_baum","date":"2026-03-31","slack_url":"https://vuild.slack.com/archives/C09V70VFF96/p1774945723198239","images":["photos/knowledge/baum/IMG_7326.jpg"],"edited":false},
     {"id":"K002","project_id":"baum_mobile","furniture_id":"baum-yatai","scope":"production","type":"progress","title":"進捗: 明日一旦完成予定","content":"うまく進めば明日一旦完成予定、明後日部分解体予定です。","posted_by":"向田 涼哉","channel":"#3040_baum","date":"2026-04-01","slack_url":"https://vuild.slack.com/archives/C09V70VFF96/p1775031635494619","images":["photos/knowledge/baum/IMG_7344.jpg","photos/knowledge/baum/IMG_7345.jpg","photos/knowledge/baum/IMG_7346.jpg","photos/knowledge/baum/IMG_7347.jpg","photos/knowledge/baum/IMG_7348.jpg"],"edited":false},
