@@ -273,9 +273,12 @@ async function init() {
     }
 
     function rebuildForYear() {
-      const yFurnIds = getActiveFurnitureIds();
+      if (!_activeYear || !years[_activeYear]) return;
+      const y = years[_activeYear];
+
+      // 1. Furniture一覧パネル
+      const yFurnIds = y.furniture_ids || [];
       const yFurnItems = (furnData.furniture || []).filter(f => yFurnIds.includes(f.id));
-      // Update furniture panel
       if (yFurnItems.length) {
         document.getElementById('panel-furniture').innerHTML =
           '<div class="detail-furniture-grid">' + yFurnItems.map(f => {
@@ -291,13 +294,69 @@ async function init() {
             </a>`;
           }).join('') + '</div>';
       }
-      // Update year-specific info in spec card
-      if (_activeYear && years[_activeYear]) {
-        const y = years[_activeYear];
-        const yearInfo = document.getElementById('year-info');
-        if (yearInfo) yearInfo.innerHTML = `<div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
-          <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
+
+      // 2. Gallery写真の切り替え
+      const yPhotos = y.gallery_photos || [];
+      if (yPhotos.length) {
+        const mainSrc = B + yPhotos[0];
+        setMainPhoto(mainSrc, 0);
+        _photoPins = []; // 年切り替え時はピンリセット
+        let thumbsHtml = yPhotos.map((src, i) =>
+          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" style="position:relative"
+               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
+            <img src="${B}${src}" alt="" loading="lazy">
+          </div>`
+        ).join('');
+        document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
       }
+
+      // 3. コスト（見積パネル）の切り替え
+      const yCost = y.cost_overview || {};
+      if (yCost.total) {
+        let costHtml = '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算 (' + _activeYear + ')</h3></div><div class="spec-card-body">';
+        costHtml += '<div class="spec-row" style="font-weight:700"><span class="spec-label">合計</span><span class="spec-value">' + formatPrice(yCost.total) + '</span></div>';
+        if (yCost.budget_note) costHtml += '<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px">' + esc(yCost.budget_note) + '</span></div>';
+        costHtml += '</div></div>';
+        document.getElementById('panel-estimate').innerHTML = costHtml;
+      }
+
+      // 4. ナレッジのdateで年フィルタ
+      const yKnowledge = (knowData.entries || []).filter(k =>
+        (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design' &&
+        k.date && k.date.startsWith(_activeYear)
+      );
+      // production knowledgeも年フィルタ（furniture_idが今年のfurniture_idsに含まれるもの）
+      const yProdKnowledge = (knowData.entries || []).filter(k =>
+        k.project_id === projectId && k.scope === 'production' &&
+        k.furniture_id && yFurnIds.includes(k.furniture_id)
+      );
+      const allYearKnow = [...yKnowledge, ...yProdKnowledge];
+      if (allYearKnow.length) {
+        window._knowledgeData = allYearKnow;
+        document.getElementById('panel-knowledge').innerHTML =
+          '<div class="hw-card-grid">' + allYearKnow.map((k, idx) => {
+            const info = getKnowledgeTypeInfo(k.type);
+            const imgs = k.images || [];
+            return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
+              <div class="know-card-header">
+                <span class="badge badge--${k.type}">${info.label}</span>
+                <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
+              </div>
+              <h4>${esc(k.title)}</h4>
+              <p>${esc(k.content || '')}</p>
+              ${imgs.length ? '<div style="font-size:10px;color:var(--color-edit-blue);margin-top:4px">\u{1F4F7} ' + imgs.length + '枚の画像</div>' : ''}
+              <div class="know-author">${esc(k.posted_by || '')}</div>
+            </div>`;
+          }).join('') + '</div>';
+      } else {
+        document.getElementById('panel-knowledge').innerHTML =
+          '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">' + _activeYear + '年のナレッジはまだ登録されていません</p>';
+      }
+
+      // 5. Spec cardの会場・会期
+      const yearInfo = document.getElementById('year-info');
+      if (yearInfo) yearInfo.innerHTML = `<div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
+        <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
     }
 
     // --- Spec card ---
