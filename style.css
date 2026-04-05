@@ -2372,6 +2372,27 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   SOURCE BADGE (自動取得 / 手入力表示)
+   ============================================================ */
+.source-badge {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 3px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+.source-auto {
+  background: rgba(45, 90, 39, 0.1);
+  color: var(--color-accent-green);
+}
+.source-manual {
+  background: rgba(74, 144, 217, 0.1);
+  color: var(--color-edit-blue);
+}
+
+/* ============================================================
    YEAR TABS (楽天など年次案件用)
    ============================================================ */
 .year-tabs {

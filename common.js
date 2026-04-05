@@ -668,6 +668,40 @@ const WebEditor = {
     window._costAddCallback = callback;
   },
 
+  /** 見積項目の手入力UI */
+  addEstimateItemUI(entityType, entityId, callback) {
+    const modal = document.createElement('div');
+    modal.className = 'know-modal-overlay is-open';
+    modal.onclick = e => { if (e.target === modal) modal.remove(); };
+    modal.innerHTML = `<div class="know-modal" style="max-width:380px">
+      <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+      <h2 style="font-size:16px;margin-bottom:12px">見積項目を手入力</h2>
+      <div class="doc-form">
+        <label>項目名<input type="text" id="est-item-name" placeholder="設計費、材料費など" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>金額（円）<input type="number" id="est-item-amount" placeholder="1000000" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <label>編集者名<input type="text" id="est-item-editor" placeholder="あなたの名前" style="width:100%;padding:6px 8px;border:1px solid var(--color-border);border-radius:4px;font-size:13px;margin:4px 0 8px"></label>
+        <button onclick="WebEditor._submitEstimateItem('${entityType}','${entityId}')" style="width:100%;padding:8px;font-size:13px;background:var(--color-text);color:#fff;border:none;border-radius:4px;cursor:pointer">追加</button>
+      </div>
+    </div>`;
+    document.body.appendChild(modal);
+    window._estAddCallback = callback;
+  },
+
+  /** 見積項目の送信処理 */
+  _submitEstimateItem(entityType, entityId) {
+    const name = document.getElementById('est-item-name').value.trim();
+    const amount = parseInt(document.getElementById('est-item-amount').value) || 0;
+    const editor = document.getElementById('est-item-editor').value.trim() || '手入力';
+    if (!name || !amount) { alert('項目名と金額は必須です'); return; }
+    this.addChange('add_estimate_item', { entityType, entityId, name, amount, editor });
+    const key = `vuild_estimate_items_${entityType}_${entityId}`;
+    const items = JSON.parse(localStorage.getItem(key) || '[]');
+    items.push({ name, amount, editor, added_at: new Date().toISOString() });
+    localStorage.setItem(key, JSON.stringify(items));
+    document.querySelector('.know-modal-overlay')?.remove();
+    if (window._estAddCallback) window._estAddCallback();
+  },
+
   /** コスト項目追加の送信処理 */
   _submitCostItem(entityType, entityId) {
     const name = document.getElementById('cost-item-name').value.trim();

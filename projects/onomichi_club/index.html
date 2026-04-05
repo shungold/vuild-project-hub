@@ -353,30 +353,36 @@ async function init() {
           '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">' + _activeYear + '年のナレッジはまだ登録されていません</p>';
       }
 
-      // 5. Spec cardの会場・会期
+      // 5. Spec card — 所在地・竣工・会場・会期を年で切り替え
       const yearInfo = document.getElementById('year-info');
-      if (yearInfo) yearInfo.innerHTML = `<div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
-        <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
+      if (yearInfo) {
+        let yiHtml = '';
+        if (y.venue) yiHtml += `<div class="spec-row"><span class="spec-label">所在地</span><span class="spec-value">${esc(y.venue)}</span></div>`;
+        yiHtml += `<div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
+        yearInfo.innerHTML = yiHtml;
+      }
     }
 
     // --- Spec card ---
+    const hasYears = yearKeys.length > 1;
     const specs = [
       ['案件番号', project.pid],
       ['カテゴリ', project.category],
-      ['所在地', project.location],
+      // 年次案件の場合、所在地・竣工は年ごとに切り替えるのでここでは出さない
+      hasYears ? null : ['所在地', project.location],
       ['構造', project.structure],
       ['面積', project.area_sqm ? project.area_sqm + ' m\u00B2' : null],
-      ['竣工', project.completion_date]
-    ].filter(([,v]) => v);
+      hasYears ? null : ['竣工', project.completion_date]
+    ].filter(x => x && x[1]);
     let specHtml = specs.map(([l,v]) =>
       `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
     ).join('');
-    if (yearKeys.length > 1 && _activeYear && years[_activeYear]) {
+    if (hasYears && _activeYear && years[_activeYear]) {
       const y = years[_activeYear];
-      specHtml += `<div id="year-info">
-        <div class="spec-row"><span class="spec-label">会場</span><span class="spec-value">${esc(y.venue || '')}</span></div>
-        <div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>
-      </div>`;
+      specHtml += `<div id="year-info">`;
+      if (y.venue) specHtml += `<div class="spec-row"><span class="spec-label">所在地</span><span class="spec-value">${esc(y.venue)}</span></div>`;
+      specHtml += `<div class="spec-row"><span class="spec-label">会期</span><span class="spec-value">${esc(y.event_date || '')}</span></div>`;
+      specHtml += `</div>`;
     }
     document.getElementById('spec-body').innerHTML = specHtml;
 
@@ -472,41 +478,59 @@ async function init() {
         `).join('') + '</div>';
     }
 
-    // --- 見積 panel (予算サマリ + 見積/請求書 + 追加UI) ---
+    // --- 見積 panel (予算サマリ + 見積/請求書 + 手入力 + 追加UI) ---
     {
       const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
       const statusClass = { '検討中': 'pending', '請求済み': 'invoiced', '支払済み': 'paid' };
       let estHtml = '';
 
+      // 予算サマリ（JSONデータ = 自動取得）
       if (co.total) {
-        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算</h3></div><div class="spec-card-body">';
+        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算</h3><span class="source-badge source-auto">Slack取得</span></div><div class="spec-card-body">';
         estHtml += `<div class="spec-row" style="font-weight:700"><span class="spec-label">プロジェクト予算</span><span class="spec-value">${formatPrice(co.total)}</span></div>`;
         if (co.design_fee) estHtml += `<div class="spec-row"><span class="spec-label">設計費</span><span class="spec-value">${formatPrice(co.design_fee)}</span></div>`;
         if (co.fabrication_fee) estHtml += `<div class="spec-row"><span class="spec-label">制作費</span><span class="spec-value">${formatPrice(co.fabrication_fee)}</span></div>`;
-        if (co.budget_note) estHtml += `<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px" colspan="2">${esc(co.budget_note)}</span></div>`;
+        if (co.budget_note) estHtml += `<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px">${esc(co.budget_note)}</span></div>`;
         estHtml += '</div></div>';
       }
 
-      if (estimateDocs.length) {
+      // 手入力の見積項目（localStorageから）
+      const estKey = `vuild_estimate_items_project_${projectId}`;
+      const manualEstItems = JSON.parse(localStorage.getItem(estKey) || '[]');
+      if (manualEstItems.length) {
+        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>手入力</h3></div><div class="spec-card-body">';
+        manualEstItems.forEach(ci => {
+          estHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span class="source-badge source-manual">${esc(ci.editor || '手入力')}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
+        });
+        estHtml += '</div></div>';
+      }
+
+      // 見積・請求書ドキュメント
+      // 案件レベルの documents + furnitureのdocuments
+      const projectDocs = (project.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
+      const allEstDocs = [...projectDocs, ...estimateDocs];
+      if (allEstDocs.length) {
         estHtml += '<h3 class="sub-title">見積・請求書</h3><div class="doc-list">';
-        estHtml += estimateDocs.map(d => `
+        estHtml += allEstDocs.map(d => `
           <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
             <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
             <div style="flex:1">
               <div class="doc-label">${esc(d.label)}</div>
               ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
-              <div class="doc-note" style="color:var(--color-edit-blue)">${esc(d.from || '')}</div>
+              ${d.from ? '<div class="doc-note" style="color:var(--color-edit-blue)">' + esc(d.from) + '</div>' : ''}
             </div>
             <span class="badge badge-doc-${statusClass[d.status] || 'pending'}">${esc(d.status || '検討中')}</span>
           </a>`).join('');
         estHtml += '</div>';
       }
 
-      estHtml += `<div style="margin-top:12px">
+      // 追加ボタン群
+      estHtml += `<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="WebEditor.addEstimateItemUI('project','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 見積項目を手入力</button>
         <button onclick="WebEditor.addDocumentUI('project','${projectId}',function(){location.reload()})" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 参考資料を追加</button>
       </div>`;
 
-      if (!co.total && !estimateDocs.length) {
+      if (!co.total && !allEstDocs.length && !manualEstItems.length) {
         estHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">見積情報はまだ登録されていません</p>' + estHtml;
       }
       document.getElementById('panel-estimate').innerHTML = estHtml;

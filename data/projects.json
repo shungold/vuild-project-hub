@@ -143,6 +143,12 @@
       ],
       "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve", "circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
       "deployment_note": "2023: MOKU MOKU KIDS TOWN（パシフィコ横浜）。2024: MOKU MOKU KIDS OASIS（東京ビッグサイト西館）。",
+      "documents": [
+        {"label": "御見積 240605 VUILD", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717567200000000", "note": "2024 正式見積", "status": "請求済み"},
+        {"label": "御見積 0721 楽天optimism2024（塗装費減額後）", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721574000000000", "note": "2024 最終見積", "status": "請求済み"},
+        {"label": "請求書 楽天optimism2024 VUILD", "type": "invoice", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722765600000000", "note": "2024 請求書", "status": "請求済み"},
+        {"label": "楽天株式会社御中 什器レンタル見積書", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1694757600000000", "note": "2023 什器レンタル見積", "status": "請求済み"}
+      ],
       "material_ids": [],
       "slack_channel_id": "C05AYV4KG3E",
       "slack_channel_name": "#393_楽天optimism",
@@ -192,6 +198,13 @@
         {"name": "木村玲大", "role": "経理"}
       ],
       "furniture_ids": ["namunami-bench", "onomichi-bench-a", "onomichi-bench-b", "onomichi-cafe-table", "onomichi-partition"],
+      "documents": [
+        {"label": "客室ソファA・Bお見積り（11/29）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732860000000000", "note": "A・B初期見積", "status": "請求済み"},
+        {"label": "尾道倶楽部FFE什器製作 お見積書（12/19）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1734600000000000", "note": "什器製作一式", "status": "請求済み"},
+        {"label": "全体見積（3/6）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000000", "note": "最終全体見積", "status": "請求済み"},
+        {"label": "御請求書 2末（3/6）", "type": "invoice", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000001", "note": "テーブル・パーティション 2末締め", "status": "請求済み"},
+        {"label": "御請求書 3末（3/6）", "type": "invoice", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000002", "note": "A+Bベンチ+オレンジ45万 3末締め", "status": "請求済み"}
+      ],
       "material_ids": [],
       "slack_channel_id": "C07K02J6SUE",
       "slack_channel_name": "#3035_尾道-千光寺山荘リニューアル",
@@ -313,6 +326,14 @@
         {"name": "木村玲大", "role": "見積もり"}
       ],
       "furniture_ids": ["toyama-tatami", "toyama-stool", "toyama-kitchen", "toyama-shelf"],
+      "documents": [
+        {"label": "2期工事お見積書（11/20）", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1763604880739099", "note": "初版見積", "status": "検討中"},
+        {"label": "二期工事 御見積もり（12/24 WS1回・設備込み）", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1766568469454219", "note": "最終見積", "status": "請求済み"},
+        {"label": "業務着手金 請求書", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1769690862040579", "note": "着手金", "status": "請求済み"},
+        {"label": "請求書・検収書（2/28）", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1772268542786169", "note": "完了金+検収", "status": "請求済み"},
+        {"label": "杉皮塗装工事 見積書", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1771391913021729", "note": "しゅうへいさん塗装見積", "status": "請求済み"},
+        {"label": "キッチン造作 請求書（仲子さん）", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1773641543921499", "note": "91,400円（税抜）", "status": "請求済み"}
+      ],
       "material_ids": [],
       "slack_channel_id": "C06KR848J0M",
       "slack_channel_name": "#3009_富山県立山のリノベ案件",
