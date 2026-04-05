@@ -272,69 +272,101 @@ async function init() {
       return project.furniture_ids || [];
     }
 
-    function rebuildForYear() {
-      if (!_activeYear || !years[_activeYear]) return;
-      const y = years[_activeYear];
+    // === 共通描画関数（init と rebuildForYear の両方から呼ぶ） ===
+    const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+    const statusClass = { '検討中': 'pending', '請求済み': 'invoiced', '支払済み': 'paid' };
 
-      // 1. Furniture一覧パネル
-      const yFurnIds = y.furniture_ids || [];
-      const yFurnItems = (furnData.furniture || []).filter(f => yFurnIds.includes(f.id));
-      if (yFurnItems.length) {
-        document.getElementById('panel-furniture').innerHTML =
-          '<div class="detail-furniture-grid">' + yFurnItems.map(f => {
-            const thumb = (f.hero_photos && f.hero_photos[0])
-              ? `<img src="${B}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
-              : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
-            return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
-              <div class="flc-thumb">${thumb}</div>
-              <div class="flc-body">
-                <h4>${esc(f.name)}</h4>
-                <p>${esc(f.dimensions || '')}</p>
-              </div>
-            </a>`;
-          }).join('') + '</div>';
+    function renderFurniturePanel(items) {
+      if (!items.length) return;
+      document.getElementById('panel-furniture').innerHTML =
+        '<div class="detail-furniture-grid">' + items.map(f => {
+          const thumb = (f.hero_photos && f.hero_photos[0])
+            ? `<img src="${B}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
+            : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
+          return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
+            <div class="flc-thumb">${thumb}</div>
+            <div class="flc-body"><h4>${esc(f.name)}</h4><p>${esc(f.dimensions || '')}</p></div>
+          </a>`;
+        }).join('') + '</div>';
+    }
+
+    function renderEstimatePanel(co, docs) {
+      let estHtml = '';
+      if (co.total) {
+        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算</h3><span class="source-badge source-auto">Slack取得</span></div><div class="spec-card-body">';
+        estHtml += `<div class="spec-row" style="font-weight:700"><span class="spec-label">プロジェクト予算</span><span class="spec-value">${formatPrice(co.total)}</span></div>`;
+        if (co.design_fee) estHtml += `<div class="spec-row"><span class="spec-label">設計費</span><span class="spec-value">${formatPrice(co.design_fee)}</span></div>`;
+        if (co.fabrication_fee) estHtml += `<div class="spec-row"><span class="spec-label">制作費</span><span class="spec-value">${formatPrice(co.fabrication_fee)}</span></div>`;
+        if (co.budget_note) estHtml += `<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px">${esc(co.budget_note)}</span></div>`;
+        estHtml += '</div></div>';
       }
-
-      // 2. Gallery写真の切り替え
-      const yPhotos = y.gallery_photos || [];
-      if (yPhotos.length) {
-        const mainSrc = B + yPhotos[0];
-        setMainPhoto(mainSrc, 0);
-        _photoPins = []; // 年切り替え時はピンリセット
-        let thumbsHtml = yPhotos.map((src, i) =>
-          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" style="position:relative"
-               data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
-            <img src="${B}${src}" alt="" loading="lazy">
-          </div>`
-        ).join('');
-        document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
+      const estKey = `vuild_estimate_items_project_${projectId}`;
+      const manualEstItems = JSON.parse(localStorage.getItem(estKey) || '[]');
+      if (manualEstItems.length) {
+        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>手入力</h3></div><div class="spec-card-body">';
+        manualEstItems.forEach(ci => {
+          estHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span class="source-badge source-manual">${esc(ci.editor || '手入力')}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
+        });
+        estHtml += '</div></div>';
       }
-
-      // 3. コスト（見積パネル）の切り替え
-      const yCost = y.cost_overview || {};
-      if (yCost.total) {
-        let costHtml = '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算 (' + _activeYear + ')</h3></div><div class="spec-card-body">';
-        costHtml += '<div class="spec-row" style="font-weight:700"><span class="spec-label">合計</span><span class="spec-value">' + formatPrice(yCost.total) + '</span></div>';
-        if (yCost.budget_note) costHtml += '<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px">' + esc(yCost.budget_note) + '</span></div>';
-        costHtml += '</div></div>';
-        document.getElementById('panel-estimate').innerHTML = costHtml;
+      if (docs.length) {
+        estHtml += '<h3 class="sub-title">見積・請求書</h3><div class="doc-list">';
+        estHtml += docs.map(d => `
+          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div style="flex:1">
+              <div class="doc-label">${esc(d.label)}</div>
+              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
+              ${d.from ? '<div class="doc-note" style="color:var(--color-edit-blue)">' + esc(d.from) + '</div>' : ''}
+            </div>
+            <span class="badge badge-doc-${statusClass[d.status] || 'pending'}">${esc(d.status || '検討中')}</span>
+          </a>`).join('');
+        estHtml += '</div>';
       }
+      estHtml += `<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+        <button onclick="WebEditor.addEstimateItemUI('project','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 見積項目を手入力</button>
+        <button onclick="WebEditor.addDocumentUI('project','${projectId}',function(){location.reload()})" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 参考資料を追加</button>
+      </div>`;
+      if (!co.total && !docs.length && !manualEstItems.length) {
+        estHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">見積情報はまだ登録されていません</p>' + estHtml;
+      }
+      document.getElementById('panel-estimate').innerHTML = estHtml;
+    }
 
-      // 4. ナレッジのdateで年フィルタ
-      const yKnowledge = (knowData.entries || []).filter(k =>
-        (k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design' &&
-        k.date && k.date.startsWith(_activeYear)
-      );
-      // production knowledgeも年フィルタ（furniture_idが今年のfurniture_idsに含まれるもの）
-      const yProdKnowledge = (knowData.entries || []).filter(k =>
-        k.project_id === projectId && k.scope === 'production' &&
-        k.furniture_id && yFurnIds.includes(k.furniture_id)
-      );
-      const allYearKnow = [...yKnowledge, ...yProdKnowledge];
-      if (allYearKnow.length) {
-        window._knowledgeData = allYearKnow;
+    function renderActualPanel(items, co) {
+      let actHtml = '';
+      if (items.length) {
+        let furnTotal = 0;
+        actHtml += '<h3 class="sub-title">Furniture 原価</h3>';
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        items.forEach(f => {
+          const cost = f.production_cost || 0;
+          furnTotal += cost;
+          actHtml += `<div class="spec-row"><span class="spec-label"><a href="${B}furniture/${f.id}/index.html" style="color:var(--color-edit-blue)">${esc(f.name)}</a></span><span class="spec-value">${cost ? formatPrice(cost) : '<span style="color:var(--color-tertiary)">未取得</span>'}</span></div>`;
+        });
+        if (furnTotal) actHtml += `<div class="spec-row" style="border-top:1px solid var(--color-border);margin-top:4px;padding-top:4px;font-weight:700"><span class="spec-label">Furniture原価合計</span><span class="spec-value">${formatPrice(furnTotal)}</span></div>`;
+        actHtml += '</div></div>';
+      }
+      if (co.design_fee) {
+        actHtml += '<h3 class="sub-title">プロジェクトコスト</h3>';
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        actHtml += `<div class="spec-row"><span class="spec-label">設計費</span><span class="spec-value">${formatPrice(co.design_fee)}</span></div>`;
+        actHtml += '</div></div>';
+      }
+      actHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addCostItemUI('project','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ コスト項目を追加</button>
+      </div>`;
+      if (!actHtml.includes('sub-title')) {
+        actHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>' + actHtml;
+      }
+      document.getElementById('panel-actual').innerHTML = actHtml;
+    }
+
+    function renderKnowledgePanel(entries) {
+      if (entries.length) {
+        window._knowledgeData = entries;
         document.getElementById('panel-knowledge').innerHTML =
-          '<div class="hw-card-grid">' + allYearKnow.map((k, idx) => {
+          '<div class="hw-card-grid">' + entries.map((k, idx) => {
             const info = getKnowledgeTypeInfo(k.type);
             const imgs = k.images || [];
             return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
@@ -349,11 +381,51 @@ async function init() {
             </div>`;
           }).join('') + '</div>';
       } else {
+        const label = _activeYear ? _activeYear + '年の' : '';
         document.getElementById('panel-knowledge').innerHTML =
-          '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">' + _activeYear + '年のナレッジはまだ登録されていません</p>';
+          `<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">${label}ナレッジはまだ登録されていません</p>`;
+      }
+    }
+
+    function rebuildForYear() {
+      if (!_activeYear || !years[_activeYear]) return;
+      const y = years[_activeYear];
+      const yFurnIds = y.furniture_ids || [];
+      const yFurnItems = (furnData.furniture || []).filter(f => yFurnIds.includes(f.id));
+      const yCost = y.cost_overview || {};
+
+      // 1. Furniture
+      renderFurniturePanel(yFurnItems);
+
+      // 2. Gallery写真
+      const yPhotos = y.gallery_photos || [];
+      if (yPhotos.length) {
+        setMainPhoto(B + yPhotos[0], 0);
+        _photoPins = [];
+        document.getElementById('photo-thumbs').innerHTML = yPhotos.map((src, i) =>
+          `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
+            <img src="${B}${src}" alt="" loading="lazy">
+          </div>`
+        ).join('');
       }
 
-      // 5. Spec card — 所在地・竣工・会場・会期を年で切り替え
+      // 3. 見積（コスト + 参考資料 + 手入力ボタン）
+      const projDocs = (project.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
+      const furnDocs = [];
+      yFurnItems.forEach(f => { (f.documents || []).forEach(d => furnDocs.push({ ...d, from: f.name })); });
+      renderEstimatePanel(yCost, [...projDocs, ...furnDocs.filter(d => d.type === 'estimate' || d.type === 'invoice')]);
+
+      // 4. 実績
+      renderActualPanel(yFurnItems, yCost);
+
+      // 5. ナレッジ（dateで年フィルタ）
+      const yKnow = (knowData.entries || []).filter(k =>
+        ((k.project_id === projectId || k.linked_id === projectId) && k.scope === 'design' && k.date && k.date.startsWith(_activeYear)) ||
+        (k.project_id === projectId && k.scope === 'production' && k.furniture_id && yFurnIds.includes(k.furniture_id))
+      );
+      renderKnowledgePanel(yKnow);
+
+      // 6. Spec card
       const yearInfo = document.getElementById('year-info');
       if (yearInfo) {
         let yiHtml = '';
@@ -444,22 +516,8 @@ async function init() {
     document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
     initDetailTabs();
 
-    // --- Furniture panel ---
-    if (furnitureItems.length) {
-      document.getElementById('panel-furniture').innerHTML =
-        '<div class="detail-furniture-grid">' + furnitureItems.map(f => {
-          const thumb = (f.hero_photos && f.hero_photos[0])
-            ? `<img src="${B}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
-            : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
-          return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
-            <div class="flc-thumb">${thumb}</div>
-            <div class="flc-body">
-              <h4>${esc(f.name)}</h4>
-              <p>${esc(f.dimensions || '')}</p>
-            </div>
-          </a>`;
-        }).join('') + '</div>';
-    }
+    // --- Furniture panel (共通関数で描画) ---
+    renderFurniturePanel(furnitureItems);
 
     // --- Materials panel ---
     if (archMaterials.length) {
@@ -478,136 +536,21 @@ async function init() {
         `).join('') + '</div>';
     }
 
-    // --- 見積 panel (予算サマリ + 見積/請求書 + 手入力 + 追加UI) ---
+    // --- 見積 panel (共通関数で描画) ---
     {
-      const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
-      const statusClass = { '検討中': 'pending', '請求済み': 'invoiced', '支払済み': 'paid' };
-      let estHtml = '';
-
-      // 予算サマリ（JSONデータ = 自動取得）
-      if (co.total) {
-        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>予算</h3><span class="source-badge source-auto">Slack取得</span></div><div class="spec-card-body">';
-        estHtml += `<div class="spec-row" style="font-weight:700"><span class="spec-label">プロジェクト予算</span><span class="spec-value">${formatPrice(co.total)}</span></div>`;
-        if (co.design_fee) estHtml += `<div class="spec-row"><span class="spec-label">設計費</span><span class="spec-value">${formatPrice(co.design_fee)}</span></div>`;
-        if (co.fabrication_fee) estHtml += `<div class="spec-row"><span class="spec-label">制作費</span><span class="spec-value">${formatPrice(co.fabrication_fee)}</span></div>`;
-        if (co.budget_note) estHtml += `<div class="spec-row"><span class="spec-label" style="color:var(--color-tertiary);font-size:11px">${esc(co.budget_note)}</span></div>`;
-        estHtml += '</div></div>';
-      }
-
-      // 手入力の見積項目（localStorageから）
-      const estKey = `vuild_estimate_items_project_${projectId}`;
-      const manualEstItems = JSON.parse(localStorage.getItem(estKey) || '[]');
-      if (manualEstItems.length) {
-        estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-header"><h3>手入力</h3></div><div class="spec-card-body">';
-        manualEstItems.forEach(ci => {
-          estHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span class="source-badge source-manual">${esc(ci.editor || '手入力')}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
-        });
-        estHtml += '</div></div>';
-      }
-
-      // 見積・請求書ドキュメント
-      // 案件レベルの documents + furnitureのdocuments
-      const projectDocs = (project.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
-      const allEstDocs = [...projectDocs, ...estimateDocs];
-      if (allEstDocs.length) {
-        estHtml += '<h3 class="sub-title">見積・請求書</h3><div class="doc-list">';
-        estHtml += allEstDocs.map(d => `
-          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
-            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
-            <div style="flex:1">
-              <div class="doc-label">${esc(d.label)}</div>
-              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
-              ${d.from ? '<div class="doc-note" style="color:var(--color-edit-blue)">' + esc(d.from) + '</div>' : ''}
-            </div>
-            <span class="badge badge-doc-${statusClass[d.status] || 'pending'}">${esc(d.status || '検討中')}</span>
-          </a>`).join('');
-        estHtml += '</div>';
-      }
-
-      // 追加ボタン群
-      estHtml += `<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
-        <button onclick="WebEditor.addEstimateItemUI('project','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 見積項目を手入力</button>
-        <button onclick="WebEditor.addDocumentUI('project','${projectId}',function(){location.reload()})" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 参考資料を追加</button>
-      </div>`;
-
-      if (!co.total && !allEstDocs.length && !manualEstItems.length) {
-        estHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">見積情報はまだ登録されていません</p>' + estHtml;
-      }
-      document.getElementById('panel-estimate').innerHTML = estHtml;
+      const activeCost = (_activeYear && years[_activeYear]) ? (years[_activeYear].cost_overview || {}) : co;
+      const projEstDocs = (project.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
+      renderEstimatePanel(activeCost, [...projEstDocs, ...estimateDocs]);
     }
 
-    // --- 実績 panel (furniture原価集約 + プロジェクトコスト + 参考資料) ---
+    // --- 実績 panel (共通関数で描画) ---
     {
-      let actHtml = '';
-
-      // 紐づくfurnitureの原価
-      if (furnitureItems.length) {
-        let furnTotal = 0;
-        actHtml += '<h3 class="sub-title">Furniture 原価</h3>';
-        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
-        furnitureItems.forEach(f => {
-          const cost = f.production_cost || 0;
-          furnTotal += cost;
-          actHtml += `<div class="spec-row"><span class="spec-label"><a href="${B}furniture/${f.id}/index.html" style="color:var(--color-edit-blue)">${esc(f.name)}</a></span><span class="spec-value">${cost ? formatPrice(cost) : '<span style="color:var(--color-tertiary)">未取得</span>'}</span></div>`;
-        });
-        if (furnTotal) {
-          actHtml += `<div class="spec-row" style="border-top:1px solid var(--color-border);margin-top:4px;padding-top:4px;font-weight:700"><span class="spec-label">Furniture原価合計</span><span class="spec-value">${formatPrice(furnTotal)}</span></div>`;
-        }
-        actHtml += '</div></div>';
-      }
-
-      // プロジェクト固有コスト（設計費など）
-      if (co.design_fee) {
-        actHtml += '<h3 class="sub-title">プロジェクトコスト</h3>';
-        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
-        actHtml += `<div class="spec-row"><span class="spec-label">設計費</span><span class="spec-value">${formatPrice(co.design_fee)}</span></div>`;
-        actHtml += '</div></div>';
-      }
-
-      // 参考資料（見積/請求以外）
-      if (refDocs.length) {
-        const typeIcons = { drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
-        actHtml += '<h3 class="sub-title">参考資料</h3><div class="doc-list">';
-        actHtml += refDocs.map(d => `
-          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
-            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
-            <div><div class="doc-label">${esc(d.label)}</div>${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}</div>
-          </a>`).join('');
-        actHtml += '</div>';
-      }
-
-      actHtml += `<div style="margin-top:12px">
-        <button onclick="WebEditor.addCostItemUI('project','${projectId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ コスト項目を追加</button>
-      </div>`;
-
-      if (!actHtml.includes('sub-title')) {
-        actHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>' + actHtml;
-      }
-      document.getElementById('panel-actual').innerHTML = actHtml;
+      const activeCost = (_activeYear && years[_activeYear]) ? (years[_activeYear].cost_overview || {}) : co;
+      renderActualPanel(furnitureItems, activeCost);
     }
 
-    // --- Knowledge panel (design scopeのみ、0件でも空メッセージ表示) ---
-    if (projectKnowledge.length) {
-      window._knowledgeData = projectKnowledge;
-      document.getElementById('panel-knowledge').innerHTML =
-        '<div class="hw-card-grid">' + projectKnowledge.map((k, idx) => {
-          const info = getKnowledgeTypeInfo(k.type);
-          const imgs = k.images || [];
-          return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
-            <div class="know-card-header">
-              <span class="badge badge--${k.type}">${info.label}</span>
-              <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
-            </div>
-            <h4>${esc(k.title)}</h4>
-            <p>${esc(k.content || '')}</p>
-            ${imgs.length ? '<div style="font-size:10px;color:var(--color-edit-blue);margin-top:4px">\u{1F4F7} ' + imgs.length + '枚の画像</div>' : ''}
-            <div class="know-author">${esc(k.posted_by || '')}</div>
-          </div>`;
-        }).join('') + '</div>';
-    } else {
-      document.getElementById('panel-knowledge').innerHTML =
-        '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">案件レベルのナレッジ（scope: design）はまだ登録されていません。<br>制作に関するナレッジは各furnitureページに表示されます。</p>';
-    }
+    // --- Knowledge panel (共通関数で描画) ---
+    renderKnowledgePanel(projectKnowledge);
 
     // --- 案件ドキュメント panel (アコーディオン) ---
     {
