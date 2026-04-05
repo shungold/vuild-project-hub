@@ -402,11 +402,15 @@ async function init() {
       if (yPhotos.length) {
         setMainPhoto(B + yPhotos[0], 0);
         _photoPins = [];
-        document.getElementById('photo-thumbs').innerHTML = yPhotos.map((src, i) =>
+        let ythumbsHtml = yPhotos.map((src, i) =>
           `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
             <img src="${B}${src}" alt="" loading="lazy">
           </div>`
         ).join('');
+        ythumbsHtml += `<div class="detail-photo-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;border:1px dashed var(--color-border)" onclick="WebEditor.addImageUI('project','${projectId}',()=>location.reload())">
+          <span style="font-size:20px;color:var(--color-tertiary)">+</span>
+        </div>`;
+        document.getElementById('photo-thumbs').innerHTML = ythumbsHtml;
       }
 
       // 3. 見積（コスト + 参考資料 + 手入力ボタン）
