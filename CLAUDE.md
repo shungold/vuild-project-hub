@@ -182,6 +182,26 @@ fixture-drawing-previewer/
 | ナレッジ(design) | 案件ページ Knowledge | クライアント要件・予算・施工計画（この案件固有の話） |
 | コスト(furniture単価) | furnitureコスト欄 | 1台あたり・材料費・取り数 |
 | コスト(請求/外注/全体) | 案件コストタブ | 見積書・請求書・工務店手間・運送費 |
+
+**コスト表示の優先ルール:**
+
+| 表示先 | 第1優先 | 第2優先 | 表示形式 |
+|--------|--------|--------|---------|
+| furnitureカード | `production_cost`（実績） | `cost_breakdown` の見積ベース値 | 金額 + ソース表示 |
+| furniture詳細ページ | `production_cost` + `cost_breakdown` | documents[]内の見積PDFから抽出 | 内訳付き |
+| 案件カード | `cost_overview.total`（実績） | 見積合計 | 金額 |
+
+**ソース表記:**
+- `auto`（Slackメッセージから自動抽出） → 「自動取得」と表示
+- `estimate`（見積PDFから抽出） → 「見積ベース」と表示
+- `manual`（手動入力・WEB編集） → 編集者名を表示（例: 「金子 手入力」）
+- 実績値がない場合 → 「⚠ 見積ベース（実績未入力）」と表示
+
+**スキャン時のコスト自動抽出:**
+- Slackメッセージ内の金額パターン（○万円、¥○○、○○円）を検出
+- furniture名キーワードとの共起でfurniture別に分類
+- `cost_source: "auto"` + `cost_extracted_from: "slack_msg"` で記録
+- 既存の手動入力値がある場合は上書きしない（手動優先）
 | 金物 | 親アイテムに従う | キッチンの金物→キッチン、配管の金物→案件 |
 | 見積書・請求書・検収書(PDF/リンク) | 案件 or furnitureの documents[] | 下記の振り分けロジック参照 |
 

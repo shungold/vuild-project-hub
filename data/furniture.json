@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-06T14:00:00",
+  "last_updated": "2026-04-06T15:00:00",
   "furniture": [
     {
       "id": "town-unit-sq900",
@@ -874,7 +874,16 @@
       ],
       "production_cost": null,
       "cost_breakdown": {
-        "単価目安": "15万円/台"
+        "原価概算（1台）": "約9万円",
+        "材料_合板": "ラワン合板3枚 約3万円",
+        "材料_脚": "スギ無垢材 約1万円（津の国屋 2,350円/枚×9枚）",
+        "加工費": "ShopBot+ビエッセ 約2万円",
+        "仕上げ・プレアッセンブル": "1.5人工 約3万円",
+        "塗装工数": "見積10人工→実績40人工（大幅超過）",
+        "出し値": "約15万円/台",
+        "売価参考": "17万円/台（再販時の参考価格）",
+        "再製作8台_オレンジ負担": "45万円",
+        "再製作8台_原価合計": "約90万円"
       },
       "tags": [
         "ベンチ",
@@ -912,7 +921,9 @@
           "note": "各階平面図です。 <https://vuild.slack.com/files/U03RHDVQW9Y/F07Q9448",
           "date": "2025-02-13"
         }
-      ]
+      ],
+      "cost_source": "auto",
+      "cost_extracted_from": "slack_msg"
     },
     {
       "id": "onomichi-bench-b",
@@ -944,7 +955,9 @@
       ],
       "production_cost": null,
       "cost_breakdown": {
-        "単価目安": "30万円/台"
+        "出し値": "約30万円/台",
+        "構成": "Aタイプのロング版・左右ミラーペア",
+        "備考": "ベンチAと同素材・同工法"
       },
       "tags": [
         "ベンチ",
@@ -975,7 +988,9 @@
           "note": "各階平面図です。 <https://vuild.slack.com/files/U03RHDVQW9Y/F07Q9448",
           "date": "2025-02-13"
         }
-      ]
+      ],
+      "cost_source": "auto",
+      "cost_extracted_from": "slack_msg"
     },
     {
       "id": "onomichi-cafe-table",
@@ -1048,7 +1063,13 @@
       ],
       "production_cost": null,
       "cost_breakdown": {
-        "テーブル+パーティション合計": "40万円"
+        "見積_出し値": "約50万円（シナ+染色仕様の場合）",
+        "原価目標": "20万円",
+        "木部費": "317,000円（タモ含む）",
+        "塗料原価": "93,627円",
+        "テーブル+パーティション請求額": "40万円（諸経費込・2末締3末払）",
+        "加工見積（特急なし）": "377,000円（税別）",
+        "輸送_衣川チャーター": "約5万円（海老名→衣川ウレタン）"
       },
       "tags": [
         "テーブル",
@@ -1114,7 +1135,9 @@
           "note": "<@U03RHDVQW9Y> 1階図面です！",
           "date": "2024-09-16"
         }
-      ]
+      ],
+      "cost_source": "auto",
+      "cost_extracted_from": "slack_msg"
     },
     {
       "id": "onomichi-partition",
@@ -1172,7 +1195,16 @@
           "note": "<@U01B694CBAL>  <https://vuild.slack.com/files/U03RHDVQW9Y/F",
           "date": "2025-01-17"
         }
-      ]
+      ],
+      "production_cost": null,
+      "cost_breakdown": {
+        "当初予算": "30万円",
+        "見積更新後": "45〜50万円（UV印刷込み）",
+        "テーブル+パーティション請求額": "40万円（諸経費込）",
+        "備考": "予算40万に合わせて調整"
+      },
+      "cost_source": "auto",
+      "cost_extracted_from": "slack_msg"
     }
   ]
 }
