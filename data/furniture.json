@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-04T13:00:00",
+  "last_updated": "2026-04-06T12:00:00",
   "furniture": [
     {
       "id": "town-unit-sq900",
@@ -12,15 +12,30 @@
       "dimensions": "H360（角型モジュール）",
       "weight_kg": null,
       "model_url": "models/furniture/town-unit.3dm",
-      "hero_photos": ["photos/placeholders/axo-town-unit.svg"],
-      "gallery_photos": ["photos/furniture/town-unit/rakuten.jpg", "photos/furniture/town-unit/nagoya.jpg", "photos/projects/rakuten_optimism/rakuten-2023b-02.jpg"],
-      "specs": {"material": "MDF（塗装仕上げ）", "finish": "塗装 / ファニチャーリノリウム天板（オプション）", "note": "フラットパック搬入・ハイエースに4-6台積載可"},
+      "hero_photos": [
+        "photos/placeholders/axo-town-unit.svg"
+      ],
+      "gallery_photos": [
+        "photos/furniture/town-unit/rakuten.jpg",
+        "photos/furniture/town-unit/nagoya.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2023b-02.jpg"
+      ],
+      "specs": {
+        "material": "MDF（塗装仕上げ）",
+        "finish": "塗装 / ファニチャーリノリウム天板（オプション）",
+        "note": "フラットパック搬入・ハイエースに4-6台積載可"
+      },
       "hardware_ids": [],
       "rental_price": 200000,
       "rental_note": "輸送込み、1回あたり目安",
       "storage_location": "海老名倉庫",
       "reference_url": "https://note.com/vuild/n/na669506a4970",
-      "tags": ["屋外","ベンチ","レンタル","モジュール"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "レンタル",
+        "モジュール"
+      ],
       "edited": false
     },
     {
@@ -33,9 +48,18 @@
       "dimensions": "H720（角型モジュール）",
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "MDF（塗装仕上げ）", "finish": "塗装 / ファニチャーリノリウム天板（オプション）", "note": "フラットパック搬入可"},
+      "specs": {
+        "material": "MDF（塗装仕上げ）",
+        "finish": "塗装 / ファニチャーリノリウム天板（オプション）",
+        "note": "フラットパック搬入可"
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","レンタル","モジュール"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "レンタル",
+        "モジュール"
+      ],
       "edited": false
     },
     {
@@ -48,9 +72,18 @@
       "dimensions": "H1080（角型モジュール）",
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "MDF（塗装仕上げ）", "finish": "塗装 / ファニチャーリノリウム天板（オプション）", "note": "フォークリフト搬入推奨"},
+      "specs": {
+        "material": "MDF（塗装仕上げ）",
+        "finish": "塗装 / ファニチャーリノリウム天板（オプション）",
+        "note": "フォークリフト搬入推奨"
+      },
       "hardware_ids": [],
-      "tags": ["屋外","テーブル","レンタル","モジュール"],
+      "tags": [
+        "屋外",
+        "テーブル",
+        "レンタル",
+        "モジュール"
+      ],
       "edited": false
     },
     {
@@ -63,9 +96,19 @@
       "dimensions": "カーブ型（H360/H720）",
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "MDF（塗装仕上げ）", "finish": "塗装", "note": "CNC加工による曲線形状・ハイエースに最大2台"},
+      "specs": {
+        "material": "MDF（塗装仕上げ）",
+        "finish": "塗装",
+        "note": "CNC加工による曲線形状・ハイエースに最大2台"
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","レンタル","CNC","モジュール"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "レンタル",
+        "CNC",
+        "モジュール"
+      ],
       "edited": false
     },
     {
@@ -78,11 +121,24 @@
       "dimensions": "W600×D600×H450",
       "weight_kg": 25,
       "model_url": "models/furniture/shiba-cube.3dm",
-      "hero_photos": ["photos/placeholders/axo-shiba-cube.svg"],
-      "gallery_photos": ["photos/furniture/shiba-cube/main.jpg", "photos/furniture/shiba-cube/detail.jpg"],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "hero_photos": [
+        "photos/placeholders/axo-shiba-cube.svg"
+      ],
+      "gallery_photos": [
+        "photos/furniture/shiba-cube/main.jpg",
+        "photos/furniture/shiba-cube/detail.jpg"
+      ],
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -95,9 +151,17 @@
       "dimensions": "W900×D600×H450",
       "weight_kg": 30,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -110,9 +174,17 @@
       "dimensions": "W1200×D600×H450",
       "weight_kg": 38,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -125,9 +197,17 @@
       "dimensions": "W1500×D600×H450",
       "weight_kg": 45,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -140,9 +220,17 @@
       "dimensions": "L型",
       "weight_kg": 40,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -155,9 +243,17 @@
       "dimensions": "コーナー型",
       "weight_kg": 35,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","ベンチ","人工芝"],
+      "tags": [
+        "屋外",
+        "ベンチ",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -170,9 +266,17 @@
       "dimensions": "H750",
       "weight_kg": 50,
       "hero_photos": [],
-      "specs": {"material": "構造用合板 24mm + 人工芝", "finish": "屋外用塗装 + 人工芝接着", "note": ""},
+      "specs": {
+        "material": "構造用合板 24mm + 人工芝",
+        "finish": "屋外用塗装 + 人工芝接着",
+        "note": ""
+      },
       "hardware_ids": [],
-      "tags": ["屋外","テーブル","人工芝"],
+      "tags": [
+        "屋外",
+        "テーブル",
+        "人工芝"
+      ],
       "edited": false
     },
     {
@@ -184,11 +288,22 @@
       "description": "CNC加工による有機的な曲面ベンチ。5軸CNC加工で木材を積層し、流れるような形状を実現。",
       "dimensions": "W1800×D500×H450",
       "weight_kg": 30,
-      "hero_photos": ["photos/placeholders/axo-namunami.svg"],
-      "gallery_photos": ["photos/furniture/namunami-bench/onomichi-11.jpg","photos/furniture/namunami-bench/onomichi-14.jpg","photos/furniture/namunami-bench/onomichi-15.jpg","photos/furniture/namunami-bench/onomichi-05.jpg","photos/furniture/namunami-bench/onomichi-06.jpg","photos/furniture/namunami-bench/onomichi.jpg"],
-      "specs": {"material": "構造用合板 積層", "finish": "ウレタン塗装", "note": "5軸CNC加工による曲面形状"},
+      "hero_photos": [
+        "photos/placeholders/axo-namunami.svg"
+      ],
+      "gallery_photos": [],
+      "specs": {
+        "material": "構造用合板 積層",
+        "finish": "ウレタン塗装",
+        "note": "5軸CNC加工による曲面形状"
+      },
       "hardware_ids": [],
-      "tags": ["ベンチ","CNC","曲面","5軸"],
+      "tags": [
+        "ベンチ",
+        "CNC",
+        "曲面",
+        "5軸"
+      ],
       "edited": false
     },
     {
@@ -200,17 +315,67 @@
       "description": "資生堂BAUMブランドのポップアップ用移動式什器。引き戸収納、シンク、サイン看板を一体化した木製ワゴン。檜・シナ合板をCNC加工し、BAUMグリーンで塗装。20インチホイールで移動可能。",
       "dimensions": "W3200×D450×H2400",
       "weight_kg": null,
-      "hero_photos": ["photos/placeholders/axo-baum.svg"],
-      "gallery_photos": ["photos/projects/baum_mobile/complete-01.jpg","photos/projects/baum_mobile/complete-02.jpg","photos/projects/baum_mobile/complete-03.jpg"],
-      "photo_pins": [
-        {"photo_index": 1, "x": 25, "y": 75, "id": "HW_009", "label": "509 トレーラー（ホイール）"},
-        {"photo_index": 1, "x": 50, "y": 35, "id": "HW_008", "label": "水性サンディングシーラー"},
-        {"photo_index": 1, "x": 75, "y": 55, "id": "HW_005", "label": "シリンダープッシュ錠"},
-        {"photo_index": 2, "x": 40, "y": 45, "id": "HW_004", "label": "AS下部レール"},
-        {"photo_index": 3, "x": 65, "y": 50, "id": "HW_009", "label": "509 トレーラー（ホイール）"}
+      "hero_photos": [
+        "photos/placeholders/axo-baum.svg"
       ],
-      "specs": {"material": "檜・シナ合板（CNC加工）", "finish": "BAUMグリーン塗装 + ルビオピュア", "note": "引き戸・シンク・看板一体型"},
-      "hardware_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
+      "gallery_photos": [
+        "photos/projects/baum_mobile/complete-01.jpg",
+        "photos/projects/baum_mobile/complete-02.jpg",
+        "photos/projects/baum_mobile/complete-03.jpg"
+      ],
+      "photo_pins": [
+        {
+          "photo_index": 1,
+          "x": 25,
+          "y": 75,
+          "id": "HW_009",
+          "label": "509 トレーラー（ホイール）"
+        },
+        {
+          "photo_index": 1,
+          "x": 50,
+          "y": 35,
+          "id": "HW_008",
+          "label": "水性サンディングシーラー"
+        },
+        {
+          "photo_index": 1,
+          "x": 75,
+          "y": 55,
+          "id": "HW_005",
+          "label": "シリンダープッシュ錠"
+        },
+        {
+          "photo_index": 2,
+          "x": 40,
+          "y": 45,
+          "id": "HW_004",
+          "label": "AS下部レール"
+        },
+        {
+          "photo_index": 3,
+          "x": 65,
+          "y": 50,
+          "id": "HW_009",
+          "label": "509 トレーラー（ホイール）"
+        }
+      ],
+      "specs": {
+        "material": "檜・シナ合板（CNC加工）",
+        "finish": "BAUMグリーン塗装 + ルビオピュア",
+        "note": "引き戸・シンク・看板一体型"
+      },
+      "hardware_ids": [
+        "HW_001",
+        "HW_002",
+        "HW_003",
+        "HW_004",
+        "HW_005",
+        "HW_006",
+        "HW_007",
+        "HW_008",
+        "HW_009"
+      ],
       "production_cost": 2582700,
       "cost_breakdown": {
         "材料費": 657700,
@@ -219,14 +384,55 @@
         "輸送・施工": 98100
       },
       "documents": [
-        {"label": "概算見積もり — 博報堂宛（3/19最新）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "¥3,582,700 / 天板檜集成材・シナ合板", "status": "請求済み"},
-        {"label": "概算見積もり — ラワン合板版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "ラワン合板使用パターン", "status": "検討中"},
-        {"label": "概算見積もり — 檜集成材版（1/14）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000", "note": "愛媛県産材檜集成材 ※シンク水栓有", "status": "検討中"},
-        {"label": "見積書 — 市川屋（檜角材+穴あけ）", "type": "estimate", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774247444311079", "note": "118,778円(税込)", "status": "請求済み"},
-        {"label": "請求書 — 光伸（天蓋）", "type": "invoice", "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774945723198239", "note": "天蓋請求書", "status": "請求済み"},
-        {"label": "AUTOESTIMATOR概算", "type": "estimate", "url": "https://aiestimate-production.up.railway.app/", "note": "AI概算見積ツール", "status": "検討中"}
+        {
+          "label": "概算見積もり — 博報堂宛（3/19最新）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000",
+          "note": "¥3,582,700 / 天板檜集成材・シナ合板",
+          "status": "請求済み"
+        },
+        {
+          "label": "概算見積もり — ラワン合板版（1/14）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000",
+          "note": "ラワン合板使用パターン",
+          "status": "検討中"
+        },
+        {
+          "label": "概算見積もり — 檜集成材版（1/14）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774037400000000",
+          "note": "愛媛県産材檜集成材 ※シンク水栓有",
+          "status": "検討中"
+        },
+        {
+          "label": "見積書 — 市川屋（檜角材+穴あけ）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774247444311079",
+          "note": "118,778円(税込)",
+          "status": "請求済み"
+        },
+        {
+          "label": "請求書 — 光伸（天蓋）",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C09V70VFF96/p1774945723198239",
+          "note": "天蓋請求書",
+          "status": "請求済み"
+        },
+        {
+          "label": "AUTOESTIMATOR概算",
+          "type": "estimate",
+          "url": "https://aiestimate-production.up.railway.app/",
+          "note": "AI概算見積ツール",
+          "status": "検討中"
+        }
       ],
-      "tags": ["屋台","移動式","ポップアップ","BAUM"],
+      "tags": [
+        "屋台",
+        "移動式",
+        "ポップアップ",
+        "BAUM"
+      ],
       "edited": false
     },
     {
@@ -239,9 +445,17 @@
       "dimensions": null,
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "構造用合板", "finish": "屋外用塗装", "note": "遊べるベンチ"},
+      "specs": {
+        "material": "構造用合板",
+        "finish": "屋外用塗装",
+        "note": "遊べるベンチ"
+      },
       "hardware_ids": [],
-      "tags": ["ベンチ","遊具","屋外"],
+      "tags": [
+        "ベンチ",
+        "遊具",
+        "屋外"
+      ],
       "edited": false
     },
     {
@@ -254,9 +468,16 @@
       "dimensions": null,
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "構造用合板", "finish": "ウレタン塗装", "note": "分解・組立可能"},
+      "specs": {
+        "material": "構造用合板",
+        "finish": "ウレタン塗装",
+        "note": "分解・組立可能"
+      },
       "hardware_ids": [],
-      "tags": ["テーブル","遊具"],
+      "tags": [
+        "テーブル",
+        "遊具"
+      ],
       "edited": false
     },
     {
@@ -269,9 +490,16 @@
       "dimensions": null,
       "weight_kg": null,
       "hero_photos": [],
-      "specs": {"material": "電設資材 + 合板座面", "finish": "素地", "note": "電線管・ジョイントを構造に活用"},
+      "specs": {
+        "material": "電設資材 + 合板座面",
+        "finish": "素地",
+        "note": "電線管・ジョイントを構造に活用"
+      },
       "hardware_ids": [],
-      "tags": ["スツール","電設資材"],
+      "tags": [
+        "スツール",
+        "電設資材"
+      ],
       "edited": false
     },
     {
@@ -283,11 +511,25 @@
       "description": "楽天Optimism 2024のメイン什器。円形の大型ベンチ、2段構成（当初3段→仕様変更）。シナ合板CNC加工、無塗装仕上げ。スタッキング可能な設計。",
       "dimensions": "大型円形（2段構成）",
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"],
-      "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024a-05.jpg","photos/projects/rakuten_optimism/rakuten-2024b-10.jpg"],
-      "specs": {"material": "シナ合板（ファルカタ芯/ラワン芯）24mm, 18mm", "finish": "無塗装（木目）", "note": "キャビネオ金物接合、スタッキング可能"},
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024a-05.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2024b-10.jpg"
+      ],
+      "specs": {
+        "material": "シナ合板（ファルカタ芯/ラワン芯）24mm, 18mm",
+        "finish": "無塗装（木目）",
+        "note": "キャビネオ金物接合、スタッキング可能"
+      },
       "hardware_ids": [],
-      "tags": ["ベンチ","イベント","CNC","楽天"],
+      "tags": [
+        "ベンチ",
+        "イベント",
+        "CNC",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -299,11 +541,22 @@
       "description": "楽天Optimism 2024の小型円形ベンチ。1段構成（当初2段→仕様変更）。シナ合板CNC加工、無塗装。スタッキング可能な設計に金子がアップデート。",
       "dimensions": "小型円形（1段構成）",
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"],
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"
+      ],
       "gallery_photos": [],
-      "specs": {"material": "シナ合板（ファルカタ芯/ラワン芯）24mm, 18mm", "finish": "無塗装（木目）", "note": "キャビネオ金物接合、スタッキング可能"},
+      "specs": {
+        "material": "シナ合板（ファルカタ芯/ラワン芯）24mm, 18mm",
+        "finish": "無塗装（木目）",
+        "note": "キャビネオ金物接合、スタッキング可能"
+      },
       "hardware_ids": [],
-      "tags": ["ベンチ","イベント","CNC","楽天"],
+      "tags": [
+        "ベンチ",
+        "イベント",
+        "CNC",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -315,11 +568,23 @@
       "description": "楽天Optimism 2024の有機的曲線ベンチ。当初6セット→最終2台。マゼンタ塗装予定だったが色校NGで無塗装に変更。加工時間: 天板26分×3枚+脚31分×1.5枚/セット。",
       "dimensions": null,
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2024a-09.jpg"],
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024a-09.jpg"
+      ],
       "gallery_photos": [],
-      "specs": {"material": "シナ合板 24mm", "finish": "無塗装（当初マゼンタ塗装予定→NG）", "note": "CNC加工、有機的曲線形状"},
+      "specs": {
+        "material": "シナ合板 24mm",
+        "finish": "無塗装（当初マゼンタ塗装予定→NG）",
+        "note": "CNC加工、有機的曲線形状"
+      },
       "hardware_ids": [],
-      "tags": ["ベンチ","イベント","CNC","曲面","楽天"],
+      "tags": [
+        "ベンチ",
+        "イベント",
+        "CNC",
+        "曲面",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -331,11 +596,23 @@
       "description": "楽天Optimism 2024のローテーブル。SM/Lサイズ展開。SM天板4枚+足で構成。加工時間: SM天板28分×4枚、L天板22分×4枚、脚51分×1.5枚。",
       "dimensions": "SM / L サイズ",
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2024a-07.jpg"],
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024a-07.jpg"
+      ],
       "gallery_photos": [],
-      "specs": {"material": "シナ合板 24mm", "finish": "無塗装", "note": "CNC加工、SM/Lサイズ展開"},
+      "specs": {
+        "material": "シナ合板 24mm",
+        "finish": "無塗装",
+        "note": "CNC加工、SM/Lサイズ展開"
+      },
       "hardware_ids": [],
-      "tags": ["テーブル","イベント","CNC","ローテーブル","楽天"],
+      "tags": [
+        "テーブル",
+        "イベント",
+        "CNC",
+        "ローテーブル",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -347,12 +624,24 @@
       "description": "楽天Optimism 2023のワークショップ用円形テーブル。薄い板を貼って取り替え可能な天板仕様。揺れない構造で解体しやすい設計。イベント後は海老名倉庫に保管。",
       "dimensions": null,
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2023c-01.jpg"],
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2023c-01.jpg"
+      ],
       "gallery_photos": [],
-      "specs": {"material": "合板（CNC加工）", "finish": "無塗装", "note": "天板差し替え可能、解体しやすい構造"},
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "無塗装",
+        "note": "天板差し替え可能、解体しやすい構造"
+      },
       "hardware_ids": [],
       "storage_location": "海老名倉庫",
-      "tags": ["テーブル","イベント","CNC","レンタル","楽天"],
+      "tags": [
+        "テーブル",
+        "イベント",
+        "CNC",
+        "レンタル",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -364,11 +653,27 @@
       "description": "楽天Optimism 2023のお絵描きワークショップ用展示什器。CNC加工の木製フレームに子どもの描いた絵馬を吊り下げ展示。テーマ別に複数面（服・帽子・魚・家・アイスなど）で構成。屋根パーツにブランドカラー塗装。",
       "dimensions": null,
       "weight_kg": null,
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2023a-07.jpg"],
-      "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2023a-04.jpg","photos/projects/rakuten_optimism/rakuten-2023a-06.jpg","photos/projects/rakuten_optimism/rakuten-2023d-01.jpg"],
-      "specs": {"material": "合板（CNC加工）+ 塗装屋根パーツ", "finish": "屋根部分のみカラー塗装（ピンク/青/赤/オレンジ）", "note": "テーマ別複数面構成、絵馬吊り下げ用スリット"},
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2023a-07.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2023a-04.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2023a-06.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2023d-01.jpg"
+      ],
+      "specs": {
+        "material": "合板（CNC加工）+ 塗装屋根パーツ",
+        "finish": "屋根部分のみカラー塗装（ピンク/青/赤/オレンジ）",
+        "note": "テーマ別複数面構成、絵馬吊り下げ用スリット"
+      },
       "hardware_ids": [],
-      "tags": ["展示","イベント","CNC","WS","楽天"],
+      "tags": [
+        "展示",
+        "イベント",
+        "CNC",
+        "WS",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -382,79 +687,19 @@
       "weight_kg": null,
       "hero_photos": [],
       "gallery_photos": [],
-      "specs": {"material": "CNC加工端材・廃材", "finish": "無塗装", "note": "端材活用のサステナブルディスプレイ"},
+      "specs": {
+        "material": "CNC加工端材・廃材",
+        "finish": "無塗装",
+        "note": "端材活用のサステナブルディスプレイ"
+      },
       "hardware_ids": [],
-      "tags": ["展示","イベント","廃材","サステナブル","楽天"],
-      "edited": false
-    },
-    {
-      "id": "onomichi-bench-a",
-      "name": "客室ベンチA",
-      "name_en": "Guest Room Bench A",
-      "series": "尾道倶楽部シリーズ",
-      "category": "ベンチ",
-      "description": "千光寺山荘の客室A（15室）用ベンチ。ラワン合板による藍染ルーバー座面とスギ無垢脚の組み合わせ。cabineo8 M6接合、Lアングル補強。キシラデ＋ウレタン塗装仕上げ。",
-      "dimensions": "W800（ショートタイプ）",
-      "weight_kg": null,
-      "hero_photos": ["photos/projects/onomichi_club/onomichi-completion-15.jpg"],
-      "gallery_photos": ["photos/projects/onomichi_club/onomichi-completion-16.jpg","photos/projects/onomichi_club/onomichi-completion-32.jpg"],
-      "specs": {"material": "ラワン合板（座面ルーバー）+ スギ無垢材 30mm（脚）", "finish": "キシラデクリア塗装 + ウレタン塗装", "note": "竜骨+脚ビス斜め打ち接合、Lアングル補強"},
-      "hardware_ids": [],
-      "production_cost": null,
-      "cost_breakdown": {"単価目安": "15万円/台"},
-      "tags": ["ベンチ","ホテル","CNC","藍染"],
-      "edited": false
-    },
-    {
-      "id": "onomichi-bench-b",
-      "name": "客室ベンチB",
-      "name_en": "Guest Room Bench B",
-      "series": "尾道倶楽部シリーズ",
-      "category": "ベンチ",
-      "description": "千光寺山荘の客室B（2室）用ロングベンチ。ベンチAと同素材・同工法でロングサイズ。左右ミラー1セットで1室分。",
-      "dimensions": "ロングサイズ",
-      "weight_kg": null,
-      "hero_photos": ["photos/projects/onomichi_club/onomichi-completion-03.jpg"],
-      "gallery_photos": ["photos/projects/onomichi_club/onomichi-completion-20.jpg","photos/projects/onomichi_club/onomichi-completion-27.jpg"],
-      "specs": {"material": "ラワン合板（座面ルーバー）+ スギ無垢材 30mm（脚）", "finish": "キシラデクリア塗装 + ウレタン塗装", "note": "ベンチAのロング版、ミラーペア"},
-      "hardware_ids": [],
-      "production_cost": null,
-      "cost_breakdown": {"単価目安": "30万円/台"},
-      "tags": ["ベンチ","ホテル","CNC","藍染"],
-      "edited": false
-    },
-    {
-      "id": "onomichi-cafe-table",
-      "name": "カフェテーブル（ロングオーバル）",
-      "name_en": "Cafe Long Oval Table",
-      "series": "尾道倶楽部シリーズ",
-      "category": "テーブル",
-      "description": "千光寺山荘カフェスペースの大型オーバルテーブル。天板3分割でボルトジョイント。丸脚3本にリブ付き、脚元にコンセント配置。ラワン合板にキシラデ仕上げ。",
-      "dimensions": "約4000×1100（3分割搬入）",
-      "weight_kg": null,
-      "hero_photos": [],
-      "gallery_photos": [],
-      "specs": {"material": "ラワン合板（天板）+ MDF 24mm（下地）", "finish": "キシラデ塗装 + ウレタン塗装", "note": "天板3分割・現場ボルトジョイント、丸脚3本リブ付き"},
-      "hardware_ids": [],
-      "production_cost": null,
-      "cost_breakdown": {"テーブル+パーティション合計": "40万円（諸経費込）"},
-      "tags": ["テーブル","ホテル","CNC","大型"],
-      "edited": false
-    },
-    {
-      "id": "onomichi-partition",
-      "name": "パーティション（レタールーム）",
-      "name_en": "Partition / Letter Room",
-      "series": "尾道倶楽部シリーズ",
-      "category": "パーティション",
-      "description": "千光寺山荘のレタースペース用パーティション。ラワン合板パネルにUV印刷でグラフィック。ポストカード差し込みフレーム付き。",
-      "dimensions": "約2200×650×H1600",
-      "weight_kg": null,
-      "hero_photos": [],
-      "gallery_photos": [],
-      "specs": {"material": "ラワン合板", "finish": "キシラデ塗装 + UV印刷", "note": "ポストカード差し込みフレーム、けんどん式ダボカット"},
-      "hardware_ids": [],
-      "tags": ["パーティション","ホテル","CNC","UV印刷"],
+      "tags": [
+        "展示",
+        "イベント",
+        "廃材",
+        "サステナブル",
+        "楽天"
+      ],
       "edited": false
     },
     {
@@ -466,13 +711,28 @@
       "description": "旧東谷保育所改修の可動式畳小上がり。900mm角モジュール、H330。アジャスター付き。11台はWSで住民と一緒に組立・塗装。",
       "dimensions": "900×900×H330",
       "weight_kg": null,
-      "hero_photos": ["photos/projects/toyama_tateyama/tateyama-delivery-03.jpg"],
-      "gallery_photos": ["photos/projects/toyama_tateyama/tateyama-set3-05.jpg"],
-      "specs": {"material": "ShopBot CNC加工合板 + 畳", "finish": "オイル塗装 / クリア塗装", "note": "アジャスター入り、ビスボンド併用、WS組立"},
+      "hero_photos": [
+        "photos/projects/toyama_tateyama/tateyama-delivery-03.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/toyama_tateyama/tateyama-set3-05.jpg"
+      ],
+      "specs": {
+        "material": "ShopBot CNC加工合板 + 畳",
+        "finish": "オイル塗装 / クリア塗装",
+        "note": "アジャスター入り、ビスボンド併用、WS組立"
+      },
       "hardware_ids": [],
       "production_cost": null,
-      "cost_breakdown": {"単価目安": "72,000円/台"},
-      "tags": ["畳","モジュール","CNC","WS"],
+      "cost_breakdown": {
+        "単価目安": "72,000円/台"
+      },
+      "tags": [
+        "畳",
+        "モジュール",
+        "CNC",
+        "WS"
+      ],
       "edited": false
     },
     {
@@ -484,11 +744,21 @@
       "description": "旧東谷保育所のキッチンスツール。CDMスツール系デザイン。シナ合板24mmをShopBot加工、合板1枚で3脚取れる。組立・塗装済みで納品。",
       "dimensions": null,
       "weight_kg": null,
-      "hero_photos": ["photos/projects/toyama_tateyama/tateyama-delivery-01.jpg"],
+      "hero_photos": [
+        "photos/projects/toyama_tateyama/tateyama-delivery-01.jpg"
+      ],
       "gallery_photos": [],
-      "specs": {"material": "シナ合板（ラワン芯）24mm", "finish": "クリア / オイル塗装", "note": "ビスボンド併用、合板4枚で10脚取り"},
+      "specs": {
+        "material": "シナ合板（ラワン芯）24mm",
+        "finish": "クリア / オイル塗装",
+        "note": "ビスボンド併用、合板4枚で10脚取り"
+      },
       "hardware_ids": [],
-      "tags": ["スツール","CNC","キッチン"],
+      "tags": [
+        "スツール",
+        "CNC",
+        "キッチン"
+      ],
       "edited": false
     },
     {
@@ -500,12 +770,25 @@
       "description": "旧東谷保育所のキッチンユニット。BOX-A/C構成＋半円テーブル。天板はシナ合板共芯t24mmに杉皮塗装。IH3口（三菱CS-T322BFR）、エクレアEシンクW823内蔵。Cabineo金物接合。",
       "dimensions": "半円テーブル天板1800mm角",
       "weight_kg": null,
-      "hero_photos": ["photos/projects/toyama_tateyama/tateyama-delivery-01.jpg"],
-      "gallery_photos": ["photos/projects/toyama_tateyama/tateyama-kitchen-03.jpg","photos/projects/toyama_tateyama/tateyama-set3-01.jpg"],
-      "specs": {"material": "シナ合板共芯 t24mm（天板）+ メラミン化粧合板 t18mm（ボックス）", "finish": "杉皮塗装（天板・木口）", "note": "IH3口・シンク内蔵、BOX底板脱着可（点検口）、Cabineo8 M6接合"},
+      "hero_photos": [
+        "photos/projects/toyama_tateyama/tateyama-delivery-01.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/toyama_tateyama/tateyama-kitchen-03.jpg",
+        "photos/projects/toyama_tateyama/tateyama-set3-01.jpg"
+      ],
+      "specs": {
+        "material": "シナ合板共芯 t24mm（天板）+ メラミン化粧合板 t18mm（ボックス）",
+        "finish": "杉皮塗装（天板・木口）",
+        "note": "IH3口・シンク内蔵、BOX底板脱着可（点検口）、Cabineo8 M6接合"
+      },
       "hardware_ids": [],
       "production_cost": null,
-      "tags": ["キッチン","CNC","設備"],
+      "tags": [
+        "キッチン",
+        "CNC",
+        "設備"
+      ],
       "edited": false
     },
     {
@@ -519,9 +802,242 @@
       "weight_kg": null,
       "hero_photos": [],
       "gallery_photos": [],
-      "specs": {"material": "ShopBot CNC加工合板（棚板20mm）+ シナ12mm（裏板）", "finish": "オイル塗装 / 杉皮塗装", "note": "扉付き、下部ローラー黒、Cabineo金物接合"},
+      "specs": {
+        "material": "ShopBot CNC加工合板（棚板20mm）+ シナ12mm（裏板）",
+        "finish": "オイル塗装 / 杉皮塗装",
+        "note": "扉付き、下部ローラー黒、Cabineo金物接合"
+      },
       "hardware_ids": [],
-      "tags": ["収納","CNC","棚"],
+      "tags": [
+        "収納",
+        "CNC",
+        "棚"
+      ],
+      "edited": false
+    },
+    {
+      "id": "onomichi-bench-a",
+      "name": "客室ベンチA",
+      "name_en": "Guest Room Bench A",
+      "series": "尾道倶楽部シリーズ",
+      "category": "ベンチ",
+      "description": "千光寺山荘の客室用ベンチ。ラワン合板ルーバー座面とスギ無垢脚。cabineo8 M6接合、Lアングル補強。キシラデ+ウレタン塗装。15室に設置。",
+      "dimensions": "W800",
+      "weight_kg": null,
+      "model_url": "models/furniture/250107_客室ベンチ.3dm",
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/onomichi-bench-a/ONOMICHI-7.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-8.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-11.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-23.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-30.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-24.jpg",
+        "photos/furniture/onomichi-bench-a/ONOMICHI-2.jpg"
+      ],
+      "photo_pins": [
+        {
+          "photo_index": 0,
+          "x": 72,
+          "y": 78,
+          "type": "material",
+          "id": "CAND_ONO_001",
+          "label": "cabineo8 M6（内部）"
+        },
+        {
+          "photo_index": 0,
+          "x": 75,
+          "y": 88,
+          "type": "material",
+          "id": "CAND_ONO_003",
+          "label": "カグスベール（内部）"
+        },
+        {
+          "photo_index": 3,
+          "x": 55,
+          "y": 75,
+          "type": "material",
+          "id": "CAND_ONO_002",
+          "label": "Lアングル（内部）"
+        }
+      ],
+      "specs": {
+        "material": "ラワン合板（座面ルーバー）+ スギ無垢材 30mm（脚）",
+        "finish": "キシラデクリア + ウレタン塗装",
+        "note": "竜骨+脚ビス斜め打ち、Lアングル補強。19台+再製作8台"
+      },
+      "hardware_ids": [
+        "CAND_ONO_001",
+        "CAND_ONO_002",
+        "CAND_ONO_003",
+        "CAND_ONO_004"
+      ],
+      "production_cost": null,
+      "cost_breakdown": {
+        "単価目安": "15万円/台"
+      },
+      "tags": [
+        "ベンチ",
+        "ホテル",
+        "CNC",
+        "ルーバー"
+      ],
+      "edited": false
+    },
+    {
+      "id": "onomichi-bench-b",
+      "name": "客室ベンチB",
+      "name_en": "Guest Room Bench B",
+      "series": "尾道倶楽部シリーズ",
+      "category": "ベンチ",
+      "description": "B型客室用ロングベンチ。ベンチAと同素材・同工法。左右ミラー1セットで1室分。2室に設置。",
+      "dimensions": "ロングサイズ（左右ミラーペア）",
+      "weight_kg": null,
+      "model_url": "models/furniture/250107_客室ベンチ.3dm",
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/onomichi-bench-b/ONOMICHI-13.jpg",
+        "photos/furniture/onomichi-bench-b/ONOMICHI-16.jpg",
+        "photos/furniture/onomichi-bench-b/ONOMICHI-28.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "ラワン合板（座面ルーバー）+ スギ無垢材 30mm（脚）",
+        "finish": "キシラデクリア + ウレタン塗装",
+        "note": "ベンチAのロング版、左右ミラーペア"
+      },
+      "hardware_ids": [
+        "CAND_ONO_001",
+        "CAND_ONO_002",
+        "CAND_ONO_003",
+        "CAND_ONO_004"
+      ],
+      "production_cost": null,
+      "cost_breakdown": {
+        "単価目安": "30万円/台"
+      },
+      "tags": [
+        "ベンチ",
+        "ホテル",
+        "CNC",
+        "ルーバー"
+      ],
+      "edited": false
+    },
+    {
+      "id": "onomichi-cafe-table",
+      "name": "カフェテーブル（ロングオーバル）",
+      "name_en": "Cafe Long Oval Table",
+      "series": "尾道倶楽部シリーズ",
+      "category": "テーブル",
+      "description": "カフェスペースの大型オーバルテーブル。天板3分割ボルトジョイント。シナ合板丸脚3本リブ付き。天板は調色塗りつぶし（日塗工19-75C）半艶、脚はシナにウレタンクリア。",
+      "dimensions": "約4000×1100（3分割搬入）",
+      "weight_kg": null,
+      "model_url": "models/furniture/250116_カフェテーブル構造共有.3dm",
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/onomichi-cafe-table/ONOMICHI2-4.jpg",
+        "photos/furniture/onomichi-cafe-table/ONOMICHI2-5.jpg",
+        "photos/furniture/onomichi-cafe-table/ONOMICHI2-6.jpg",
+        "photos/furniture/onomichi-cafe-table/ONOMICHI2-8.jpg",
+        "photos/furniture/onomichi-cafe-table/ONOMICHI2-7.jpg"
+      ],
+      "photo_pins": [
+        {
+          "photo_index": 0,
+          "x": 32,
+          "y": 58,
+          "type": "material",
+          "id": "CAND_ONO_005",
+          "label": "コンセント（神保ソリッドグレー）"
+        },
+        {
+          "photo_index": 2,
+          "x": 78,
+          "y": 42,
+          "type": "material",
+          "id": "CAND_ONO_005",
+          "label": "コンセント"
+        },
+        {
+          "photo_index": 3,
+          "x": 35,
+          "y": 80,
+          "type": "material",
+          "id": "CAND_ONO_005",
+          "label": "コンセント×3"
+        },
+        {
+          "photo_index": 3,
+          "x": 55,
+          "y": 35,
+          "type": "material",
+          "id": "CAND_ONO_006",
+          "label": "天板ボルトジョイント"
+        },
+        {
+          "photo_index": 4,
+          "x": 28,
+          "y": 12,
+          "type": "material",
+          "id": "CAND_ONO_005",
+          "label": "コンセント"
+        }
+      ],
+      "specs": {
+        "material": "ラワン合板（天板）+ MDF 24mm（下地）+ シナ合板（丸脚）",
+        "finish": "天板: 調色塗りつぶし（日塗工19-75C）半艶 / 脚: シナにウレタンクリア",
+        "note": "天板3分割ボルトジョイント、丸脚3本リブ付き、コンセント神保ソリッドグレー"
+      },
+      "hardware_ids": [
+        "CAND_ONO_005",
+        "CAND_ONO_006"
+      ],
+      "production_cost": null,
+      "cost_breakdown": {
+        "テーブル+パーティション合計": "40万円"
+      },
+      "tags": [
+        "テーブル",
+        "ホテル",
+        "CNC",
+        "オーバル"
+      ],
+      "edited": false
+    },
+    {
+      "id": "onomichi-partition",
+      "name": "パーティション（レタールーム）",
+      "name_en": "Partition / Letter Room",
+      "series": "尾道倶楽部シリーズ",
+      "category": "パーティション",
+      "description": "レタースペース用パーティション。ラワン合板パネルにUV印刷。ポストカード差し込みフレーム・けんどん式ダボカット。POST赤色パネル付き。",
+      "dimensions": "約2200×650×H1600",
+      "weight_kg": null,
+      "model_url": "models/furniture/250129_パーテーション.3dm",
+      "hero_photos": [
+        "photos/furniture/onomichi-partition/hero_viewcapture.png"
+      ],
+      "gallery_photos": [
+        "photos/furniture/onomichi-partition/ONOMICHI2-3.jpg",
+        "photos/furniture/onomichi-partition/ONOMICHI2.jpg",
+        "photos/furniture/onomichi-partition/ONOMICHI2-2.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "ラワン合板",
+        "finish": "キシラデ塗装 + UV印刷",
+        "note": "ポストカード差し込みフレーム、けんどん式ダボカット"
+      },
+      "hardware_ids": [
+        "CAND_ONO_007"
+      ],
+      "tags": [
+        "パーティション",
+        "ホテル",
+        "CNC",
+        "UV印刷"
+      ],
       "edited": false
     }
   ]

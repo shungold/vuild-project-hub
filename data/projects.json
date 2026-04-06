@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-05T12:00:00",
+  "last_updated": "2026-04-06T12:00:00",
   "projects": [
     {
       "id": "baum_mobile",
@@ -14,26 +14,107 @@
       "area_sqm": null,
       "structure": "木造（CNC加工）",
       "description": "資生堂BAUMブランドのポップアップ用移動式什器。引き戸収納、シンク、サイン看板を一体化した木製ワゴン。檜・シナ合板をCNC加工し、BAUMグリーンで塗装。",
-      "hero_photos": ["photos/projects/baum_mobile/complete-01.jpg"],
-      "gallery_photos": ["photos/projects/baum_mobile/complete-02.jpg","photos/projects/baum_mobile/complete-03.jpg","photos/projects/baum_mobile/complete-04.jpg","photos/projects/baum_mobile/complete-05.jpg","photos/projects/baum_mobile/complete-06.jpg","photos/projects/baum_mobile/IMG_6760_F0ADED.jpg","photos/projects/baum_mobile/paint-01.jpg","photos/projects/baum_mobile/paint-02.jpg"],
+      "hero_photos": [
+        "photos/projects/baum_mobile/complete-01.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/baum_mobile/complete-02.jpg",
+        "photos/projects/baum_mobile/complete-03.jpg",
+        "photos/projects/baum_mobile/complete-04.jpg",
+        "photos/projects/baum_mobile/complete-05.jpg",
+        "photos/projects/baum_mobile/complete-06.jpg",
+        "photos/projects/baum_mobile/IMG_6760_F0ADED.jpg",
+        "photos/projects/baum_mobile/paint-01.jpg",
+        "photos/projects/baum_mobile/paint-02.jpg"
+      ],
       "photo_pins": [
-        {"photo_index": 0, "x": 50, "y": 50, "type": "furniture", "id": "baum-yatai", "label": "BAUM 移動式什器"},
-        {"photo_index": 0, "x": 25, "y": 75, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
-        {"photo_index": 0, "x": 85, "y": 60, "type": "material", "id": "HW_005", "label": "シリンダープッシュ錠"},
-        {"photo_index": 2, "x": 70, "y": 50, "type": "material", "id": "HW_009", "label": "509 トレーラー（ホイール）"},
-        {"photo_index": 5, "x": 50, "y": 50, "type": "furniture", "id": "baum-yatai", "label": "下北沢ポップアップ"}
+        {
+          "photo_index": 0,
+          "x": 50,
+          "y": 50,
+          "type": "furniture",
+          "id": "baum-yatai",
+          "label": "BAUM 移動式什器"
+        },
+        {
+          "photo_index": 0,
+          "x": 25,
+          "y": 75,
+          "type": "material",
+          "id": "HW_009",
+          "label": "509 トレーラー（ホイール）"
+        },
+        {
+          "photo_index": 0,
+          "x": 85,
+          "y": 60,
+          "type": "material",
+          "id": "HW_005",
+          "label": "シリンダープッシュ錠"
+        },
+        {
+          "photo_index": 2,
+          "x": 70,
+          "y": 50,
+          "type": "material",
+          "id": "HW_009",
+          "label": "509 トレーラー（ホイール）"
+        },
+        {
+          "photo_index": 5,
+          "x": 50,
+          "y": 50,
+          "type": "furniture",
+          "id": "baum-yatai",
+          "label": "下北沢ポップアップ"
+        }
       ],
       "team": [
-        {"name": "金子俊耶", "role": "設計"},
-        {"name": "黒部駿人", "role": "設計"},
-        {"name": "向田涼哉", "role": "制作"}
+        {
+          "name": "金子俊耶",
+          "role": "設計"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計"
+        },
+        {
+          "name": "向田涼哉",
+          "role": "制作"
+        }
       ],
-      "furniture_ids": ["baum-yatai"],
-      "material_ids": ["HW_001","HW_002","HW_003","HW_004","HW_005","HW_006","HW_007","HW_008","HW_009"],
+      "furniture_ids": [
+        "baum-yatai"
+      ],
+      "material_ids": [
+        "HW_001",
+        "HW_002",
+        "HW_003",
+        "HW_004",
+        "HW_005",
+        "HW_006",
+        "HW_007",
+        "HW_008",
+        "HW_009"
+      ],
       "slack_channel_id": "C09V70VFF96",
       "slack_channel_name": "#3040_baum移動式什器",
-      "cost_overview": {"total": 3582700, "design_fee": 1000000, "fabrication_fee": 2582700, "estimate_date": "2026-03-19", "estimate_source": "260319_概算見積もり_BAUM移動型什器", "budget_note": "総予算350万(設計100万+制作250万)、wota含めると400-450万"},
-      "tags": ["什器","移動式","ポップアップ","BAUM","檜","シナ合板"],
+      "cost_overview": {
+        "total": 3582700,
+        "design_fee": 1000000,
+        "fabrication_fee": 2582700,
+        "estimate_date": "2026-03-19",
+        "estimate_source": "260319_概算見積もり_BAUM移動型什器",
+        "budget_note": "総予算350万(設計100万+制作250万)、wota含めると400-450万"
+      },
+      "tags": [
+        "什器",
+        "移動式",
+        "ポップアップ",
+        "BAUM",
+        "檜",
+        "シナ合板"
+      ],
       "updated_at": "2026-04-03",
       "edited": false
     },
@@ -51,15 +132,29 @@
       "description": "人の森ライブラリースペースの曲面壁面什器。CNC加工による曲面形状の棚板を組み合わせた書架。",
       "hero_photos": [],
       "team": [
-        {"name": "金子俊耶", "role": "設計"},
-        {"name": "黒部駿人", "role": "設計"}
+        {
+          "name": "金子俊耶",
+          "role": "設計"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計"
+        }
       ],
       "furniture_ids": [],
       "material_ids": [],
       "slack_channel_id": "C0AFAFBC8AH",
       "slack_channel_name": "#1141_人の森_ライブラリースペース",
-      "cost_overview": {"total": null, "estimate_pdf": null},
-      "tags": ["内装","曲面","書架","CNC"],
+      "cost_overview": {
+        "total": null,
+        "estimate_pdf": null
+      },
+      "tags": [
+        "内装",
+        "曲面",
+        "書架",
+        "CNC"
+      ],
       "updated_at": "2026-04-02",
       "edited": false
     },
@@ -77,16 +172,32 @@
       "description": "東京建物の屋上庭園プロジェクト。",
       "hero_photos": [],
       "team": [
-        {"name": "金子俊耶", "role": "設計"},
-        {"name": "黒部駿人", "role": "設計"},
-        {"name": "杉山真道", "role": "設計"}
+        {
+          "name": "金子俊耶",
+          "role": "設計"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計"
+        },
+        {
+          "name": "杉山真道",
+          "role": "設計"
+        }
       ],
       "furniture_ids": [],
       "material_ids": [],
       "slack_channel_id": "C09D1N2CEM8",
       "slack_channel_name": "#1127_東京建物_屋上庭園pj",
-      "cost_overview": {"total": null, "estimate_pdf": null},
-      "tags": ["建築","屋上","庭園"],
+      "cost_overview": {
+        "total": null,
+        "estimate_pdf": null
+      },
+      "tags": [
+        "建築",
+        "屋上",
+        "庭園"
+      ],
       "updated_at": "2026-04-02",
       "edited": false
     },
@@ -104,17 +215,39 @@
       "description": "Panasonic門真新棟6F/7Fのセルフビルドキッチン。社員が自分たちで組み立てるワークショップ形式で制作。芝キューブも導入。",
       "hero_photos": [],
       "team": [
-        {"name": "金子俊耶", "role": "設計"},
-        {"name": "黒部駿人", "role": "設計"},
-        {"name": "向田涼哉", "role": "制作"},
-        {"name": "杉山真道", "role": "制作"}
+        {
+          "name": "金子俊耶",
+          "role": "設計"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計"
+        },
+        {
+          "name": "向田涼哉",
+          "role": "制作"
+        },
+        {
+          "name": "杉山真道",
+          "role": "制作"
+        }
       ],
-      "furniture_ids": ["shiba-cube"],
+      "furniture_ids": [
+        "shiba-cube"
+      ],
       "material_ids": [],
       "slack_channel_id": "C09455EDRJN",
       "slack_channel_name": "#1125_pan_門真新棟6f7grセルフビルドキッチン開発",
-      "cost_overview": {"total": null, "estimate_pdf": null},
-      "tags": ["内装","キッチン","セルフビルド","Panasonic"],
+      "cost_overview": {
+        "total": null,
+        "estimate_pdf": null
+      },
+      "tags": [
+        "内装",
+        "キッチン",
+        "セルフビルド",
+        "Panasonic"
+      ],
       "updated_at": "2026-04-02",
       "edited": false
     },
@@ -130,91 +263,158 @@
       "area_sqm": 150,
       "structure": "木造（CNC加工）",
       "description": "楽天グループの大規模イベント「Rakuten Optimism」のキッズゾーン・ブース設計制作。TECH & GREEN（木×テクノロジー）をコンセプトに、親子で楽しめる木製遊具・家具を約15m×10mの空間に展開。2023年・2024年の2回実施。来場者数 日1万〜1.5万人。",
-      "hero_photos": ["photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg"],
-      "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-09.jpg","photos/projects/rakuten_optimism/rakuten-2023b-01.jpg","photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"],
-      "team": [
-        {"name": "黒部駿人", "role": "設計ディレクション"},
-        {"name": "沼田汐里", "role": "設計・運営"},
-        {"name": "金子俊耶", "role": "設計"},
-        {"name": "長岡勉", "role": "レビュー"},
-        {"name": "宇都宮純", "role": "PM"},
-        {"name": "木村玲大", "role": "制作"},
-        {"name": "長尾和樹", "role": "加工・搬出"}
+      "hero_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg"
       ],
-      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve", "round-table", "ema-wall", "haizai-wall", "circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "gallery_photos": [
+        "photos/projects/rakuten_optimism/rakuten-2024b-09.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2023b-01.jpg",
+        "photos/projects/rakuten_optimism/rakuten-2024b-06.jpg"
+      ],
+      "team": [
+        {
+          "name": "黒部駿人",
+          "role": "設計ディレクション"
+        },
+        {
+          "name": "沼田汐里",
+          "role": "設計・運営"
+        },
+        {
+          "name": "金子俊耶",
+          "role": "設計"
+        },
+        {
+          "name": "長岡勉",
+          "role": "レビュー"
+        },
+        {
+          "name": "宇都宮純",
+          "role": "PM"
+        },
+        {
+          "name": "木村玲大",
+          "role": "制作"
+        },
+        {
+          "name": "長尾和樹",
+          "role": "加工・搬出"
+        }
+      ],
+      "furniture_ids": [
+        "town-unit-sq900",
+        "town-unit-sq1200",
+        "town-unit-sq1800",
+        "town-unit-curve",
+        "round-table",
+        "ema-wall",
+        "haizai-wall",
+        "circle-bench-l",
+        "circle-bench-s",
+        "ununune-bench",
+        "chabudai"
+      ],
       "deployment_note": "2023: MOKU MOKU KIDS TOWN（パシフィコ横浜）。2024: MOKU MOKU KIDS OASIS（東京ビッグサイト西館）。",
       "documents": [
-        {"label": "御見積 240605 VUILD", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717567200000000", "note": "2024 正式見積", "status": "請求済み"},
-        {"label": "御見積 0721 楽天optimism2024（塗装費減額後）", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721574000000000", "note": "2024 最終見積", "status": "請求済み"},
-        {"label": "請求書 楽天optimism2024 VUILD", "type": "invoice", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722765600000000", "note": "2024 請求書", "status": "請求済み"},
-        {"label": "楽天株式会社御中 什器レンタル見積書", "type": "estimate", "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1694757600000000", "note": "2023 什器レンタル見積", "status": "請求済み"}
+        {
+          "label": "御見積 240605 VUILD",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717567200000000",
+          "note": "2024 正式見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "御見積 0721 楽天optimism2024（塗装費減額後）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721574000000000",
+          "note": "2024 最終見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "請求書 楽天optimism2024 VUILD",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722765600000000",
+          "note": "2024 請求書",
+          "status": "請求済み"
+        },
+        {
+          "label": "楽天株式会社御中 什器レンタル見積書",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1694757600000000",
+          "note": "2023 什器レンタル見積",
+          "status": "請求済み"
+        }
       ],
       "material_ids": [],
       "slack_channel_id": "C05AYV4KG3E",
       "slack_channel_name": "#393_楽天optimism",
-      "cost_overview": {"total": 23800000, "estimate_pdf": null},
+      "cost_overview": {
+        "total": 23800000,
+        "estimate_pdf": null
+      },
       "years": {
         "2023": {
           "label": "MOKU MOKU KIDS TOWN",
           "venue": "パシフィコ横浜",
           "event_date": "2023-08-02〜06",
-          "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800", "town-unit-curve", "round-table", "ema-wall", "haizai-wall"],
-          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg","photos/projects/rakuten_optimism/rakuten-2023b-01.jpg","photos/projects/rakuten_optimism/rakuten-2023b-02.jpg","photos/projects/rakuten_optimism/rakuten-2023a-07.jpg","photos/projects/rakuten_optimism/rakuten-2023c-01.jpg","photos/projects/rakuten_optimism/rakuten-2023e-01.jpg","photos/projects/rakuten_optimism/rakuten-2023a-03.jpg"],
-          "cost_overview": {"total": 6373390, "budget_note": "什器製作原価（税抜）: 材料費2,463,300 + 外注加工870,000 + VUILD加工2,125,390 + 組立750,000 + 金物45,700"}
+          "furniture_ids": [
+            "town-unit-sq900",
+            "town-unit-sq1200",
+            "town-unit-sq1800",
+            "town-unit-curve",
+            "round-table",
+            "ema-wall",
+            "haizai-wall"
+          ],
+          "gallery_photos": [
+            "photos/projects/rakuten_optimism/rakuten-2023-drone-01.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023b-01.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023b-02.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023a-07.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023c-01.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023e-01.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2023a-03.jpg"
+          ],
+          "cost_overview": {
+            "total": 6373390,
+            "budget_note": "什器製作原価（税抜）: 材料費2,463,300 + 外注加工870,000 + VUILD加工2,125,390 + 組立750,000 + 金物45,700"
+          }
         },
         "2024": {
           "label": "MOKU MOKU KIDS OASIS",
           "venue": "東京ビッグサイト 西館",
           "event_date": "2024-08-01〜04",
-          "furniture_ids": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
-          "gallery_photos": ["photos/projects/rakuten_optimism/rakuten-2024b-09.jpg","photos/projects/rakuten_optimism/rakuten-2024b-10.jpg","photos/projects/rakuten_optimism/rakuten-2024b-06.jpg","photos/projects/rakuten_optimism/rakuten-2024a-05.jpg","photos/projects/rakuten_optimism/rakuten-2024a-09.jpg","photos/projects/rakuten_optimism/rakuten-2024a-07.jpg","photos/projects/rakuten_optimism/rakuten-2024b-02.jpg"],
-          "cost_overview": {"total": 6091818, "budget_note": "売上6,091,818円（売上原価947,379 + 労務費562,000）、営業利益率69%。楽天確定予算: 税抜750万円"}
+          "furniture_ids": [
+            "circle-bench-l",
+            "circle-bench-s",
+            "ununune-bench",
+            "chabudai"
+          ],
+          "gallery_photos": [
+            "photos/projects/rakuten_optimism/rakuten-2024b-09.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024b-10.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024b-06.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024a-05.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024a-09.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024a-07.jpg",
+            "photos/projects/rakuten_optimism/rakuten-2024b-02.jpg"
+          ],
+          "cost_overview": {
+            "total": 6091818,
+            "budget_note": "売上6,091,818円（売上原価947,379 + 労務費562,000）、営業利益率69%。楽天確定予算: 税抜750万円"
+          }
         }
       },
-      "tags": ["イベント","ブース","キッズ","タウンユニット","楽天","横浜","ビッグサイト"],
+      "tags": [
+        "イベント",
+        "ブース",
+        "キッズ",
+        "タウンユニット",
+        "楽天",
+        "横浜",
+        "ビッグサイト"
+      ],
       "updated_at": "2026-04-05",
-      "edited": false
-    },
-    {
-      "id": "onomichi_club",
-      "name": "尾道倶楽部 FFE",
-      "pid": "#70081125043",
-      "client": "尾道倶楽部（オレンジ）",
-      "status": "completed",
-      "category": "ホテル",
-      "location": "広島県尾道市",
-      "completion_date": "2025-03",
-      "area_sqm": null,
-      "structure": "木造（CNC加工）",
-      "description": "千光寺山荘リニューアルプロジェクト。ホテル・リゾート施設のFFE（家具・什器・備品）設計制作。屋上テラスのファイヤーピット周りのシーティングやナミナミベンチなど、尾道の景観に溶け込む木製家具を提供。",
-      "hero_photos": ["photos/projects/onomichi_club/onomichi-completion-05.jpg"],
-      "gallery_photos": ["photos/projects/onomichi_club/onomichi-completion-03.jpg","photos/projects/onomichi_club/onomichi-completion-10.jpg","photos/projects/onomichi_club/onomichi-completion-25.jpg","photos/projects/onomichi_club/onomichi-completion-30.jpg"],
-      "team": [
-        {"name": "宇都宮純", "role": "PM"},
-        {"name": "黒部駿人", "role": "設計ディレクション"},
-        {"name": "金子俊耶", "role": "制作管理"},
-        {"name": "長岡勉", "role": "レビュー"},
-        {"name": "長尾和樹", "role": "制作"},
-        {"name": "木村玲大", "role": "経理"}
-      ],
-      "furniture_ids": ["namunami-bench", "onomichi-bench-a", "onomichi-bench-b", "onomichi-cafe-table", "onomichi-partition"],
-      "documents": [
-        {"label": "客室ソファA・Bお見積り（11/29）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732860000000000", "note": "A・B初期見積", "status": "請求済み"},
-        {"label": "尾道倶楽部FFE什器製作 お見積書（12/19）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1734600000000000", "note": "什器製作一式", "status": "請求済み"},
-        {"label": "全体見積（3/6）", "type": "estimate", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000000", "note": "最終全体見積", "status": "請求済み"},
-        {"label": "御請求書 2末（3/6）", "type": "invoice", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000001", "note": "テーブル・パーティション 2末締め", "status": "請求済み"},
-        {"label": "御請求書 3末（3/6）", "type": "invoice", "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000002", "note": "A+Bベンチ+オレンジ45万 3末締め", "status": "請求済み"}
-      ],
-      "material_ids": [],
-      "slack_channel_id": "C07K02J6SUE",
-      "slack_channel_name": "#3035_尾道-千光寺山荘リニューアル",
-      "cost_overview": {
-        "total": 5165918,
-        "design_fee": 1200000,
-        "budget_note": "設計費120万（当初200万→スコープ縮小）。テーブル+パーティション40万（2末締3末払）、A+Bベンチ+オレンジ45万（3末締4末払）。再製作8台コスト: オレンジ45万+VUILD負担分"
-      },
-      "tags": ["ホテル","FFE","リノベーション","ナミナミベンチ","尾道"],
-      "updated_at": "2026-04-04",
       "edited": false
     },
     {
@@ -229,19 +429,49 @@
       "area_sqm": null,
       "structure": "木造（CNC加工）",
       "description": "横浜ネイチャーウィーク2025でのワークショップ＋タウンユニット展示。シンボルツリー設営、ガーランド製作WS、コロコロレールWSなど。2024年に続き2回目の実施。H1080×1台、H720×4台、H360×8台＋円形テーブルを搬入。",
-      "hero_photos": ["photos/projects/yokohama_natureweek/ynw-01.jpg"],
-      "gallery_photos": ["photos/projects/yokohama_natureweek/ynw-02.jpg","photos/projects/yokohama_natureweek/ynw-03.jpg","photos/projects/yokohama_natureweek/ynw-04.jpg","photos/projects/yokohama_natureweek/ynw-05.jpg","photos/projects/yokohama_natureweek/ynw-06.jpg"],
-      "team": [
-        {"name": "黒部駿人", "role": "ディレクション"},
-        {"name": "金子俊耶", "role": "制作"},
-        {"name": "沼田汐里", "role": "WS企画"}
+      "hero_photos": [
+        "photos/projects/yokohama_natureweek/ynw-01.jpg"
       ],
-      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200", "town-unit-sq1800"],
+      "gallery_photos": [
+        "photos/projects/yokohama_natureweek/ynw-02.jpg",
+        "photos/projects/yokohama_natureweek/ynw-03.jpg",
+        "photos/projects/yokohama_natureweek/ynw-04.jpg",
+        "photos/projects/yokohama_natureweek/ynw-05.jpg",
+        "photos/projects/yokohama_natureweek/ynw-06.jpg"
+      ],
+      "team": [
+        {
+          "name": "黒部駿人",
+          "role": "ディレクション"
+        },
+        {
+          "name": "金子俊耶",
+          "role": "制作"
+        },
+        {
+          "name": "沼田汐里",
+          "role": "WS企画"
+        }
+      ],
+      "furniture_ids": [
+        "town-unit-sq900",
+        "town-unit-sq1200",
+        "town-unit-sq1800"
+      ],
       "material_ids": [],
       "slack_channel_id": "C086FBQ1EN4",
       "slack_channel_name": "#3039_yokohamanarureweek2025",
-      "cost_overview": {"total": 4000000, "budget_note": "5/16-17の2DAYS：400万円程度。別途事前WS(5)：300-350万円"},
-      "tags": ["イベント","WS","タウンユニット","横浜","ガーランド"],
+      "cost_overview": {
+        "total": 4000000,
+        "budget_note": "5/16-17の2DAYS：400万円程度。別途事前WS(5)：300-350万円"
+      },
+      "tags": [
+        "イベント",
+        "WS",
+        "タウンユニット",
+        "横浜",
+        "ガーランド"
+      ],
       "updated_at": "2026-04-04",
       "edited": false
     },
@@ -257,20 +487,52 @@
       "area_sqm": null,
       "structure": null,
       "description": "玉川野毛町公園でのアクティブデー・イベント。タウンユニットH360×6台、H720×6台、円形テーブル1台をレンタル設置。赤帽で海老名倉庫から搬入・搬出。",
-      "hero_photos": ["photos/projects/nogecho_park/nogecho-01.jpg"],
-      "gallery_photos": ["photos/projects/nogecho_park/nogecho-02.jpg","photos/projects/nogecho_park/nogecho-03.jpg","photos/projects/nogecho_park/nogecho-04.jpg","photos/projects/nogecho_park/nogecho-05.jpg","photos/projects/nogecho_park/nogecho-06.jpg"],
-      "team": [
-        {"name": "木村玲大", "role": "搬入管理"},
-        {"name": "黒部駿人", "role": "ディレクション"},
-        {"name": "風祭あゆみ", "role": "図面"},
-        {"name": "小泉秀一郎", "role": "図面"}
+      "hero_photos": [
+        "photos/projects/nogecho_park/nogecho-01.jpg"
       ],
-      "furniture_ids": ["town-unit-sq900", "town-unit-sq1200"],
+      "gallery_photos": [
+        "photos/projects/nogecho_park/nogecho-02.jpg",
+        "photos/projects/nogecho_park/nogecho-03.jpg",
+        "photos/projects/nogecho_park/nogecho-04.jpg",
+        "photos/projects/nogecho_park/nogecho-05.jpg",
+        "photos/projects/nogecho_park/nogecho-06.jpg"
+      ],
+      "team": [
+        {
+          "name": "木村玲大",
+          "role": "搬入管理"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "ディレクション"
+        },
+        {
+          "name": "風祭あゆみ",
+          "role": "図面"
+        },
+        {
+          "name": "小泉秀一郎",
+          "role": "図面"
+        }
+      ],
+      "furniture_ids": [
+        "town-unit-sq900",
+        "town-unit-sq1200"
+      ],
       "material_ids": [],
       "slack_channel_id": "C06DWBFG927",
       "slack_channel_name": "#3006_野毛町公園pj",
-      "cost_overview": {"total": 136620, "budget_note": "タウンユニットレンタル費用（売上実績）"},
-      "tags": ["イベント","レンタル","タウンユニット","公園","世田谷"],
+      "cost_overview": {
+        "total": 136620,
+        "budget_note": "タウンユニットレンタル費用（売上実績）"
+      },
+      "tags": [
+        "イベント",
+        "レンタル",
+        "タウンユニット",
+        "公園",
+        "世田谷"
+      ],
       "updated_at": "2026-04-04",
       "edited": false
     },
@@ -286,20 +548,53 @@
       "area_sqm": null,
       "structure": null,
       "description": "UR赤羽台団地でのファブラボ構想・ワークショップ事業。タウンユニット（カーブ型H720×1、カーブ型H360×1）をハイエースで搬入しWSに使用。ShopBot導入の検討も進行中。",
-      "hero_photos": ["photos/projects/ur_akabane/ur-01.jpg"],
-      "gallery_photos": ["photos/projects/ur_akabane/ur-02.jpg","photos/projects/ur_akabane/ur-03.jpg","photos/projects/ur_akabane/ur-04.jpg","photos/projects/ur_akabane/ur-05.jpg","photos/projects/ur_akabane/ur-06.jpg"],
-      "team": [
-        {"name": "宇都宮純", "role": "PM"},
-        {"name": "黒部駿人", "role": "ディレクション"},
-        {"name": "金子俊耶", "role": "制作"},
-        {"name": "青柳篤広", "role": "制作"}
+      "hero_photos": [
+        "photos/projects/ur_akabane/ur-01.jpg"
       ],
-      "furniture_ids": ["town-unit-curve", "town-unit-sq900"],
+      "gallery_photos": [
+        "photos/projects/ur_akabane/ur-02.jpg",
+        "photos/projects/ur_akabane/ur-03.jpg",
+        "photos/projects/ur_akabane/ur-04.jpg",
+        "photos/projects/ur_akabane/ur-05.jpg",
+        "photos/projects/ur_akabane/ur-06.jpg"
+      ],
+      "team": [
+        {
+          "name": "宇都宮純",
+          "role": "PM"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "ディレクション"
+        },
+        {
+          "name": "金子俊耶",
+          "role": "制作"
+        },
+        {
+          "name": "青柳篤広",
+          "role": "制作"
+        }
+      ],
+      "furniture_ids": [
+        "town-unit-curve",
+        "town-unit-sq900"
+      ],
       "material_ids": [],
       "slack_channel_id": "C07CPMPFB7X",
       "slack_channel_name": "#3028_ur赤羽台ws",
-      "cost_overview": {"total": null, "budget_note": "レンタル料＝レンタカー+ガソリン代程度"},
-      "tags": ["WS","ファブラボ","タウンユニット","団地","UR","ShopBot"],
+      "cost_overview": {
+        "total": null,
+        "budget_note": "レンタル料＝レンタカー+ガソリン代程度"
+      },
+      "tags": [
+        "WS",
+        "ファブラボ",
+        "タウンユニット",
+        "団地",
+        "UR",
+        "ShopBot"
+      ],
       "updated_at": "2026-04-04",
       "edited": false
     },
@@ -315,24 +610,90 @@
       "area_sqm": null,
       "structure": "木造（CNC加工 + 建築改修）",
       "description": "旧東谷保育所を地域の交流拠点にリノベーション。可動式畳小上がり、キッチンユニット、スツール、収納棚をVUILDが設計製作。2/28搬入・什器組立、3/1にWSで住民と一緒に畳小上がりを組立・塗装。給排水・電気工事は地元業者。県補助金事業。",
-      "hero_photos": ["photos/projects/toyama_tateyama/tateyama-set3-01.jpg"],
-      "gallery_photos": ["photos/projects/toyama_tateyama/tateyama-set3-05.jpg","photos/projects/toyama_tateyama/tateyama-delivery-01.jpg","photos/projects/toyama_tateyama/tateyama-delivery-03.jpg","photos/projects/toyama_tateyama/tateyama-kitchen-03.jpg"],
-      "team": [
-        {"name": "黒部駿人", "role": "PM・現場監督"},
-        {"name": "宇都宮潤", "role": "設計・予算管理"},
-        {"name": "西村俊貴", "role": "設計（キッチン・半円テーブル）"},
-        {"name": "杉山真道", "role": "加工・製作（ShopBot）"},
-        {"name": "沼田汐里", "role": "デザイン（初期）"},
-        {"name": "木村玲大", "role": "見積もり"}
+      "hero_photos": [
+        "photos/projects/toyama_tateyama/tateyama-set3-01.jpg"
       ],
-      "furniture_ids": ["toyama-tatami", "toyama-stool", "toyama-kitchen", "toyama-shelf"],
+      "gallery_photos": [
+        "photos/projects/toyama_tateyama/tateyama-set3-05.jpg",
+        "photos/projects/toyama_tateyama/tateyama-delivery-01.jpg",
+        "photos/projects/toyama_tateyama/tateyama-delivery-03.jpg",
+        "photos/projects/toyama_tateyama/tateyama-kitchen-03.jpg"
+      ],
+      "team": [
+        {
+          "name": "黒部駿人",
+          "role": "PM・現場監督"
+        },
+        {
+          "name": "宇都宮潤",
+          "role": "設計・予算管理"
+        },
+        {
+          "name": "西村俊貴",
+          "role": "設計（キッチン・半円テーブル）"
+        },
+        {
+          "name": "杉山真道",
+          "role": "加工・製作（ShopBot）"
+        },
+        {
+          "name": "沼田汐里",
+          "role": "デザイン（初期）"
+        },
+        {
+          "name": "木村玲大",
+          "role": "見積もり"
+        }
+      ],
+      "furniture_ids": [
+        "toyama-tatami",
+        "toyama-stool",
+        "toyama-kitchen",
+        "toyama-shelf"
+      ],
       "documents": [
-        {"label": "2期工事お見積書（11/20）", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1763604880739099", "note": "初版見積", "status": "検討中"},
-        {"label": "二期工事 御見積もり（12/24 WS1回・設備込み）", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1766568469454219", "note": "最終見積", "status": "請求済み"},
-        {"label": "業務着手金 請求書", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1769690862040579", "note": "着手金", "status": "請求済み"},
-        {"label": "請求書・検収書（2/28）", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1772268542786169", "note": "完了金+検収", "status": "請求済み"},
-        {"label": "杉皮塗装工事 見積書", "type": "estimate", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1771391913021729", "note": "しゅうへいさん塗装見積", "status": "請求済み"},
-        {"label": "キッチン造作 請求書（仲子さん）", "type": "invoice", "url": "https://vuild.slack.com/archives/C06KR848J0M/p1773641543921499", "note": "91,400円（税抜）", "status": "請求済み"}
+        {
+          "label": "2期工事お見積書（11/20）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1763604880739099",
+          "note": "初版見積",
+          "status": "検討中"
+        },
+        {
+          "label": "二期工事 御見積もり（12/24 WS1回・設備込み）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1766568469454219",
+          "note": "最終見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "業務着手金 請求書",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1769690862040579",
+          "note": "着手金",
+          "status": "請求済み"
+        },
+        {
+          "label": "請求書・検収書（2/28）",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1772268542786169",
+          "note": "完了金+検収",
+          "status": "請求済み"
+        },
+        {
+          "label": "杉皮塗装工事 見積書",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1771391913021729",
+          "note": "しゅうへいさん塗装見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "キッチン造作 請求書（仲子さん）",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C06KR848J0M/p1773641543921499",
+          "note": "91,400円（税抜）",
+          "status": "請求済み"
+        }
       ],
       "material_ids": [],
       "slack_channel_id": "C06KR848J0M",
@@ -344,8 +705,208 @@
         "estimate_date": "2026-02",
         "budget_note": "税込4,694,800円（材料組立費1,442,540 + 材料工事費1,533,620 + WS費1,718,640）。県補助金事業、3年計画の2期工事分"
       },
-      "tags": ["リノベーション","WS","キッチン","畳","CNC","補助金","富山"],
+      "tags": [
+        "リノベーション",
+        "WS",
+        "キッチン",
+        "畳",
+        "CNC",
+        "補助金",
+        "富山"
+      ],
       "updated_at": "2026-04-05",
+      "edited": false
+    },
+    {
+      "id": "onomichi_club",
+      "name": "尾道倶楽部 FFE",
+      "pid": "#70081125043",
+      "client": "尾道倶楽部（オレンジ / 瀬戸内ブランドコーポレーション）",
+      "status": "completed",
+      "category": "ホテル",
+      "location": "広島県尾道市",
+      "completion_date": "2025-03",
+      "area_sqm": null,
+      "structure": "木造（CNC加工）",
+      "description": "千光寺山荘リニューアル。ホテル客室のFFE設計制作。CNC加工によるルーバー座面ベンチ、カフェ用ロングオーバルテーブル、レタールーム用パーティションを製作・納品。",
+      "hero_photos": [
+        "photos/projects/onomichi_club/ONOMICHI-12.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/onomichi_club/ONOMICHI-32.jpg",
+        "photos/projects/onomichi_club/ONOMICHI-33.jpg",
+        "photos/projects/onomichi_club/ONOMICHI-17.jpg",
+        "photos/projects/onomichi_club/ONOMICHI2-4.jpg",
+        "photos/projects/onomichi_club/ONOMICHI2.jpg",
+        "photos/projects/onomichi_club/ONOMICHI-28.jpg"
+      ],
+      "photo_pins": [
+        {
+          "photo_index": 0,
+          "x": 58,
+          "y": 62,
+          "type": "furniture",
+          "id": "onomichi-bench-a",
+          "label": "客室ベンチA"
+        },
+        {
+          "photo_index": 1,
+          "x": 60,
+          "y": 58,
+          "type": "furniture",
+          "id": "onomichi-bench-a",
+          "label": "客室ベンチA"
+        },
+        {
+          "photo_index": 2,
+          "x": 58,
+          "y": 55,
+          "type": "furniture",
+          "id": "onomichi-bench-a",
+          "label": "客室ベンチA"
+        },
+        {
+          "photo_index": 3,
+          "x": 35,
+          "y": 55,
+          "type": "furniture",
+          "id": "onomichi-bench-b",
+          "label": "客室ベンチB"
+        },
+        {
+          "photo_index": 3,
+          "x": 65,
+          "y": 60,
+          "type": "furniture",
+          "id": "onomichi-bench-b",
+          "label": "客室ベンチB"
+        },
+        {
+          "photo_index": 4,
+          "x": 50,
+          "y": 50,
+          "type": "furniture",
+          "id": "onomichi-cafe-table",
+          "label": "カフェテーブル"
+        },
+        {
+          "photo_index": 5,
+          "x": 40,
+          "y": 40,
+          "type": "furniture",
+          "id": "onomichi-partition",
+          "label": "パーティション"
+        },
+        {
+          "photo_index": 6,
+          "x": 35,
+          "y": 55,
+          "type": "furniture",
+          "id": "onomichi-bench-b",
+          "label": "客室ベンチB"
+        },
+        {
+          "photo_index": 6,
+          "x": 62,
+          "y": 58,
+          "type": "furniture",
+          "id": "onomichi-bench-b",
+          "label": "客室ベンチB"
+        }
+      ],
+      "team": [
+        {
+          "name": "宇都宮純",
+          "role": "PM"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計ディレクション"
+        },
+        {
+          "name": "金子俊耶",
+          "role": "制作管理"
+        },
+        {
+          "name": "長岡勉",
+          "role": "レビュー"
+        },
+        {
+          "name": "長尾和樹",
+          "role": "制作"
+        },
+        {
+          "name": "木村玲大",
+          "role": "経理"
+        }
+      ],
+      "furniture_ids": [
+        "onomichi-bench-a",
+        "onomichi-bench-b",
+        "onomichi-cafe-table",
+        "onomichi-partition"
+      ],
+      "documents": [
+        {
+          "label": "客室ソファA・Bお見積り",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732860000000000",
+          "note": "A・B初期見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "尾道倶楽部FFE什器製作 お見積書",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1734600000000000",
+          "note": "什器製作一式",
+          "status": "請求済み"
+        },
+        {
+          "label": "全体見積（3/6）",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000000",
+          "note": "最終全体見積",
+          "status": "請求済み"
+        },
+        {
+          "label": "御請求書 2末",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000001",
+          "note": "テーブル+パーティション 2末締め",
+          "status": "請求済み"
+        },
+        {
+          "label": "御請求書 3末",
+          "type": "invoice",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1741860000000002",
+          "note": "A+Bベンチ+オレンジ45万 3末締め",
+          "status": "請求済み"
+        }
+      ],
+      "material_ids": [
+        "CAND_ONO_001",
+        "CAND_ONO_002",
+        "CAND_ONO_003",
+        "CAND_ONO_004",
+        "CAND_ONO_005",
+        "CAND_ONO_006",
+        "CAND_ONO_007"
+      ],
+      "slack_channel_id": "C07K02J6SUE",
+      "slack_channel_name": "#3035_尾道-千光寺山荘リニューアル",
+      "cost_overview": {
+        "total": 5165918,
+        "design_fee": 1200000,
+        "budget_note": "設計費120万。テーブル+パーティション40万（2末締）、A+Bベンチ+オレンジ45万（3末締）。再製作8台: オレンジ45万+VUILD負担分"
+      },
+      "tags": [
+        "ホテル",
+        "FFE",
+        "リノベーション",
+        "CNC",
+        "尾道"
+      ],
+      "updated_at": "2026-04-06",
       "edited": false
     }
   ]
