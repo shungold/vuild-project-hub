@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-06T12:00:00",
+  "last_updated": "2026-04-06T14:00:00",
   "furniture": [
     {
       "id": "town-unit-sq900",
@@ -882,7 +882,37 @@
         "CNC",
         "ルーバー"
       ],
-      "edited": false
+      "edited": false,
+      "documents": [
+        {
+          "label": "250123_ソファ脚部加工お見積り送料なし",
+          "type": "reference",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1738758134910649",
+          "note": "<@U01B694CBAL> <https://docs.google.com/spreadsheets/d/1_P-X",
+          "date": "2025-02-05"
+        },
+        {
+          "label": "241129_株式会社瀬戸内ブランドコーポレーション御中_客室ソファA・Bお見積り",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732863266191179",
+          "note": "<@U03RHDVQW9Y> <@U010Q66DKA5> <@U02RPC3H71T> シートの内容見積書にまとめたの",
+          "date": "2024-11-29"
+        },
+        {
+          "label": "240619_提案書一式客室ABは減額後案",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1724994517734099",
+          "note": "",
+          "date": "2024-08-30"
+        },
+        {
+          "label": "240729_各階平面図 (4)",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1739423162626509",
+          "note": "各階平面図です。 <https://vuild.slack.com/files/U03RHDVQW9Y/F07Q9448",
+          "date": "2025-02-13"
+        }
+      ]
     },
     {
       "id": "onomichi-bench-b",
@@ -922,7 +952,30 @@
         "CNC",
         "ルーバー"
       ],
-      "edited": false
+      "edited": false,
+      "documents": [
+        {
+          "label": "250123_ソファ脚部加工お見積り送料なし",
+          "type": "reference",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1738758134910649",
+          "note": "<@U01B694CBAL> <https://docs.google.com/spreadsheets/d/1_P-X",
+          "date": "2025-02-05"
+        },
+        {
+          "label": "241129_株式会社瀬戸内ブランドコーポレーション御中_客室ソファA・Bお見積り",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732863266191179",
+          "note": "<@U03RHDVQW9Y> <@U010Q66DKA5> <@U02RPC3H71T> シートの内容見積書にまとめたの",
+          "date": "2024-11-29"
+        },
+        {
+          "label": "240729_各階平面図 (4)",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1739423162626509",
+          "note": "各階平面図です。 <https://vuild.slack.com/files/U03RHDVQW9Y/F07Q9448",
+          "date": "2025-02-13"
+        }
+      ]
     },
     {
       "id": "onomichi-cafe-table",
@@ -1003,7 +1056,65 @@
         "CNC",
         "オーバル"
       ],
-      "edited": false
+      "edited": false,
+      "documents": [
+        {
+          "label": "241129_株式会社瀬戸内ブランドコーポレーション御中_カフェテーブルお見積り",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1732863266191179",
+          "note": "<@U03RHDVQW9Y> <@U010Q66DKA5> <@U02RPC3H71T> シートの内容見積書にまとめたの",
+          "date": "2024-11-29"
+        },
+        {
+          "label": "20241111_尾道-テーブル三面図",
+          "type": "drawing",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1731272846809569",
+          "note": "<@U010AMD8LBF> <@U03RHDVQW9Y> <@U01HQHXLZJA>  テーブル三面図、こんな感じで",
+          "date": "2024-11-11"
+        },
+        {
+          "label": "20241102_tテーブル途中",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1730594960460729",
+          "note": "<@U03RHDVQW9Y> <@U01HQHXLZJA>  テーブル三面図、途中ですが共有。 仕様について月火あたりで",
+          "date": "2024-11-03"
+        },
+        {
+          "label": "20241019_尾道-千光寺山荘リニューアル",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1729301254248769",
+          "note": "テーブル電源の位置出し",
+          "date": "2024-10-19"
+        },
+        {
+          "label": "240913_テーブル金物脚_御見積書",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1726237592996749",
+          "note": "<@U010AMD8LBF> コンプレックスさんから見積きました！出精値引きしてくれてます ```お世話になっております",
+          "date": "2024-09-13"
+        },
+        {
+          "label": "20241112_尾道-テーブル三面図",
+          "type": "drawing",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1731402037934349",
+          "note": "",
+          "date": "2024-11-12"
+        },
+        {
+          "label": "241024-1階ロビー壁プロット",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1730167112677429",
+          "note": "<@U037U3KSPJB> 現地の設備会社から添付図面にカフェテーブルのコンセント位置をいれてほしいと言われ、お願いで",
+          "date": "2024-10-29"
+        },
+        {
+          "label": "ロビーカフェ",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1726479206672199",
+          "note": "<@U03RHDVQW9Y> 1階図面です！",
+          "date": "2024-09-16"
+        }
+      ]
     },
     {
       "id": "onomichi-partition",
@@ -1038,7 +1149,30 @@
         "CNC",
         "UV印刷"
       ],
-      "edited": false
+      "edited": false,
+      "documents": [
+        {
+          "label": "フレーム",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1739328159622869",
+          "note": "<@U01HQHXLZJA> ```宇都宮さん、遅くなりましてすみません！レタールームのフレーム、作図しました。 破線が",
+          "date": "2025-02-12"
+        },
+        {
+          "label": "250212_尾道パーテーション_印刷可能範囲 (1)",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1739328159622869",
+          "note": "<@U01HQHXLZJA> ```宇都宮さん、遅くなりましてすみません！レタールームのフレーム、作図しました。 破線が",
+          "date": "2025-02-12"
+        },
+        {
+          "label": "241219_ 尾道倶楽部FFE 什器製作_発注書",
+          "type": "estimate",
+          "url": "https://vuild.slack.com/archives/C07K02J6SUE/p1737084220504229",
+          "note": "<@U01B694CBAL>  <https://vuild.slack.com/files/U03RHDVQW9Y/F",
+          "date": "2025-01-17"
+        }
+      ]
     }
   ]
 }
