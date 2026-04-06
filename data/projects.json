@@ -315,26 +315,18 @@
         {
           "name": "7F天板塗装WS",
           "date": "2026-02-16",
-          "description": "パナソニック社員が7階キッチン天板をシュウヘイさん指導のもと塗装。シーラー+桜葉模様。",
+          "description": "パナソニック社員が7階キッチン天板の素材・色を選定。桜の木の落ち葉に決定。RENO OILを使用した塗装プロセス。",
           "furniture_ids": [
             "pan-kitchen-7f"
           ],
-          "participants": [
-            "パナソニック社員",
-            "シュウヘイさん",
-            "金子"
-          ],
+          "participants": "パナソニック社員, 金子",
           "photos": [
             "photos/projects/pan_kitchen/ws/IMG_5407.jpg",
             "photos/projects/pan_kitchen/ws/IMG_5412.jpg"
           ],
-          "lessons": [
-            "シーラー必須",
-            "ローラー塗装可能"
-          ],
           "tags": [
             "塗装",
-            "天板"
+            "素材選定"
           ]
         },
         {
@@ -346,15 +338,12 @@
             "pan-mobile-kitchen-b",
             "pan-mobile-kitchen-c"
           ],
-          "participants": [
-            "パナソニック社員",
-            "金子"
-          ],
+          "participants": "パナソニック社員, 金子",
           "photos": [
-            "photos/projects/pan_kitchen/ws/panasonicws-22.jpg",
-            "photos/projects/pan_kitchen/ws/panasonicws-23.jpg"
+            "photos/projects/pan_kitchen/ws/dsc_0892.jpg",
+            "photos/projects/pan_kitchen/ws/dsc_0887.jpg",
+            "photos/projects/pan_kitchen/ws/dsc_0883.jpg"
           ],
-          "lessons": [],
           "tags": [
             "組立",
             "MKU"
