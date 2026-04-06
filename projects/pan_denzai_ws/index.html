@@ -543,7 +543,8 @@ async function init() {
     const tabs = [];
     if (furnitureItems.length) tabs.push({ id: 'furniture', label: 'VUILD Furniture', count: furnitureItems.length });
     if (archMaterials.length) tabs.push({ id: 'materials', label: 'Materials', count: archMaterials.length });
-    tabs.push({ id: 'drawings', label: '図面', count: hasDrawings ? project.drawings.length : 0 });
+    const drawDocCount = (project.documents || []).filter(d => d.type === 'drawing' || d.type === 'fabrication').length;
+    tabs.push({ id: 'drawings', label: '図面', count: (hasDrawings ? project.drawings.length : 0) + drawDocCount });
     tabs.push({ id: 'estimate', label: '見積', count: estimateDocs.length || null });
     tabs.push({ id: 'actual', label: '実績', count: null });
     tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
@@ -670,16 +671,35 @@ async function init() {
       document.getElementById('pin-editor-bar').style.display = '';
     }
 
-    // --- Drawings panel (図面 + 追加/削除UI) ---
+    // --- Drawings panel (図面 + PDF図面/加工依頼書 + 追加/削除UI) ---
     {
       let drawHtml = '';
+      // Image-based drawings
       if (hasDrawings) {
         drawHtml += '<div class="detail-gallery">' + project.drawings.map((d, i) =>
           `<div class="detail-gallery-item" style="position:relative" onclick="openLightbox('${B}${d.src}')">
             <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
             <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('project_drawing','${projectId}','${d.src}');this.parentElement.remove();">&times;</div>
           </div>`).join('') + '</div>';
-      } else {
+      }
+      // PDF drawings & fabrication docs from documents[]
+      const drawDocs = (project.documents || []).filter(d => d.type === 'drawing' || d.type === 'fabrication');
+      if (drawDocs.length) {
+        drawHtml += '<div style="margin-top:16px">';
+        drawDocs.forEach(d => {
+          const icon = d.type === 'drawing' ? '\u{1F4D0}' : '\u{1F527}';
+          const badge = d.type === 'fabrication' ? '<span style="font-size:10px;padding:1px 6px;background:var(--color-surface-2);border-radius:3px;margin-left:6px">加工依頼</span>' : '';
+          drawHtml += `<a href="${esc(d.url || '#')}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:6px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;text-decoration:none;color:inherit;font-size:13px">
+            <span style="font-size:18px">${icon}</span>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(d.label)}${badge}</div>
+              ${d.date ? `<div style="font-size:11px;color:var(--color-tertiary)">${esc(d.date)}</div>` : ''}
+            </div>
+          </a>`;
+        });
+        drawHtml += '</div>';
+      }
+      if (!hasDrawings && !drawDocs.length) {
         drawHtml += '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
       }
       drawHtml += `<div style="margin-top:12px">
