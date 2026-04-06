@@ -210,12 +210,19 @@ async function renderFurniture() {
         </div>
         <div class="card-body">
           <h3>${esc(f.name)}</h3>
-          <p class="card-meta">${f.dimensions ? esc(f.dimensions) : ''} ${f.weight_kg ? '/ ' + f.weight_kg + 'kg' : ''}</p>
-          ${f.production_cost
-            ? '<div class="card-cost">' + formatPrice(f.production_cost) + '</div>'
-            : f.cost_breakdown
-              ? '<div class="card-cost" style="color:var(--color-secondary)">' + esc(Object.values(f.cost_breakdown).find(v => /万|円|¥|\\d{3,}/.test(String(v))) || '要見積') + ' <span style="font-size:10px;color:var(--color-tertiary)">見積ベース</span></div>'
-              : '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>'}
+          ${f.dimensions ? `<p class="card-meta">${esc(f.dimensions)}</p>` : ''}
+          ${(() => {
+            if (f.production_cost) return '<div class="card-cost">' + formatPrice(f.production_cost) + '</div>';
+            if (f.cost_breakdown) {
+              const vals = Object.values(f.cost_breakdown).map(String);
+              const yenVal = vals.find(v => /^[¥￥]/.test(v));
+              const manVal = vals.find(v => /^\d+万|^約\d+万/.test(v));
+              const price = yenVal ? yenVal.replace(/[（\(].*/,'').trim() : manVal ? manVal.replace(/[（\(].*/,'').trim() : null;
+              if (price) return '<div class="card-cost" style="color:var(--color-secondary)">' + esc(price) + ' <span style="font-size:10px;color:var(--color-tertiary)">見積ベース</span></div>';
+              return '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>';
+            }
+            return '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>';
+          })()}
         </div>
       </a>`;
     }).join('');

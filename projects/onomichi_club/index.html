@@ -294,9 +294,19 @@ async function init() {
           const thumb = thumbSrc
             ? `<img src="${B}${thumbSrc}" alt="${esc(f.name)}" loading="lazy">`
             : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
+          let cardCost = '';
+          if (f.production_cost) {
+            cardCost = '<div style="font-size:12px;color:var(--color-primary);margin-top:2px">' + formatPrice(f.production_cost) + '</div>';
+          } else if (f.cost_breakdown) {
+            const vals = Object.values(f.cost_breakdown).map(String);
+            const yenVal = vals.find(v => /^[¥￥]/.test(v));
+            const manVal = vals.find(v => /^\d+万|^約\d+万/.test(v));
+            const price = yenVal ? yenVal.replace(/[（\(].*/,'').trim() : manVal ? manVal.replace(/[（\(].*/,'').trim() : null;
+            if (price) cardCost = '<div style="font-size:12px;color:var(--color-secondary);margin-top:2px">' + esc(price) + ' <span style="font-size:10px;color:var(--color-tertiary)">見積</span></div>';
+          }
           return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
             <div class="flc-thumb">${thumb}</div>
-            <div class="flc-body"><h4>${esc(f.name)}</h4><p>${esc(f.dimensions || '')}</p></div>
+            <div class="flc-body"><h4>${esc(f.name)}</h4>${f.dimensions ? '<p style="font-size:11px;color:var(--color-tertiary)">' + esc(f.dimensions) + '</p>' : ''}${cardCost}</div>
           </a>`;
         }).join('') + '</div>';
     }
