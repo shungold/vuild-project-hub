@@ -429,29 +429,12 @@ Claude が画像を Read で確認して被写体を判定する:
 
 | 条件 | 判定 |
 |------|------|
-| 同一チャンネルに異なる年度のイベント/施工が含まれる | 年次タブあり |
-| 年度ごとにfurniture構成が異なる | 年次タブあり |
-| 同じfurnitureを複数年使い回し（レンタル等） | 年次タブなし（案件ごとに別管理） |
+| 同一チャンネルに異なる年度のイベント/施工が含まれる | **別案件** + 関連案件として紐づけ |
+| 年度ごとにfurniture構成が異なる | **別案件**（各案件に独自のfurniture_ids） |
+| 同じfurnitureを複数年使い回し（レンタル等） | 各案件のfurniture_idsに同じIDを登録 |
 
-**years[] で年ごとに持つデータ:**
-
-| データ | years[]に持つ | 案件トップに持つ |
-|--------|-------------|---------------|
-| furniture_ids | ○（年ごとに異なる） | 全年の合算も保持 |
-| gallery_photos | ○（年ごとに異なる） | hero_photoは代表1枚 |
-| cost_overview | ○（年ごとに異なる） | 合算totalを保持 |
-| venue / event_date | ○ | — |
-| team | — | ○（全年共通） |
-
-**ナレッジの年フィルタ:**
-ナレッジは年フィールドを持たず、dateの年で自動振り分け（2023-xx-xx → 2023タブ）
-
-**UIの年次タブ切り替え対象:**
-1. furniture一覧パネル ← years[].furniture_ids
-2. gallery写真 ← years[].gallery_photos
-3. 見積パネルのコスト ← years[].cost_overview
-4. ナレッジパネル ← entriesのdateで年フィルタ
-5. spec cardの会場・会期 ← years[].venue / event_date
+**年次タブは使わない。** 年度違いは常に別案件として登録し、`related_projects` で紐づける。
+例: 楽天Optimism 2023 と 楽天Optimism 2024 は別案件。各案件ページの「関連案件」セクションで相互リンク。
 
 #### 完了判定 → ドキュメント生成ルール
 
@@ -490,6 +473,75 @@ Claude が画像を Read で確認して被写体を判定する:
 | 施工計画（案件） | 工程記載なし | 「⚠ 施工計画を追加してください（工程表・段取り等）」 |
 
 プレースホルダーはユーザーがSlackやWEB編集UIから情報を追加した後、次回スキャン時に自動で置き換わる。
+
+#### 関連案件の整理ルール
+
+1チャンネル内に複数の案件が共存するケースを統一的に扱う。
+
+**関連案件が発生するパターン:**
+
+| パターン | 例 | 整理方法 |
+|---------|-----|---------|
+| WS/イベント | pan門真 + 電材プロダクトWS | 別案件 + related_projects |
+| 年度違い | 楽天2023 + 楽天2024 | 別案件 + related_projects |
+| フェーズ違い | 1期工事 + 2期工事 | 別案件 + related_projects |
+
+**全て同じ仕組みで処理する — 年次タブは使わない。**
+
+**検出方法:**
+- メッセージ内の「WS」「ワークショップ」「2023」「2024」「1期」「2期」等
+- 異なるfurnitureセットが異なる文脈・時期で言及されている
+- ユーザーのStep 1確認時に分割方針を決定
+
+**整理方法:**
+
+| 要素 | 扱い |
+|------|------|
+| 各案件 | **別のproject ID**で登録（独自のfurniture_ids, photos, cost, knowledge） |
+| furniture | 各案件のfurniture_idsに紐づけ |
+| 共有furniture（レンタル等） | 両方のfurniture_idsに同じIDを登録 |
+| 写真/ナレッジ/コスト | 該当案件に振り分け |
+| 共通写真 | 両方に登録可 |
+
+**projects.jsonの関連案件フィールド:**
+```json
+{
+  "id": "pan_kitchen",
+  "related_projects": [
+    {"id": "pan_denzai_ws", "label": "電材プロダクトWS", "relation": "ws"},
+    {"id": "rakuten_2024", "label": "楽天Optimism 2024", "relation": "year"}
+  ],
+  "parent_project": null
+}
+```
+- `relation`: "ws" | "year" | "phase" | "related"
+- 子案件には `"parent_project": "pan_kitchen"` を持たせる（任意）
+
+**WEB UIの「関連案件」セクション:**
+- 案件詳細ページの下部に「関連案件」カードを表示
+- カードにはサムネイル + 案件名 + relation種別バッジ + リンク
+- relation種別に応じたバッジ: WS / 2024 / 2期 等
+
+#### 複合furniture構成の整理ルール
+
+1つのチャンネルに、階層・タイプ・連数などで複数バリエーションがある場合:
+
+**階層/フロアで分ける場合:**
+- 同じカテゴリでも設置階や用途が異なる → 別furniture
+- 例: 6階造作キッチン / 7階造作キッチン
+
+**タイプで分ける場合:**
+- 形状・サイズ・構成が異なるバリエーション → 別furniture
+- 例: モバイルキッチンユニット type A / type B / type C
+
+**連数/ブロック数で分ける場合:**
+- 同じ単体ブロックの組み合わせ数が異なる → 別furniture
+- 例: 芝キューブ 2連 / 3連 / 4連
+
+**IDの命名規則:**
+- 階層: `{project}-kitchen-6f` / `{project}-kitchen-7f`
+- タイプ: `{project}-mobile-kitchen-a` / `-b` / `-c`
+- 連数: `{project}-shiba-2ren` / `-3ren` / `-4ren`
 
 #### 既存furniture同一判定ルール
 
