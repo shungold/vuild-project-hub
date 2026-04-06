@@ -429,7 +429,26 @@
         "6F"
       ],
       "edited": false,
-      "documents": [],
+      "documents": [
+        {
+          "label": "251029_概算見積(6F造作キッチン部分)",
+          "type": "estimate",
+          "note": "材料¥250万+設備¥138万+加工¥97万+施工¥200万",
+          "date": "2025-10-29"
+        },
+        {
+          "label": "260123_6,7階造作キッチン図面",
+          "type": "drawing",
+          "note": "VUILD造作キッチン図面",
+          "date": "2026-01-23"
+        },
+        {
+          "label": "251223_新棟6F_キッチン天板制作依頼",
+          "type": "fabrication",
+          "note": "6Fキッチン天板加工依頼書",
+          "date": "2025-12-23"
+        }
+      ],
       "cost_source": "auto",
       "cost_extracted_from": null
     },
@@ -468,7 +487,26 @@
         "7F"
       ],
       "edited": false,
-      "documents": [],
+      "documents": [
+        {
+          "label": "251029_概算見積(7F造作部分)",
+          "type": "estimate",
+          "note": "造作施工¥200万+設備工事¥15万",
+          "date": "2025-10-29"
+        },
+        {
+          "label": "中村塗装見積(塗装工事+WS)",
+          "type": "estimate",
+          "note": "¥1,336,500 天板・パネル・棚板塗装+WS運営",
+          "date": "2026-01-16"
+        },
+        {
+          "label": "260123_6,7階造作キッチン図面",
+          "type": "drawing",
+          "note": "VUILD造作キッチン図面",
+          "date": "2026-01-23"
+        }
+      ],
       "cost_source": "auto",
       "cost_extracted_from": null
     },
@@ -511,7 +549,20 @@
         "typeA"
       ],
       "edited": false,
-      "documents": [],
+      "documents": [
+        {
+          "label": "251029_概算見積(MKU部分)",
+          "type": "estimate",
+          "note": "typeA ¥195,000/台×3=¥585,000",
+          "date": "2025-10-29"
+        },
+        {
+          "label": "251210_6Fモバイルキッチン仕様書",
+          "type": "reference",
+          "note": "6F稼働什器の仕様書",
+          "date": "2025-12-11"
+        }
+      ],
       "cost_source": "auto",
       "cost_extracted_from": null
     },
@@ -624,7 +675,32 @@
         "2連"
       ],
       "edited": false,
-      "documents": [],
+      "documents": [
+        {
+          "label": "カトケン見積(芝キューブ木部)",
+          "type": "estimate",
+          "note": "¥648,450 ShopBot加工+仮組+送料",
+          "date": "2025-12-09"
+        },
+        {
+          "label": "衣川ウレタン見積(芝貼り+搬入)",
+          "type": "estimate",
+          "note": "¥918,500 ユニットA-G+搬入設置",
+          "date": "2026-01-07"
+        },
+        {
+          "label": "251212_pan7F芝キューブ加工依頼",
+          "type": "fabrication",
+          "note": "カトケン向け木部加工指示",
+          "date": "2025-12-12"
+        },
+        {
+          "label": "251210_芝キューブ仕様書",
+          "type": "reference",
+          "note": "芝キューブの仕様書",
+          "date": "2025-12-10"
+        }
+      ],
       "cost_source": "auto",
       "cost_extracted_from": null
     },
@@ -732,7 +808,14 @@
         "CNC"
       ],
       "edited": false,
-      "documents": [],
+      "documents": [
+        {
+          "label": "251029_概算見積(スツール部分)",
+          "type": "estimate",
+          "note": "セルフビルドキッチンユニット見積内",
+          "date": "2025-10-29"
+        }
+      ],
       "cost_source": "auto",
       "cost_extracted_from": null
     },
