@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUILD furniture — Detail</title>
+<link rel="stylesheet" href="../../style.css?v=5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<header class="global-header">
+  <div class="header-inner">
+    <div class="brand">
+      <a href="../../index.html#furniture" class="brand-logo">VUILD</a>
+      <div class="brand-divider"></div>
+      <span class="brand-title" id="header-title">furniture</span>
+    </div>
+  </div>
+</header>
+
+<div class="detail-container">
+  <a href="../../index.html#furniture" class="back-link">&larr; furniture カタログ</a>
+
+  <!-- Title -->
+  <div class="detail-title-block">
+    <h1 id="furn-name"></h1>
+    <p class="detail-sub" id="furn-sub"></p>
+  </div>
+
+  <!-- Pin Editor Bar -->
+  <div class="pin-editor-bar" id="pin-editor-bar" style="display:none">
+    <span>ピン編集モード</span>
+    <button class="pin-edit-toggle" id="pin-edit-toggle" onclick="PinEditor.toggle()">編集ON</button>
+    <span style="font-size:10px;color:var(--color-tertiary)">写真をクリックしてピンを追加</span>
+  </div>
+
+  <!-- Photo + Pin Side Panel -->
+  <div class="detail-photo-area" id="photo-area" style="display:none">
+    <div class="pin-layout" id="pin-layout">
+      <div>
+        <div class="detail-photo-main" id="photo-main"></div>
+        <div class="detail-photo-thumbs" id="photo-thumbs"></div>
+      </div>
+      <div class="pin-side-panel" id="pin-side-panel">
+        <div class="psp-label">写真のピンをクリックすると金物の詳細が表示されます</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Two-column -->
+  <div class="detail-grid">
+    <div class="detail-main">
+
+      <!-- Overview -->
+      <div class="detail-section">
+        <h2 class="detail-section-title">Overview</h2>
+        <p class="detail-description" id="furn-description"></p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="detail-tabs" id="detail-tabs"></div>
+
+      <!-- Tab Panels -->
+      <div id="tab-panels">
+        <div class="detail-tab-panel" id="panel-drawings"></div>
+        <div class="detail-tab-panel" id="panel-estimate"></div>
+        <div class="detail-tab-panel" id="panel-actual"></div>
+        <div class="detail-tab-panel" id="panel-hardware"></div>
+        <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-proddoc"></div>
+      </div>
+
+      <!-- Case Studies (導入事例) — ページ最下部、箇条書き -->
+      <div class="detail-section" id="section-cases" style="display:none;margin-top:32px">
+        <h2 class="detail-section-title">Case Studies</h2>
+        <ul class="case-list" id="furn-cases"></ul>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="detail-sidebar">
+      <div class="spec-card">
+        <div class="spec-card-header">
+          <h3>Spec</h3>
+          <span class="badge badge-active" id="furn-series-badge" style="display:none"></span>
+        </div>
+        <div class="spec-card-body" id="furn-spec-body"></div>
+      </div>
+
+      <div id="furn-tags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<script src="../../common.js?v=5"></script>
+<script>
+DataLoader.basePath = '../../';
+const B = DataLoader.basePath;
+
+const pathParts = location.pathname.replace(/\/index\.html$/, '').split('/').filter(Boolean);
+const furnitureId = pathParts[pathParts.length - 1];
+
+function initDetailTabs() {
+  document.querySelectorAll('.detail-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('is-active'));
+      document.querySelectorAll('.detail-tab-panel').forEach(p => p.classList.remove('is-active'));
+      tab.classList.add('is-active');
+      const panel = document.getElementById('panel-' + tab.dataset.panel);
+      if (panel) panel.classList.add('is-active');
+    });
+  });
+}
+
+let _furnPhotoPins = [];
+let _furnMatData = null;
+
+function setMainPhoto(src, photoIndex) {
+  const main = document.getElementById('photo-main');
+  const idx = photoIndex || 0;
+  const pinsForPhoto = _furnPhotoPins.filter(p => p.photo_index === idx);
+  let pinsHtml = pinsForPhoto.map((pin, i) =>
+    `<div class="photo-pin" style="left:${pin.x}%;top:${pin.y}%" onclick="event.stopPropagation();showFurnPinDetail(${idx},${i})">
+      <div class="pin-dot"></div>
+    </div>`
+  ).join('');
+
+  main.innerHTML = `<div class="pin-photo-container">
+    <img src="${src}" alt="" onclick="openLightbox('${src}')">
+    ${pinsHtml}
+  </div>`;
+  main.onclick = null;
+  document.querySelectorAll('.detail-photo-thumb').forEach(t => {
+    t.classList.toggle('is-active', t.dataset.src === src);
+  });
+  document.getElementById('pin-side-panel').innerHTML =
+    '<div class="psp-label">写真のピンをクリックすると金物の詳細が表示されます</div>';
+}
+
+function showFurnPinDetail(photoIdx, pinIdx) {
+  const pin = _furnPhotoPins.filter(p => p.photo_index === photoIdx)[pinIdx];
+  if (!pin) return;
+  const panel = document.getElementById('pin-side-panel');
+  const allMats = [...((_furnMatData||{}).materials||[]), ...((_furnMatData||{}).candidates||[])];
+  const m = allMats.find(x => x.id === pin.id);
+  if (m) {
+    const href = B + 'materials/' + m.id + '/index.html';
+    panel.innerHTML = `
+      <div class="psp-label">Hardware Detail</div>
+      ${m.thumbnail_url ? '<div class="psp-thumb"><img src="' + m.thumbnail_url + '" alt=""></div>' : ''}
+      <h3>${esc(m.name)}</h3>
+      <div class="psp-meta">${esc(m.maker || '')} &middot; ${esc(m.product_code || '')}</div>
+      <div style="font-size:18px;font-weight:700;margin:4px 0">${formatPrice(m.price)}</div>
+      <div class="psp-specs">${esc(m.specs || '')}</div>
+      <div class="psp-links">
+        ${m.product_url ? '<a href="' + m.product_url + '" target="_blank">商品ページ &nearr;</a>' : ''}
+        <a href="${href}">金物詳細ページ &rarr;</a>
+      </div>`;
+  } else {
+    panel.innerHTML = `<div class="psp-label">${esc(pin.label || '')}</div>`;
+  }
+}
+
+async function init() {
+  try {
+    const [furnData, projData, matData, knowData] = await Promise.all([
+      DataLoader.load('furniture'),
+      DataLoader.load('projects'),
+      DataLoader.load('materials'),
+      DataLoader.load('knowledge')
+    ]);
+
+    const item = (furnData.furniture || []).find(f => f.id === furnitureId);
+    if (!item) {
+      document.querySelector('.detail-container').innerHTML =
+        '<p class="empty-state">プロダクトが見つかりません</p>';
+      return;
+    }
+
+    document.title = 'VUILD furniture — ' + item.name;
+    document.getElementById('header-title').textContent = item.name;
+    document.getElementById('furn-name').textContent = item.name;
+    document.getElementById('furn-sub').textContent =
+      [item.series, item.category, item.name_en].filter(Boolean).join(' — ');
+
+    // --- Photos with pins + image management ---
+    _furnMatData = matData;
+    _furnPhotoPins = item.photo_pins || [];
+    const photos = [...(item.hero_photos || []), ...(item.gallery_photos || [])];
+    document.getElementById('photo-area').style.display = '';
+    if (photos.length) {
+      setMainPhoto(B + photos[0], 0);
+    }
+    // Thumbs + add button
+    let thumbsHtml = photos.map((src, i) =>
+      `<div class="detail-photo-thumb${i === 0 ? ' is-active' : ''}" style="position:relative"
+           data-src="${B}${src}" onclick="setMainPhoto('${B}${src}', ${i})">
+        <img src="${B}${src}" alt="" loading="lazy">
+        <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('furniture','${furnitureId}','${src}');this.parentElement.remove();">&times;</div>
+      </div>`
+    ).join('');
+    thumbsHtml += `<div class="detail-photo-thumb" style="display:flex;align-items:center;justify-content:center;background:var(--color-bg);cursor:pointer;border:1px dashed var(--color-border)" onclick="WebEditor.addImageUI('furniture','${furnitureId}',()=>location.reload())">
+      <span style="font-size:20px;color:var(--color-tertiary)">+</span>
+    </div>`;
+    document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
+
+    // --- Description ---
+    document.getElementById('furn-description').textContent =
+      item.description || '';
+
+    // --- Spec ---
+    const specs = [
+      ['寸法', item.dimensions],
+      ['重量', item.weight_kg ? item.weight_kg + ' kg' : null],
+      ['素材', item.specs?.material],
+      ['仕上げ', item.specs?.finish],
+      ['備考', item.specs?.note]
+    ].filter(([,v]) => v);
+    document.getElementById('furn-spec-body').innerHTML = specs.map(([l,v]) =>
+      `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
+    ).join('');
+
+    if (item.series) {
+      const badge = document.getElementById('furn-series-badge');
+      badge.textContent = item.series;
+      badge.style.display = '';
+    }
+
+    // --- 3D Model section ---
+    document.getElementById('furn-tags').insertAdjacentHTML('beforebegin', '<div id="model-section"></div>');
+    ModelManager.render('model-section', 'furniture', furnitureId, item.model_url || null, B);
+
+    // --- Tags ---
+    document.getElementById('furn-tags').innerHTML = (item.tags || []).map(t =>
+      `<span class="tag">${esc(t)}</span>`
+    ).join('');
+
+    // --- Pin Editor init ---
+    const allHwForPins = (matData.materials || []).filter(m =>
+      (item.hardware_ids || []).includes(m.id));
+    if (allHwForPins.length) {
+      PinEditor.init('furniture', furnitureId, _furnPhotoPins,
+        allHwForPins.map(m => ({ type: 'material', id: m.id, label: m.name }))
+      );
+      // Reload pins from localStorage (includes user edits)
+      _furnPhotoPins = PinEditor.loadPins(_furnPhotoPins);
+      if (photos.length) setMainPhoto(B + photos[0], 0);
+      document.getElementById('pin-editor-bar').style.display = '';
+    }
+
+    // --- Build Tabs ---
+    const hwItems = (matData.materials || []).filter(m =>
+      (item.hardware_ids || []).includes(m.id));
+    const prodKnowledge = (knowData.entries || []).filter(k =>
+      k.furniture_id === furnitureId && k.scope === 'production');
+    const prodDocs = (knowData.production_documents || []).filter(d =>
+      d.furniture_id === furnitureId);
+    const hasDrawings = item.drawings && item.drawings.length;
+    const hasCost = item.production_cost;
+    const hasDocs = item.documents && item.documents.length;
+
+    // Always show: 図面, 見積, 実績, 金物, ナレッジ
+    const tabs = [
+      { id: 'drawings', label: '図面', count: hasDrawings ? item.drawings.length : 0 },
+      { id: 'estimate', label: '見積', count: null },
+      { id: 'actual', label: '実績', count: null },
+      { id: 'hardware', label: '金物・パーツ', count: hwItems.length },
+      { id: 'knowledge', label: 'Knowledge', count: prodKnowledge.length },
+      { id: 'proddoc', label: '製作ドキュメント', count: prodDocs.length }
+    ];
+
+    document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
+      `<button class="detail-tab${i === 0 ? ' is-active' : ''}" data-panel="${t.id}">
+        ${t.label}${t.count != null ? '<span class="tab-count">' + t.count + '</span>' : ''}
+      </button>`
+    ).join('');
+    document.getElementById('panel-' + tabs[0].id).classList.add('is-active');
+    initDetailTabs();
+
+    // --- 図面 panel (追加/削除UI付き) ---
+    {
+      let drawHtml = '';
+      if (hasDrawings) {
+        drawHtml += '<div class="detail-gallery">' + item.drawings.map((d, i) =>
+          `<div class="detail-gallery-item" style="position:relative" onclick="openLightbox('${B}${d.src}')">
+            <img src="${B}${d.src}" alt="${esc(d.label || '')}" loading="lazy">
+            <div class="img-delete-btn" onclick="event.stopPropagation();WebEditor.removeImage('furniture_drawing','${furnitureId}','${d.src}');this.parentElement.remove();">&times;</div>
+          </div>`).join('') + '</div>';
+      } else {
+        drawHtml += '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">図面はまだ登録されていません</p>';
+      }
+      drawHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addImageUI('furniture_drawing','${furnitureId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 図面を追加</button>
+      </div>`;
+      document.getElementById('panel-drawings').innerHTML = drawHtml;
+    }
+
+    // --- 見積 panel (AUTOESTIMATOR + 見積/請求書 + 参考資料追加) ---
+    {
+      const estimateDocs = (item.documents || []).filter(d => d.type === 'estimate' || d.type === 'invoice');
+      const typeIcons = { estimate: '\u{1F4C4}', invoice: '\u{1F4B0}', drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+      const statusClass = { '検討中': 'pending', '請求済み': 'invoiced', '支払済み': 'paid' };
+
+      let estHtml = `
+        <div class="bom-dropzone" id="bom-dropzone" onclick="document.getElementById('bom-file').click()">
+          AUTOESTIMATOR JSONをドラッグ&ドロップ、またはクリックして読み込み
+          <input type="file" id="bom-file" accept=".json">
+        </div>
+        <div id="bom-result"></div>`;
+
+      if (estimateDocs.length) {
+        estHtml += '<h3 class="sub-title" style="margin-top:20px">見積・請求書</h3><div class="doc-list">';
+        estHtml += estimateDocs.map(d => `
+          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div style="flex:1">
+              <div class="doc-label">${esc(d.label)}</div>
+              ${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}
+            </div>
+            <span class="badge badge-doc-${statusClass[d.status] || 'pending'}">${esc(d.status || '検討中')}</span>
+          </a>`).join('');
+        estHtml += '</div>';
+      }
+
+      estHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addDocumentUI('furniture','${furnitureId}',function(doc){location.reload()})" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ 参考資料を追加</button>
+      </div>`;
+      document.getElementById('panel-estimate').innerHTML = estHtml;
+      initBomImport(hwItems);
+    }
+
+    // --- 実績 panel (金物積み上げ + 手動コスト + 参考資料) ---
+    {
+      let actHtml = '';
+
+      // 金物コスト積み上げ
+      if (hwItems.length) {
+        let hwTotal = 0;
+        actHtml += '<h3 class="sub-title">金物コスト</h3>';
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        hwItems.forEach(m => {
+          const qty = m.quantity || 1;
+          const cost = (m.price || 0) * qty;
+          hwTotal += cost;
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(m.name)}${qty > 1 ? ' ×' + qty : ''}</span><span class="spec-value">${formatPrice(cost)}</span></div>`;
+        });
+        actHtml += `<div class="spec-row" style="border-top:1px solid var(--color-border);margin-top:4px;padding-top:4px;font-weight:700"><span class="spec-label">金物小計</span><span class="spec-value">${formatPrice(hwTotal)}</span></div>`;
+        actHtml += '</div></div>';
+      }
+
+      // 手動追加コスト項目 (localStorageから)
+      const costKey = `vuild_cost_items_furniture_${furnitureId}`;
+      const manualItems = JSON.parse(localStorage.getItem(costKey) || '[]');
+      // 既存のcost_breakdownも表示
+      const existingBreakdown = item.cost_breakdown || {};
+      const hasManual = manualItems.length || Object.keys(existingBreakdown).length;
+
+      if (hasManual) {
+        const sourceLabel = item.cost_source === 'auto' ? '自動取得' : item.cost_source === 'manual' ? (item.cost_edited_by || '手入力') : '見積ベース';
+        actHtml += `<h3 class="sub-title">コスト内訳 <span style="font-size:11px;color:var(--color-tertiary);font-weight:400;margin-left:8px">${sourceLabel}</span></h3>`;
+        actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
+        for (const [k, v] of Object.entries(existingBreakdown)) {
+          // Handle both numeric and string values
+          const displayVal = (typeof v === 'number') ? formatPrice(v) : esc(String(v));
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${displayVal}</span></div>`;
+        }
+        manualItems.forEach(ci => {
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span style="font-size:10px;color:var(--color-tertiary)">${esc(ci.category)}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
+        });
+        actHtml += '</div></div>';
+      }
+
+      // production_cost or estimate fallback
+      if (item.production_cost) {
+        actHtml += `<div class="spec-card" style="max-width:500px;margin-bottom:16px;background:var(--color-bg)"><div class="spec-card-body">
+          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">原価合計（実績）</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>
+        </div></div>`;
+      } else if (Object.keys(existingBreakdown).length) {
+        actHtml += `<div style="padding:8px 12px;background:#fff8e1;border:1px solid #ffe082;border-radius:6px;font-size:12px;color:#f57f17;max-width:500px;margin-bottom:16px">⚠ 実績値未入力 — 上記は見積ベースです</div>`;
+      }
+
+      // 金物コスト積み上げ（数値のみ）
+      const hwTotal = hwItems.reduce((s, m) => s + (m.price || 0) * (m.quantity || 1), 0);
+      const manualTotal = manualItems.reduce((s, ci) => s + (ci.amount || 0), 0);
+      const numericTotal = hwTotal + manualTotal;
+      if (numericTotal) {
+        actHtml += `<div class="spec-card" style="max-width:500px;margin-bottom:16px;background:var(--color-bg)"><div class="spec-card-body">
+          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">金物+手動合計</span><span class="spec-value">${formatPrice(numericTotal)}</span></div>
+        </div></div>`;
+      }
+
+      // 参考資料（見積/請求以外）
+      const refDocs = (item.documents || []).filter(d => d.type !== 'estimate' && d.type !== 'invoice');
+      if (refDocs.length) {
+        const typeIcons = { drawing: '\u{1F4D0}', memo: '\u{1F4DD}', model: '\u{1F4E6}' };
+        actHtml += '<h3 class="sub-title">参考資料</h3><div class="doc-list">';
+        actHtml += refDocs.map(d => `
+          <a href="${d.url || '#'}" target="_blank" class="doc-item" style="text-decoration:none">
+            <div class="doc-icon">${typeIcons[d.type] || '\u{1F4CE}'}</div>
+            <div><div class="doc-label">${esc(d.label)}</div>${d.note ? '<div class="doc-note">' + esc(d.note) + '</div>' : ''}</div>
+          </a>`).join('');
+        actHtml += '</div>';
+      }
+
+      actHtml += `<div style="margin-top:12px">
+        <button onclick="WebEditor.addCostItemUI('furniture','${furnitureId}',()=>location.reload())" style="padding:6px 14px;font-size:12px;background:var(--color-surface);border:1px dashed var(--color-border);border-radius:4px;cursor:pointer;color:var(--color-secondary)">+ コスト項目を追加</button>
+      </div>`;
+
+      if (!actHtml.includes('sub-title') && !grandTotal) {
+        actHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">実績コストはまだ登録されていません</p>' + actHtml;
+      }
+      document.getElementById('panel-actual').innerHTML = actHtml;
+    }
+
+    // --- Hardware panel (カテゴリ分類 + カード) ---
+    {
+      const cats = {};
+      hwItems.forEach(m => {
+        const cat = m.category || 'その他';
+        if (!cats[cat]) cats[cat] = [];
+        cats[cat].push(m);
+      });
+      let hwHtml = '';
+      for (const [cat, items] of Object.entries(cats)) {
+        hwHtml += `<h3 class="sub-title">${esc(cat)}</h3>`;
+        hwHtml += '<div class="hw-card-grid">' + items.map(m => `
+          <a href="${B}materials/${m.id}/index.html" class="hw-card">
+            <div class="hw-card-thumb">
+              ${m.thumbnail_url ? `<img src="${m.thumbnail_url}" alt="${esc(m.name)}" loading="lazy" onerror="this.style.display='none'">` : '<div class="hw-icon">\u2699</div>'}
+            </div>
+            <div class="hw-card-body">
+              ${m.status === 'adopted' ? '<span class="badge badge-adopted" style="margin-bottom:4px">採用</span>' : ''}
+              <h4>${esc(m.name)}</h4>
+              <div class="hw-meta">${esc(m.product_code || '')} / ${esc(m.maker || '')}</div>
+              <div class="hw-price">${formatPrice(m.price)}</div>
+              ${m.specs ? '<div class="hw-meta">' + esc(m.specs) + '</div>' : ''}
+            </div>
+          </a>
+        `).join('') + '</div>';
+      }
+      // 候補(candidates) — furniture_idで紐づけ
+      const candidates = (matData.candidates || []).filter(c =>
+        c.furniture_id === furnitureId);
+      if (candidates.length) {
+        hwHtml += '<h3 class="sub-title" style="margin-top:24px">検討中の候補</h3>';
+        hwHtml += '<div class="hw-card-grid">' + candidates.map(c => `
+          <a href="${c.product_url || '#'}" target="_blank" class="hw-card" style="border-left:3px solid var(--color-wood)">
+            <div class="hw-card-thumb">
+              ${c.thumbnail_url ? `<img src="${c.thumbnail_url}" alt="${esc(c.name)}" loading="lazy">` : '<div class="hw-icon">?</div>'}
+            </div>
+            <div class="hw-card-body">
+              <span class="badge badge-pending" style="margin-bottom:4px">検討中</span>
+              <h4>${esc(c.name)}</h4>
+              <div class="hw-meta">${esc(c.maker || '')} / ${esc(c.product_code || '')}</div>
+              <div class="hw-price">${formatPrice(c.price)}</div>
+              <div class="hw-meta">${esc(c.posted_by || '')} ${c.posted_at || ''}</div>
+              <div class="cand-actions">
+                <button class="cand-btn cand-btn-adopt" onclick="event.preventDefault();WebEditor.setCandidateStatus('${c.id}','adopted','${esc(c.name)}');this.closest('.hw-card').style.borderLeftColor='var(--color-accent-green)';this.closest('.cand-actions').innerHTML='<span style=\\'color:var(--color-accent-green);font-size:10px\\'>採用済み（次回同期で反映）</span>';">採用</button>
+                <button class="cand-btn cand-btn-dismiss" onclick="event.preventDefault();WebEditor.setCandidateStatus('${c.id}','dismissed','${esc(c.name)}');this.closest('.hw-card').style.opacity='0.4';this.closest('.cand-actions').innerHTML='<span style=\\'color:var(--color-tertiary);font-size:10px\\'>不採用（次回同期で反映）</span>';">不採用</button>
+              </div>
+            </div>
+          </a>
+        `).join('') + '</div>';
+      }
+      document.getElementById('panel-hardware').innerHTML = hwHtml || '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">金物はまだ登録されていません</p>';
+    }
+
+    // --- Knowledge panel (カード + クリックでモーダル) ---
+    {
+      // Store knowledge data for modal
+      window._knowledgeData = prodKnowledge;
+      let knowHtml = '<div class="hw-card-grid">' + prodKnowledge.map((k, idx) => {
+        const info = getKnowledgeTypeInfo(k.type);
+        const imgs = k.images || [];
+        const imgCount = imgs.length;
+        return `<div class="know-card" onclick="openKnowledgeModal(${idx})" style="cursor:pointer">
+          <div class="know-card-header">
+            <span class="badge badge--${k.type}">${info.label}</span>
+            <span style="font-size:10px;color:var(--color-tertiary)">${formatDate(k.date)}</span>
+          </div>
+          <h4>${esc(k.title)}</h4>
+          <p>${esc(k.content || '')}</p>
+          ${imgCount ? '<div style="font-size:10px;color:var(--color-edit-blue);margin-top:4px">\u{1F4F7} ' + imgCount + '枚の画像</div>' : ''}
+          <div class="know-author">${esc(k.posted_by || '')}</div>
+        </div>`;
+      }).join('') + '</div>';
+      document.getElementById('panel-knowledge').innerHTML = knowHtml;
+    }
+
+    // --- 製作ドキュメント panel (アコーディオン) ---
+    {
+      let pdHtml = '';
+      if (prodDocs.length) {
+        prodDocs.forEach(doc => {
+          const statusBadge = doc.status === 'published'
+            ? '<span class="badge badge-adopted">公開</span>'
+            : '<span class="badge badge-pending">下書き</span>';
+          pdHtml += `<div class="proddoc-card">
+            <div class="proddoc-header">${statusBadge} <span style="font-size:11px;color:var(--color-tertiary)">生成日: ${doc.generated_at || '—'}</span></div>`;
+          (doc.sections || []).forEach(sec => {
+            pdHtml += `<details class="proddoc-section">
+              <summary class="proddoc-summary">${esc(sec.title)}</summary>
+              <div class="proddoc-content">${esc(sec.content || '未記入').replace(/\\n/g, '\n').replace(/\n/g, '<br>')}</div>
+            </details>`;
+          });
+          pdHtml += '</div>';
+        });
+      } else {
+        pdHtml = '<p style="color:var(--color-tertiary);font-size:13px;padding:16px 0">製作ドキュメントはまだ生成されていません</p>';
+      }
+      document.getElementById('panel-proddoc').innerHTML = pdHtml;
+    }
+
+    // --- Case Studies (箇条書き、ページ最下部) ---
+    const cases = (projData.projects || []).filter(p =>
+      (p.furniture_ids || []).includes(furnitureId));
+    if (cases.length) {
+      document.getElementById('section-cases').style.display = '';
+      document.getElementById('furn-cases').innerHTML = cases.map(p =>
+        `<li><a href="${B}projects/${p.id}/index.html">${esc(p.name)}</a><span class="case-meta">${esc(p.pid)} — ${esc(p.client)} — ${esc(p.location || '')}</span></li>`
+      ).join('');
+    }
+
+  } catch (e) {
+    console.error(e);
+    document.querySelector('.detail-container').innerHTML =
+      '<p style="padding:40px;color:red">Error: ' + e.message + '</p>';
+  }
+}
+
+// --- BOM Import from AUTOESTIMATOR JSON ---
+function initBomImport(hwItems) {
+  const dropzone = document.getElementById('bom-dropzone');
+  const fileInput = document.getElementById('bom-file');
+  if (!dropzone || !fileInput) return;
+
+  ['dragover','dragenter'].forEach(ev => {
+    dropzone.addEventListener(ev, e => { e.preventDefault(); dropzone.classList.add('is-dragover'); });
+  });
+  ['dragleave','drop'].forEach(ev => {
+    dropzone.addEventListener(ev, () => dropzone.classList.remove('is-dragover'));
+  });
+  dropzone.addEventListener('drop', e => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file) processBomFile(file, hwItems);
+  });
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) processBomFile(e.target.files[0], hwItems);
+  });
+
+  // Auto-load saved estimate if available
+  const saved = localStorage.getItem('vuild_bom_' + furnitureId);
+  if (saved) {
+    try { renderBom(JSON.parse(saved), hwItems); } catch {}
+  }
+}
+
+function processBomFile(file, hwItems) {
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      localStorage.setItem('vuild_bom_' + furnitureId, JSON.stringify(data));
+      renderBom(data, hwItems);
+    } catch (err) {
+      document.getElementById('bom-result').innerHTML =
+        '<p style="color:red;padding:8px">JSONの読み込みに失敗: ' + err.message + '</p>';
+    }
+  };
+  reader.readAsText(file);
+}
+
+function renderBom(data, hwItems) {
+  const er = data.estimate_result || {};
+  const est = (er.estimates || [])[0] || {};
+  const lineItems = est.line_items || [];
+  const materials = ((data.structured_data || {}).products || [])[0]?.materials || [];
+
+  // Build named line items
+  const named = lineItems.map((li, i) => ({
+    name: (materials[i] && materials[i].name) || li.name || '(' + (li.category || '不明') + ')',
+    category: li.category || '',
+    amount: li.amount || 0,
+    materialInfo: materials[i] || null
+  }));
+
+  // Categorize
+  const matItems = named.filter(n => n.category === '材料費');
+  const procItems = named.filter(n => n.category === '加工費');
+  const matTotal = matItems.reduce((s, n) => s + n.amount, 0);
+  const procTotal = procItems.reduce((s, n) => s + n.amount, 0);
+
+  // Match hardware items by name (fuzzy)
+  const hwNames = hwItems.map(h => ({ id: h.id, name: h.name.toLowerCase(), price: h.price }));
+  function findMatch(itemName) {
+    const lower = itemName.toLowerCase();
+    const keywords = ['丁番','蝶番','水栓','シンク','キャスター','車輪','取っ手','ビス','金物','錠','レール','ローラー','アングル'];
+    const isHw = keywords.some(k => lower.includes(k));
+    if (!isHw) return null;
+    return hwNames.find(h => {
+      const hn = h.name;
+      return lower.includes(hn) || hn.includes(lower) ||
+        keywords.some(k => lower.includes(k) && hn.includes(k));
+    });
+  }
+
+  let html = '';
+
+  // Summary stats
+  html += `<div class="bom-summary">
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(er.grand_total)}</div><div class="bom-stat-label">税込合計</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(matTotal)}</div><div class="bom-stat-label">材料費</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(procTotal)}</div><div class="bom-stat-label">加工費</div></div>
+    <div class="bom-stat"><div class="bom-stat-val">${formatPrice(er.management_fee)}</div><div class="bom-stat-label">管理費</div></div>
+  </div>`;
+
+  // Project info
+  const proj = er.project || data.structured_data?.project || {};
+  html += `<p style="font-size:11px;color:var(--color-tertiary);margin-bottom:12px">
+    ${esc(proj.project_name || '')} — AUTOESTIMATOR概算 (${data.exported_at ? data.exported_at.split('T')[0] : ''})
+  </p>`;
+
+  // Line items table
+  html += '<table class="bom-table"><thead><tr><th>品名</th><th>区分</th><th style="text-align:right">金額</th><th>照合</th></tr></thead><tbody>';
+  for (const n of named) {
+    const match = findMatch(n.name);
+    const matchHtml = match
+      ? `<span class="bom-match matched">実価格 ${formatPrice(match.price)}</span>`
+      : (n.category === '材料費' && ['丁番','蝶番','水栓','シンク','キャスター','車輪','取っ手','ビス','金物','錠','レール','ローラー','アングル'].some(k => n.name.includes(k))
+        ? '<span class="bom-match unmatched">未照合</span>'
+        : '');
+    html += `<tr>
+      <td>${esc(n.name)}</td>
+      <td class="bom-cat">${esc(n.category)}</td>
+      <td class="bom-amount">${formatPrice(n.amount)}</td>
+      <td>${matchHtml}</td>
+    </tr>`;
+  }
+  html += '</tbody></table>';
+
+  // Warnings
+  if (er.warnings && er.warnings.length) {
+    html += '<div style="margin-top:12px;padding:8px 12px;background:rgba(212,136,15,0.08);border-radius:4px;font-size:11px;color:var(--color-wood)">';
+    er.warnings.forEach(w => { html += '<div>' + esc(w) + '</div>'; });
+    html += '</div>';
+  }
+
+  // Reset button
+  html += `<button onclick="localStorage.removeItem('vuild_bom_${furnitureId}');document.getElementById('bom-result').innerHTML='';document.getElementById('bom-dropzone').style.display=''" style="margin-top:8px;font-size:11px;color:var(--color-tertiary);cursor:pointer;background:none;border:none;text-decoration:underline">クリア</button>`;
+
+  document.getElementById('bom-result').innerHTML = html;
+  document.getElementById('bom-dropzone').style.display = 'none';
+}
+
+// --- Knowledge Modal ---
+function openKnowledgeModal(idx) {
+  const k = window._knowledgeData[idx];
+  if (!k) return;
+  const info = getKnowledgeTypeInfo(k.type);
+  const imgs = k.images || [];
+  const imgsHtml = imgs.length ? `<div class="know-modal-images">${imgs.map(img => {
+    const src = img.startsWith('photos/') ? B + img : img;
+    return `<img src="${src}" alt="" onclick="openLightbox('${src}')" loading="lazy">`;
+  }).join('')}</div>` : '';
+  const modal = document.createElement('div');
+  modal.className = 'know-modal-overlay is-open';
+  modal.onclick = e => { if (e.target === modal) modal.remove(); };
+  modal.innerHTML = `<div class="know-modal">
+    <button class="know-modal-close" onclick="this.closest('.know-modal-overlay').remove()">&times;</button>
+    <span class="badge badge--${k.type}">${info.label}</span>
+    <h2>${esc(k.title)}</h2>
+    <div class="know-modal-content">${esc(k.content || '')}</div>
+    ${imgsHtml}
+    <div class="know-modal-footer">
+      <span>${esc(k.posted_by || '')} — ${formatDate(k.date)}</span>
+      ${k.slack_url ? '<a href="' + k.slack_url + '" target="_blank" style="color:var(--color-edit-blue)">\u{1F4AC} Slackで見る</a>' : ''}
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+// Called by PinEditor after pin add/delete to refresh pin display
+function refreshCurrentPhoto() {
+  const photos = [];
+  document.querySelectorAll('.detail-photo-thumb[data-src]').forEach(t => {
+    photos.push(t.dataset.src);
+  });
+  const idx = photos.findIndex(s => document.querySelector('.detail-photo-thumb.is-active')?.dataset.src === s);
+  const currentIdx = idx >= 0 ? idx : 0;
+  if (photos[currentIdx]) {
+    _furnPhotoPins = PinEditor.pins || _furnPhotoPins;
+    setMainPhoto(photos[currentIdx], currentIdx);
+  }
+}
+
+function openLightbox(src) {
+  if (!src) return;
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('is-open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('is-open');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeLightbox();
+    document.querySelectorAll('.know-modal-overlay').forEach(m => m.remove());
+  }
+});
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

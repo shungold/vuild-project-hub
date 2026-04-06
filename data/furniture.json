@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-06T16:00:00",
+  "last_updated": "2026-04-06T18:00:00",
   "furniture": [
     {
       "id": "onomichi-bench-a",
@@ -392,6 +392,375 @@
       },
       "cost_source": "auto",
       "cost_extracted_from": "slack_msg"
+    },
+    {
+      "id": "pan-kitchen-6f",
+      "name": "6F造作キッチン",
+      "name_en": "6F Built-in Kitchen",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "キッチン",
+      "description": "6階コの字型キッチンカウンター。半分固定・半分可動式。テクスチャパネル仕上げ。シンク付き。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/pan-kitchen-6f/panasonic-14.jpg",
+        "photos/furniture/pan-kitchen-6f/panasonic-21.jpg",
+        "photos/furniture/pan-kitchen-6f/panasonic-22.jpg",
+        "photos/furniture/pan-kitchen-6f/IMG_0634.jpg",
+        "photos/furniture/pan-kitchen-6f/IMG_0633.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板 + テクスチャパネル仕上げ",
+        "finish": "塗装仕上げ",
+        "note": "コの字型、半固定半可動"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "キッチン",
+        "造作",
+        "6F"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-kitchen-7f",
+      "name": "7F造作キッチン",
+      "name_en": "7F Built-in Kitchen",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "キッチン",
+      "description": "7階固定造作キッチン。ステンレス天板+タイル壁面。冷蔵庫・食洗機・オーブン組込み。レースウェイ照明付き。4ユニット構成。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/pan-kitchen-7f/panasonic-10.jpg",
+        "photos/furniture/pan-kitchen-7f/panasonic-11.jpg",
+        "photos/furniture/pan-kitchen-7f/panasonic-4.jpg",
+        "photos/furniture/pan-kitchen-7f/IMG_0681.jpg",
+        "photos/furniture/pan-kitchen-7f/IMG_0680.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "ステンレス天板 + タイル壁面",
+        "finish": "ステンレス + タイル",
+        "note": "4ユニット構成、冷蔵庫・食洗機・オーブン組込"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "キッチン",
+        "造作",
+        "7F",
+        "ステンレス"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-mobile-kitchen-a",
+      "name": "モバイルキッチンユニット typeA",
+      "name_en": "Mobile Kitchen Unit Type A",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "キッチンユニット",
+      "description": "7F用モバイルキッチンユニットtypeA。キャスター付き可動式。合板CNC加工。穴あきパネル+引き出し収納。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/pan-mobile-kitchen/panasonic-9.jpg",
+        "photos/furniture/pan-mobile-kitchen/panasonic-25.jpg",
+        "photos/furniture/pan-mobile-kitchen/panasonic-26.jpg",
+        "photos/furniture/pan-mobile-kitchen/panasonic-2.jpg",
+        "photos/furniture/pan-mobile-kitchen/panasonic-3.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "クリア塗装",
+        "note": "キャスター付き可動式、穴あきパネル+引き出し収納"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "キッチン",
+        "モバイル",
+        "CNC",
+        "typeA"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-mobile-kitchen-b",
+      "name": "モバイルキッチンユニット typeB",
+      "name_en": "Mobile Kitchen Unit Type B",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "キッチンユニット",
+      "description": "7F用モバイルキッチンユニットtypeB。オーバル天板型。キャスター付き。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "クリア塗装",
+        "note": "オーバル天板型"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "キッチン",
+        "モバイル",
+        "CNC",
+        "typeB"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-mobile-kitchen-c",
+      "name": "モバイルキッチンユニット typeC",
+      "name_en": "Mobile Kitchen Unit Type C",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "キッチンユニット",
+      "description": "7F用モバイルキッチンユニットtypeC。アイランド型。キャスター付き。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "クリア塗装",
+        "note": "アイランド型"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "キッチン",
+        "モバイル",
+        "CNC",
+        "typeC"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-shiba-2ren",
+      "name": "芝キューブ 2連",
+      "name_en": "Shiba Cube 2-block",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "什器",
+      "description": "人工芝仕上げのモジュラー什器。2ブロック連結タイプ。座面・背もたれとして使用。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/pan-shiba/panasonic-12.jpg",
+        "photos/furniture/pan-shiba/panasonic-16.jpg",
+        "photos/furniture/pan-shiba/panasonic-17.jpg",
+        "photos/furniture/pan-shiba/panasonic-18.jpg",
+        "photos/furniture/pan-shiba/panasonic-19.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板基材 + 人工芝仕上げ",
+        "finish": "人工芝貼り",
+        "note": "2ブロック連結"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "什器",
+        "芝",
+        "モジュラー",
+        "2連"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-shiba-3ren",
+      "name": "芝キューブ 3連",
+      "name_en": "Shiba Cube 3-block",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "什器",
+      "description": "人工芝仕上げのモジュラー什器。3ブロック連結タイプ。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板基材 + 人工芝仕上げ",
+        "finish": "人工芝貼り",
+        "note": "3ブロック連結"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "什器",
+        "芝",
+        "モジュラー",
+        "3連"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-shiba-4ren",
+      "name": "芝キューブ 4連",
+      "name_en": "Shiba Cube 4-block",
+      "series": "Panasonic Design Kyotoシリーズ",
+      "category": "什器",
+      "description": "人工芝仕上げのモジュラー什器。4ブロック連結タイプ。最大サイズ。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板基材 + 人工芝仕上げ",
+        "finish": "人工芝貼り",
+        "note": "4ブロック連結、最大サイズ"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ コスト未取得"
+      },
+      "tags": [
+        "什器",
+        "芝",
+        "モジュラー",
+        "4連"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-denzai-stool",
+      "name": "電材スツール",
+      "name_en": "Denzai Stool",
+      "series": "電材プロダクトWSシリーズ",
+      "category": "スツール",
+      "description": "電材プロダクトWSで制作するスツール。CNC加工パーツの組立式。進行中。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [
+        "photos/furniture/pan-denzai-stool/IMG_7144.jpg",
+        "photos/furniture/pan-denzai-stool/IMG_7143.jpg",
+        "photos/furniture/pan-denzai-stool/IMG_7105.jpg",
+        "photos/furniture/pan-denzai-stool/IMG_7108.jpg",
+        "photos/furniture/pan-denzai-stool/IMG_7110.jpg"
+      ],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "未定",
+        "note": "組立式パーツ"
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ 進行中。コスト未確定。"
+      },
+      "tags": [
+        "スツール",
+        "電材",
+        "WS",
+        "CNC"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
+    },
+    {
+      "id": "pan-book-rack",
+      "name": "ブックラック",
+      "name_en": "Book Rack",
+      "series": "電材プロダクトWSシリーズ",
+      "category": "収納",
+      "description": "電材プロダクトWSで制作するブックラック。進行中。",
+      "dimensions": null,
+      "weight_kg": null,
+      "model_url": null,
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "specs": {
+        "material": "合板（CNC加工）",
+        "finish": "未定",
+        "note": ""
+      },
+      "hardware_ids": [],
+      "production_cost": null,
+      "cost_breakdown": {
+        "備考": "⚠ 進行中。コスト未確定。"
+      },
+      "tags": [
+        "収納",
+        "電材",
+        "WS",
+        "CNC"
+      ],
+      "edited": false,
+      "documents": [],
+      "cost_source": "auto",
+      "cost_extracted_from": null
     }
   ]
 }

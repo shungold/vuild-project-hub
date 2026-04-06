@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2026-04-06T16:00:00",
+  "last_updated": "2026-04-06T18:00:00",
   "projects": [
     {
       "id": "onomichi_club",
@@ -190,6 +190,242 @@
         "リノベーション",
         "CNC",
         "尾道"
+      ],
+      "updated_at": "2026-04-06",
+      "edited": false
+    },
+    {
+      "id": "pan_kitchen",
+      "name": "Panasonic Design Kyoto 什器製作",
+      "pid": null,
+      "client": "パナソニック",
+      "status": "completed",
+      "category": "オフィス",
+      "location": "京都府（Panasonic Design Kyoto）",
+      "completion_date": "2026-03",
+      "area_sqm": null,
+      "structure": "木造（CNC加工）",
+      "description": "Panasonic Design Kyoto 6F・7Fの造作キッチン、モバイルキッチンユニット（typeA〜C）、芝キューブ什器を設計・制作。7F造作キッチン天板塗装WS、6Fモバイルキッチン組立WSをパナソニック社員と実施。",
+      "hero_photos": [
+        "photos/projects/pan_kitchen/panasonic-9.jpg"
+      ],
+      "gallery_photos": [
+        "photos/projects/pan_kitchen/panasonic-14.jpg",
+        "photos/projects/pan_kitchen/panasonic-10.jpg",
+        "photos/projects/pan_kitchen/panasonic-25.jpg",
+        "photos/projects/pan_kitchen/panasonic-12.jpg",
+        "photos/projects/pan_kitchen/IMG_5407.jpg",
+        "photos/projects/pan_kitchen/panasonic-21.jpg"
+      ],
+      "photo_pins": [
+        {
+          "photo_index": 0,
+          "x": 40,
+          "y": 55,
+          "type": "furniture",
+          "id": "pan-mobile-kitchen-a",
+          "label": "MKU typeA"
+        },
+        {
+          "photo_index": 0,
+          "x": 60,
+          "y": 60,
+          "type": "furniture",
+          "id": "pan-mobile-kitchen-b",
+          "label": "MKU typeB"
+        },
+        {
+          "photo_index": 0,
+          "x": 75,
+          "y": 70,
+          "type": "furniture",
+          "id": "pan-denzai-stool",
+          "label": "電材スツール"
+        },
+        {
+          "photo_index": 2,
+          "x": 50,
+          "y": 50,
+          "type": "furniture",
+          "id": "pan-kitchen-7f",
+          "label": "7F造作キッチン"
+        },
+        {
+          "photo_index": 3,
+          "x": 50,
+          "y": 55,
+          "type": "furniture",
+          "id": "pan-mobile-kitchen-a",
+          "label": "MKU使用中"
+        },
+        {
+          "photo_index": 4,
+          "x": 45,
+          "y": 55,
+          "type": "furniture",
+          "id": "pan-shiba-2ren",
+          "label": "芝キューブ"
+        }
+      ],
+      "team": [
+        {
+          "name": "金子俊耶",
+          "role": "PM / 設計"
+        },
+        {
+          "name": "黒部駿人",
+          "role": "設計ディレクション / 撮影"
+        },
+        {
+          "name": "宇都宮純",
+          "role": "制作管理"
+        },
+        {
+          "name": "長岡勉",
+          "role": "レビュー"
+        }
+      ],
+      "furniture_ids": [
+        "pan-kitchen-6f",
+        "pan-kitchen-7f",
+        "pan-mobile-kitchen-a",
+        "pan-mobile-kitchen-b",
+        "pan-mobile-kitchen-c",
+        "pan-shiba-2ren",
+        "pan-shiba-3ren",
+        "pan-shiba-4ren"
+      ],
+      "documents": [
+        {
+          "label": "全体見積",
+          "type": "estimate",
+          "url": "",
+          "note": "什器製作一式",
+          "status": "請求済み"
+        }
+      ],
+      "material_ids": [],
+      "slack_channel_id": "C09455EDRJN",
+      "slack_channel_name": "#pan_kitchen",
+      "cost_overview": {
+        "total": null,
+        "design_fee": null,
+        "budget_note": "⚠ コスト情報未取得。Slackから見積・請求書の詳細抽出が必要。"
+      },
+      "related_projects": [
+        {
+          "id": "pan_denzai_ws",
+          "relation": "ws",
+          "label": "電材プロダクトWS"
+        }
+      ],
+      "ws_events": [
+        {
+          "name": "7F天板塗装WS",
+          "date": "2026-02-16",
+          "description": "パナソニック社員が7階キッチン天板をシュウヘイさん指導のもと塗装。シーラー+桜葉模様。",
+          "furniture_ids": [
+            "pan-kitchen-7f"
+          ],
+          "participants": [
+            "パナソニック社員",
+            "シュウヘイさん",
+            "金子"
+          ],
+          "photos": [
+            "photos/projects/pan_kitchen/ws/IMG_5407.jpg",
+            "photos/projects/pan_kitchen/ws/IMG_5412.jpg"
+          ],
+          "lessons": [
+            "シーラー必須",
+            "ローラー塗装可能"
+          ],
+          "tags": [
+            "塗装",
+            "天板"
+          ]
+        },
+        {
+          "name": "6F MKU組立WS",
+          "date": "2026-02-17",
+          "description": "6階モバイルキッチンユニットの組立ワークショップ。3日間（17-19日）金子が常駐。",
+          "furniture_ids": [
+            "pan-mobile-kitchen-a",
+            "pan-mobile-kitchen-b",
+            "pan-mobile-kitchen-c"
+          ],
+          "participants": [
+            "パナソニック社員",
+            "金子"
+          ],
+          "photos": [
+            "photos/projects/pan_kitchen/ws/panasonicws-22.jpg",
+            "photos/projects/pan_kitchen/ws/panasonicws-23.jpg"
+          ],
+          "lessons": [],
+          "tags": [
+            "組立",
+            "MKU"
+          ]
+        }
+      ],
+      "tags": [
+        "オフィス",
+        "キッチン",
+        "CNC",
+        "パナソニック",
+        "WS"
+      ],
+      "updated_at": "2026-04-06",
+      "edited": false
+    },
+    {
+      "id": "pan_denzai_ws",
+      "name": "電材プロダクトWS",
+      "pid": null,
+      "client": "パナソニック",
+      "status": "active",
+      "category": "ワークショップ",
+      "location": "京都府（Panasonic Design Kyoto）",
+      "completion_date": null,
+      "area_sqm": null,
+      "structure": "木造（CNC加工）",
+      "description": "Panasonic Design Kyoto向け電材プロダクトワークショップ。スツールとブックラックの制作。進行中。",
+      "hero_photos": [],
+      "gallery_photos": [],
+      "photo_pins": [],
+      "team": [
+        {
+          "name": "金子俊耶",
+          "role": "PM / 設計"
+        }
+      ],
+      "furniture_ids": [
+        "pan-denzai-stool",
+        "pan-book-rack"
+      ],
+      "documents": [],
+      "material_ids": [],
+      "slack_channel_id": "C09455EDRJN",
+      "slack_channel_name": "#pan_kitchen",
+      "cost_overview": {
+        "total": null,
+        "design_fee": null,
+        "budget_note": "⚠ 進行中案件。コスト未確定。"
+      },
+      "related_projects": [
+        {
+          "id": "pan_kitchen",
+          "relation": "parent",
+          "label": "Panasonic Design Kyoto 什器製作"
+        }
+      ],
+      "ws_events": [],
+      "tags": [
+        "ワークショップ",
+        "電材",
+        "スツール",
+        "ブックラック"
       ],
       "updated_at": "2026-04-06",
       "edited": false

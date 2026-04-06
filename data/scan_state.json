@@ -9,6 +9,18 @@
       "last_scanned_ts": null,
       "last_scanned_at": "2026-04-06T12:00:00",
       "scan_mode": "initial"
+    },
+    "C09455EDRJN": {
+      "channel_name": "#pan_kitchen",
+      "last_scan": "2026-04-06T18:00:00",
+      "scan_type": "initial",
+      "message_count": 1279,
+      "photo_count": 983,
+      "projects": [
+        "pan_kitchen",
+        "pan_denzai_ws"
+      ],
+      "furniture_count": 10
     }
   }
 }
