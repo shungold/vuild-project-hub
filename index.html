@@ -214,7 +214,7 @@ async function renderFurniture() {
           ${f.production_cost
             ? '<div class="card-cost">' + formatPrice(f.production_cost) + '</div>'
             : f.cost_breakdown
-              ? '<div class="card-cost" style="color:var(--color-secondary)">' + esc(Object.values(f.cost_breakdown).find(v => /万|円/.test(v)) || '要見積') + ' <span style="font-size:10px;color:var(--color-tertiary)">見積ベース</span></div>'
+              ? '<div class="card-cost" style="color:var(--color-secondary)">' + esc(Object.values(f.cost_breakdown).find(v => /万|円|¥|\\d{3,}/.test(String(v))) || '要見積') + ' <span style="font-size:10px;color:var(--color-tertiary)">見積ベース</span></div>'
               : '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>'}
         </div>
       </a>`;
