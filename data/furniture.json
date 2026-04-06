@@ -410,9 +410,9 @@
       ],
       "photo_pins": [],
       "specs": {
-        "material": "ステンレス天板 + タイル壁面",
-        "finish": "ステンレス + タイル",
-        "note": "4ユニット構成、冷蔵庫・食洗機・オーブン組込"
+        "material": "シナ共芯合板 24mm（本体）+ ステンレス天板 + MDF（凹凸パネル下地）",
+        "finish": "天板: 桜葉ステイン塗装（しゅうへいさん施工）/ 側面: シナにシーラー+ステイン / 凹凸パネル: MDF砂飯盒塗装 / 棚板: シーラー2度塗り",
+        "note": "4ユニット構成。レースウェイ照明キャンチ+壁固定。設備: IH・レンジフード・シンク・混合水栓・冷蔵庫(NR-F557XV)・食洗機組込。WS稼働収納の扉取付あり。大工施工: トップヒルズ岡崎さん"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -469,9 +469,9 @@
       ],
       "photo_pins": [],
       "specs": {
-        "material": "合板 + テクスチャパネル仕上げ",
-        "finish": "塗装仕上げ",
-        "note": "シンク付きカウンター"
+        "material": "シナ共芯合板 24mm + MDF（岩テクスチャパネル）",
+        "finish": "天板: 桜葉ステイン塗装 / 側面: シナにステイン / 凹凸面: MDF岩テクスチャ+砂飯盒塗装 / シーラー下地必須",
+        "note": "テクスチャパネルカウンター。シンク・水栓付き。芝キューブと同エリア。岩テクスチャはMDFで再現、小口は段差をなじませるためにヤスリ処理"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -517,7 +517,7 @@
       "series": "pan門真新棟シリーズ",
       "category": "キッチンユニット",
       "description": "6F用モバイルキッチンユニットtypeA。キャスター付き可動式。合板CNC加工。穴あきパネル+引き出し収納。",
-      "dimensions": null,
+      "dimensions": "W900×D900×H700",
       "weight_kg": null,
       "model_url": null,
       "hero_photos": [],
@@ -529,9 +529,9 @@
       ],
       "photo_pins": [],
       "specs": {
-        "material": "合板（CNC加工）",
-        "finish": "クリア塗装",
-        "note": "キャスター付き可動式、穴あきパネル+引き出し収納"
+        "material": "構造用合板 t:24mm（CNC加工）+ 有孔ボード + 電線管",
+        "finish": "クリアウレタン塗装（外注: 天野さん）3分艶",
+        "note": "キャスター付き可動式。穴あきパネル+引き出し収納。電線管でコンセント経路確保。海老名工場で加工(合板43枚)。WS見本用に1セット先行組立。組立WSでパナソニック社員が参加"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -580,9 +580,9 @@
       "gallery_photos": [],
       "photo_pins": [],
       "specs": {
-        "material": "合板（CNC加工）",
-        "finish": "クリア塗装",
-        "note": "オーバル天板型"
+        "material": "構造用合板 t:24mm（CNC加工）",
+        "finish": "クリアウレタン塗装（外注: 天野さん）3分艶",
+        "note": "オーバル天板型。キャスター付き"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -614,9 +614,9 @@
       "gallery_photos": [],
       "photo_pins": [],
       "specs": {
-        "material": "合板（CNC加工）",
-        "finish": "クリア塗装",
-        "note": "アイランド型"
+        "material": "構造用合板 t:24mm（CNC加工）",
+        "finish": "クリアウレタン塗装（外注: 天野さん）3分艶",
+        "note": "アイランド型。キャスター付き"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -654,9 +654,9 @@
       ],
       "photo_pins": [],
       "specs": {
-        "material": "合板基材 + 人工芝仕上げ",
-        "finish": "人工芝貼り",
-        "note": "2ブロック連結"
+        "material": "構造用合板 t:24mm（CNC加工: カトケン/aoiem）+ ウレタンフォーム + 人工芝（衣川ウレタン施工）",
+        "finish": "木部: 無塗装 / 表面: 人工芝貼り（衣川ウレタン加工販賣工業所）",
+        "note": "2ブロック連結。木部CNC加工(合板40枚・ShopBot26h)+仮組をカトケンが担当。芝貼り+搬入設置を衣川が担当(2便に分けて大阪直送)。搬入時にぐらつきなし確認済"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -793,8 +793,8 @@
       "photo_pins": [],
       "specs": {
         "material": "合板（CNC加工）",
-        "finish": "未定",
-        "note": "組立式パーツ"
+        "finish": "未定（進行中）",
+        "note": "電材プロダクトWS制作。天板裏側の干渉部分約6mm注意"
       },
       "hardware_ids": [],
       "production_cost": null,
