@@ -196,16 +196,16 @@
     },
     {
       "id": "pan_kitchen",
-      "name": "#1125 Panasonic Design Kyoto",
+      "name": "#1125_pan_門真新棟6f7grセルフビルドキッチン開発",
       "pid": null,
       "client": "パナソニック",
       "status": "completed",
       "category": "オフィス",
-      "location": "京都府（Panasonic Design Kyoto）",
+      "location": "大阪府門真市（パナソニック門真新棟）",
       "completion_date": "2026-03",
       "area_sqm": null,
       "structure": "木造（CNC加工）",
-      "description": "Panasonic Design Kyoto 6F・7Fの造作キッチン、モバイルキッチンユニット（typeA〜C）、芝キューブ什器を設計・制作。7F造作キッチン天板塗装WS、6Fモバイルキッチン組立WSをパナソニック社員と実施。",
+      "description": "パナソニック門真新棟 6F・7Fの造作キッチン、モバイルキッチンユニット（typeA〜C）、芝キューブ什器を設計・制作。7F造作キッチン天板塗装WS、6Fモバイルキッチン組立WSをパナソニック社員と実施。",
       "hero_photos": [
         "photos/projects/pan_kitchen/panasonic-9.jpg"
       ],
@@ -314,7 +314,7 @@
       ],
       "material_ids": [],
       "slack_channel_id": "C09455EDRJN",
-      "slack_channel_name": "#pan_kitchen",
+      "slack_channel_name": "#1125_pan_門真新棟6f7grセルフビルドキッチン開発",
       "cost_overview": {
         "total": null,
         "design_fee": null,
@@ -389,12 +389,12 @@
     },
     {
       "id": "pan_denzai_ws",
-      "name": "#1125 電材プロダクトWS",
+      "name": "#1125_pan 電材プロダクトWS",
       "pid": null,
       "client": "パナソニック",
       "status": "active",
       "category": "ワークショップ",
-      "location": "京都府（Panasonic Design Kyoto）",
+      "location": "大阪府門真市（パナソニック門真新棟）",
       "completion_date": null,
       "area_sqm": null,
       "structure": "木造（CNC加工）",

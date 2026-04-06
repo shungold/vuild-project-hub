@@ -23,7 +23,7 @@ fixture-drawing-previewer/
   - C0AFAFBC8AH → hitonomori_wallshelf (#1141)
   - C09V70VFF96 → baum_mobile (#3040)
   - C09D1N2CEM8 → tokyo_rooftop (#1127)
-  - C09455EDRJN → pan_kitchen (#1125)
+  - C09455EDRJN → pan_kitchen (#1125_pan_門真新棟6f7grセルフビルドキッチン開発)
 - 他のプロジェクトのデータを混ぜない
 
 ### 2. ポータルとの同期
