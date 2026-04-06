@@ -73,6 +73,7 @@
         <div class="detail-tab-panel" id="panel-estimate"></div>
         <div class="detail-tab-panel" id="panel-actual"></div>
         <div class="detail-tab-panel" id="panel-knowledge"></div>
+        <div class="detail-tab-panel" id="panel-ws"></div>
         <div class="detail-tab-panel" id="panel-projdoc"></div>
       </div>
     </div>
@@ -542,6 +543,8 @@ async function init() {
     tabs.push({ id: 'estimate', label: '見積', count: estimateDocs.length || null });
     tabs.push({ id: 'actual', label: '実績', count: null });
     tabs.push({ id: 'knowledge', label: 'Knowledge', count: projectKnowledge.length });
+    const wsEvents = project.ws_events || [];
+    if (wsEvents.length) tabs.push({ id: 'ws', label: '案件WS', count: wsEvents.length });
     tabs.push({ id: 'projdoc', label: '案件ドキュメント', count: projDocs.length });
 
     document.getElementById('detail-tabs').innerHTML = tabs.map((t, i) =>
@@ -587,6 +590,44 @@ async function init() {
 
     // --- Knowledge panel (共通関数で描画) ---
     renderKnowledgePanel(projectKnowledge);
+
+    // --- 案件WS panel ---
+    if (wsEvents.length) {
+      let wsHtml = '';
+      wsEvents.forEach(ws => {
+        const furnItem = (furnData.furniture || []).find(f => f.id === ws.furniture_id);
+        const furnBadge = furnItem
+          ? `<a href="../../furniture/${ws.furniture_id}/index.html" style="display:inline-block;padding:2px 10px;border-radius:100px;font-size:10px;font-weight:600;background:var(--color-accent-light);color:var(--color-accent);text-decoration:none;margin-left:8px">${esc(furnItem.name)}</a>`
+          : '';
+
+        const photos = (ws.photos || []);
+        const photoGrid = photos.length
+          ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-top:12px">
+              ${photos.map(src => `<div style="aspect-ratio:4/3;border-radius:6px;overflow:hidden;background:var(--color-surface-2)">
+                <img src="../../${src}" style="width:100%;height:100%;object-fit:cover" loading="lazy" onerror="this.parentElement.textContent='?'">
+              </div>`).join('')}
+            </div>`
+          : '';
+
+        const tasks = (ws.tasks || []);
+        const taskList = tasks.length
+          ? `<div style="margin-top:8px;font-size:12px;color:var(--color-secondary)">${tasks.map(t => `<span style="display:inline-block;padding:2px 8px;margin:2px;background:var(--color-surface-2);border-radius:4px">${esc(t)}</span>`).join('')}</div>`
+          : '';
+
+        wsHtml += `<div style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:12px;padding:20px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+            <h3 style="font-size:16px;font-weight:700">${esc(ws.name)}${furnBadge}</h3>
+            <span style="font-size:12px;color:var(--color-tertiary)">${esc(ws.date || '')}</span>
+          </div>
+          ${ws.participants ? `<p style="font-size:12px;color:var(--color-secondary);margin-top:6px">参加者: ${esc(ws.participants)}</p>` : ''}
+          ${ws.description ? `<p style="font-size:13px;margin-top:8px;line-height:1.7">${esc(ws.description)}</p>` : ''}
+          ${taskList}
+          ${photoGrid}
+          ${ws.lessons ? `<div style="margin-top:12px;padding:10px 14px;background:#fff8e1;border:1px solid #ffe082;border-radius:6px;font-size:12px;color:#f57f17"><strong>教訓:</strong> ${esc(ws.lessons)}</div>` : ''}
+        </div>`;
+      });
+      document.getElementById('panel-ws').innerHTML = wsHtml;
+    }
 
     // --- 案件ドキュメント panel (アコーディオン) ---
     {
