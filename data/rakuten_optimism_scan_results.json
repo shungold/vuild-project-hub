@@ -1,0 +1,666 @@
+{
+  "channel_id": "C05AYV4KG3E",
+  "channel_name": "#393_楽天optimism",
+  "scan_date": "2026-04-05",
+  "scan_range": "2023-07-18 ~ 2026-03-03",
+
+  "knowledge_entries": [
+    {
+      "id": "K_RO_001",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 楽天から仕様変更指示（3段→2段、塗装取りやめ等）",
+      "content": "日野さんからの指示: サークルベンチ大:3段目無し(2段構成)、サークルベンチ小:2段目無し、サークルベンチ塗装:無塗装木目、ちゃぶ台:SMサイズ各1台、うねうねベンチ:2台に変更・上部のみマゼンダ施工・他木目。バオバブツリー/サボテン看板は実施無し。税抜750万で収まる構成を求められた。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "chabudai", "ununune-bench"],
+      "posted_by": "木村　玲大",
+      "date": "2024-06-12",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718160040.431869",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718160040431869"
+    },
+    {
+      "id": "K_RO_002",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 予算交渉: 案1(600万)に決定、750万案は不採用",
+      "content": "楽天から社内協議の結果、案1での発注。案2(うねうねベンチ追加等)も魅力的だったが他施策との兼ね合いで案1に。600万の予算枠で確定。黒部:「キッズスペース的に段数減らすの微妙だと思う。予算750万でも3段と2段は塗装を減らすで調整できそう」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s"],
+      "posted_by": "沼田 汐里",
+      "date": "2024-06-19",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718775210.843909",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718775210843909"
+    },
+    {
+      "id": "K_RO_003",
+      "type": "trouble",
+      "scope": "production",
+      "title": "シナ合板在庫不足問題（ファルカタ芯・ラワン芯）",
+      "content": "東合板に確認したところ、共芯ファルカタ合板3x6x24mmは現状在庫32枚、別メーカー30枚、6/20過ぎ引取で32枚=計94枚。案1なら75枚で足りるが案2は103枚必要で不足。製造元が半分以下に減産しておりラワン芯は在庫が深刻。代案としてシナラワン芯材を使う。シナ合板ファルカタ芯の在庫: 3x6x18mm=86枚、シナ合板ラワン芯: 3x6x18mm=100枚、3x6x24mm=40枚。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-06-17",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718610222.654159",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718610222654159"
+    },
+    {
+      "id": "K_RO_004",
+      "type": "spec",
+      "scope": "production",
+      "title": "加工時間・取り数の記録（2024 ちゃぶ台）",
+      "content": "ちゃぶ台3セット: ①28分x4枚(SM天板)=112分、②22分x4枚(L天板)=88分、③51分x1.5枚(あし)=76分。合計276分≒4.6時間/3セット",
+      "furniture_id": "chabudai",
+      "posted_by": "沼田 汐里",
+      "date": "2024-06-05",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1717564384.124069",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717564384124069"
+    },
+    {
+      "id": "K_RO_005",
+      "type": "spec",
+      "scope": "production",
+      "title": "加工時間・取り数の記録（2024 うねうねベンチ）",
+      "content": "うねうねベンチ6セット: 26分x3枚(天板)=78分、31分x1.5枚(足)=46分。合計124分≒2時間/6セット",
+      "furniture_id": "ununune-bench",
+      "posted_by": "沼田 汐里",
+      "date": "2024-06-05",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1717565025.105479",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717565025105479"
+    },
+    {
+      "id": "K_RO_006",
+      "type": "trouble",
+      "scope": "production",
+      "title": "キャビネオ鬼目ナット不一致トラブル",
+      "content": "長尾:「キャビネオを使う什器の鬼目ナットがサイズ違う。穴の径8mmに対して鬼目ナットの幅10mm。以前仮組した時のものより大きい」。木村:「ごめん、cabimeo用の鬼目発注してないかも！明日発注する！」。他のモジュールだと届いてる鬼目で適合するはず。他の天板は11mmの径の部分があったので今あるもので大丈夫そう。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s"],
+      "posted_by": "長尾和樹",
+      "date": "2024-07-23",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721725294.977359",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721725294977359"
+    },
+    {
+      "id": "K_RO_007",
+      "type": "howto",
+      "scope": "production",
+      "title": "サークルベンチL 施工メモ（組立手順）",
+      "content": "サークルL: 穴あきのものと交互で配置に注意。内下、外下、外上、内上の順で天板を組む。最後に確認で全部締める（木なので途中で緩むため）。ボルト入れて仮組→強度もあっていい感じ。",
+      "furniture_id": "circle-bench-l",
+      "posted_by": "長尾和樹",
+      "date": "2024-07-24",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721816356.194809",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721816356194809"
+    },
+    {
+      "id": "K_RO_008",
+      "type": "progress",
+      "scope": "production",
+      "title": "2024 楽天加工分全て切削完了",
+      "content": "長尾:「楽天加工分全て切削完了しました！来週から残り研磨とアッセンブルしていく予定です。」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "長尾和樹",
+      "date": "2024-07-19",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721395665.699519",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721395665699519"
+    },
+    {
+      "id": "K_RO_009",
+      "type": "howto",
+      "scope": "design",
+      "title": "2024 搬入・設置の段取り記録",
+      "content": "7/30: 8:30海老名工場集合、9:00積み込み開始。2tロングなら行けそうな勢い。軽バンで移動。ビッグサイトに13:00以降でトラック着車次第搬入開始。搬入用備品: 平台車15台、パネ台車2台（外注作業員2名に減）。1時間30分で設置完了！ヘルメット着用必須。西2ゲートから進入、西1-C搬入口を目指す。積み込みシミュレーションのRhinoモデルも作成。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-07-30",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1722242526.341429",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722242526341429"
+    },
+    {
+      "id": "K_RO_010",
+      "type": "howto",
+      "scope": "design",
+      "title": "2024 搬出・撤収の記録",
+      "content": "8/4: 17:00ビッグサイト車両入場開始。無事搬出終わり、海老名工場にも無事到着。翌09時海老名工場おろし方始め。8/5荷下ろし完了。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "長尾和樹",
+      "date": "2024-08-04",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1722772174.527829",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722772174527829"
+    },
+    {
+      "id": "K_RO_011",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 売上原価と営業利益",
+      "content": "¥6,091,818に対し、売上原価¥947,379。労務費: 562,000円。営業利益69%。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-08-06",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1722936673.181699",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722936673181699"
+    },
+    {
+      "id": "K_RO_012",
+      "type": "spec",
+      "scope": "design",
+      "title": "2023 ユニット什器の製作費原価（材料費・加工費・組立費・金物）",
+      "content": "すべて税抜き: 材料費2,463,300円、加工費(外注費870,000円+VUILD2,125,390円)、組み立て費750,000円、金物45,700円。合計6,373,390円。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "木村　玲大",
+      "date": "2023-08-10",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1691623587.411799",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691623587411799"
+    },
+    {
+      "id": "K_RO_013",
+      "type": "spec",
+      "scope": "production",
+      "title": "2023 ユニット什器の組立工数",
+      "content": "宇都宮:「楽天のユニット什器っただいたい何人で組み上げたか分かる？」→木村:「基本2人体制x2週間くらい」(切削・研磨含む)。純粋な組み立てだけで1週間x1人。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "木村　玲大",
+      "date": "2023-09-12",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1694440130.864319",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1694440130864319"
+    },
+    {
+      "id": "K_RO_014",
+      "type": "trouble",
+      "scope": "production",
+      "title": "2023 子どもの落書き問題と塗装試行錯誤",
+      "content": "会期中に子どもがクーピー(ワックス樹脂)で什器に落書き。金子:「120のサンダーで研磨したがけっこう磨かないと全然落ちない&完全には消えないので塗りつぶししでないと厳しそう」。研磨でも木目に入り込んだものは落ちない。塗装屋ヒアリング結果:みつろうの上にウレタン塗装すると乾かなかった。表面削ってシンナーで溶かす。色で潰すならペンキ屋が良いがクレヨンは嫌がると思う。艶消しクリアーラッカー塗ってテスト依頼。基本はウレタンクリア塗装になりそう。金子:「ウレタンのスプレーは弾かずに塗れそう。クリーナー試したがまったく落ちなかった」→パターン案: 研磨で完全に落としてウレタンクリアー(いちばんきれい)、研磨+脱脂→ウレタンクリアー、ペンキをローラーで塗りつぶし。9月頭で人集めて海老名で1日研磨して飲み会。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "金子俊耶",
+      "date": "2023-08-07",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1691396485.832409",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691396485832409"
+    },
+    {
+      "id": "K_RO_015",
+      "type": "howto",
+      "scope": "production",
+      "title": "2023 撤収ノウハウ（楽天10人加勢で30分完了）",
+      "content": "木村:「楽天さんからも10人加勢してくれて30分で撤収完了、19:10で積み込み終わりました」。搬出はD入口先にトラックをケツからつけた。台車で運ぶことに。撤収用持ち物: ラップ、巻きダンボール、インパクト、六角レンチ(前回の反省活かして5mmと4mm両方)、ニッパー(インシュロック切断用)。VUILD6人+荷揚げ屋4人で搬入。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "木村　玲大",
+      "date": "2023-08-06",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1691317141.337699",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691317141337699"
+    },
+    {
+      "id": "K_RO_016",
+      "type": "trouble",
+      "scope": "design",
+      "title": "2023 お絵描き問題→エリア制限でクレーム対応",
+      "content": "沼田:「お絵描きゾーンきまってるんなら徹底するべきだろうとクレームが入り、山エリア以外はお絵描きオッケーにすることになりました」。会期中の運用変更。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "沼田 汐里",
+      "date": "2023-08-06",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1691290270.284069",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691290270284069"
+    },
+    {
+      "id": "K_RO_017",
+      "type": "spec",
+      "scope": "production",
+      "title": "2024 塗装参考（タウンユニット塗装費52万）",
+      "content": "木村:「塗装参考までに、タウンユニットの塗装、52万でした。」",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "木村　玲大",
+      "date": "2024-06-04",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1717490514.106219",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717490514106219"
+    },
+    {
+      "id": "K_RO_018",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 見積もり経緯（903万→750万→600万）",
+      "content": "初回見積8,332,728円(税抜・粗利37%)→再精査9,032,583円(税込)→楽天側から750万で構成依頼→最終的に案1(600万)に決定。見積スプレッドシート: https://docs.google.com/spreadsheets/d/1JPPcZ7RsKp15HiicV5D7LPj4n2zcIqDiwpURrv9xA1g/。輸送費内訳: 10t1台+2t1台往復272,950円、搬入資材費66,220円、搬入・手元作業員172,700円。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-06-05",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1717582440.526999",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717582440526999"
+    },
+    {
+      "id": "K_RO_019",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 塗装費減額→契約金額調整",
+      "content": "黒部:「楽天の契約に記載する数字と最新の見積書を合わせたいので塗装費減額したもの欲しいです。楽天にも送付しておく」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s"],
+      "posted_by": "黒部駿人",
+      "date": "2024-07-19",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721375108.220429",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721375108220429"
+    },
+    {
+      "id": "K_RO_020",
+      "type": "spec",
+      "scope": "production",
+      "title": "2024 モジュール合板枚数制約（600万予算で70枚以下）",
+      "content": "金子:「全体予算600だと合板何枚くらいに抑えないととかありますか？？」→木村:「モジュールだけでマックス70枚以下に抑えられると〜」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "金子俊耶",
+      "date": "2024-06-20",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718846166.258379",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718846166258379"
+    },
+    {
+      "id": "K_RO_021",
+      "type": "spec",
+      "scope": "production",
+      "title": "2024 加工枚数130枚",
+      "content": "木村:「先ほど加工枚数数えたのですが130枚くらいになってて、再度そこも確認したいです」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-06-17",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718596251.370229",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718596251370229"
+    },
+    {
+      "id": "K_RO_022",
+      "type": "howto",
+      "scope": "production",
+      "title": "2023 鑢組・外注加工先の活用",
+      "content": "鑢組(板橋)にて360円弧ユニット10台を丁寧に組立。トリマーによる焦げが何箇所か見受けられたため研磨して是正。また椚戸材木店(新木場)でも外注加工。鑢組請求書と椚戸材木店見積あり。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "木村　玲大",
+      "date": "2023-07-19",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1689752698.818879",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1689752698818879"
+    },
+    {
+      "id": "K_RO_023",
+      "type": "howto",
+      "scope": "production",
+      "title": "2023 塗装後の研磨→サンダー+クリアー仕上げのノウハウ",
+      "content": "黒部:「ベンさんと帰り道話していて、色ついたやつサンダーで研磨して、いい感じにうっすら色がのった状態でクリアー塗装すると もしかしたらいい感じになるかもね」。みつろうの上にウレタン塗装すると乾かない。基本はウレタンクリア塗装。VUILDで溶剤クリーニングを行う。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "黒部駿人",
+      "date": "2023-08-05",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1691228703.752899",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691228703752899"
+    },
+    {
+      "id": "K_RO_024",
+      "type": "spec",
+      "scope": "design",
+      "title": "2023 什器レンタル見積→国立競技場への再利用",
+      "content": "黒部:「什器レンタルの見積もり作成しました。確認お願いします」。ヴィッセル神戸イベント(10/21)にて再利用検討。全パーツ使用する場合/くねくねベンチ数個使用する場合のパターン別。搬入先は国立競技場。荷揚げやの金額に乗せている。",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "黒部駿人",
+      "date": "2023-08-21",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1692608184.118119",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1692608184118119"
+    },
+    {
+      "id": "K_RO_025",
+      "type": "spec",
+      "scope": "design",
+      "title": "2023 什器再利用後の研磨→楽天小野さんからの問い合わせ",
+      "content": "楽天小野さん:「什器に関してはOptimism終了後、研磨などして落書きなどがそのまま残らないようにする(全体的に薄くなってマーブル模様っぽくなる？)と会期中伺ったと記憶しているのですが、そちらの研磨などがされた状態で届くという理解であってますでしょうか？また研磨のビフォーアフターの画像などあればイメージご共有いただくこと可能でしょうか？」",
+      "furniture_id": "town-unit-sq900",
+      "posted_by": "黒部駿人",
+      "date": "2023-08-30",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1693371830.344549",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1693371830344549"
+    },
+    {
+      "id": "K_RO_026",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 楽天モバイルカラー（塗装色参考）",
+      "content": "沼田がRakutenモバイルのコーポレートカラーページを共有: https://corp.mobile.rakuten.co.jp/news/press/2022/0628_01/。マゼンダ色の塗装が話題に。",
+      "furniture_id": ["ununune-bench"],
+      "posted_by": "沼田 汐里",
+      "date": "2024-06-04",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1717489510.283299",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717489510283299"
+    },
+    {
+      "id": "K_RO_027",
+      "type": "howto",
+      "scope": "production",
+      "title": "2024 梱包完了→積み込みシミュレーション",
+      "content": "長尾:「梱包完了しました！」。木村:積み込みシミュレーション.3dmをRhinoで作成・共有。",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "長尾和樹",
+      "date": "2024-07-26",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721970334.101679",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721970334101679"
+    },
+    {
+      "id": "K_RO_028",
+      "type": "spec",
+      "scope": "design",
+      "title": "2024 WS備品予算10万（スタンプ・カラー用紙等）",
+      "content": "全体予算10万。紙20000円、スタンプ（楽天スタンプWSのカラー用紙=蛍光色の紙）。スタンプ台・スタンプ・カラー用紙5000枚発注完了。ワークショップ備品費用スプレッドシートあり。",
+      "furniture_id": [],
+      "posted_by": "沼田 汐里",
+      "date": "2024-07-18",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721265007.486569",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721265007486569"
+    },
+    {
+      "id": "K_RO_029",
+      "type": "spec",
+      "scope": "production",
+      "title": "2024 設置時間の記録: 1時間30分",
+      "content": "木村:「1時間30で設置完了！」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-07-30",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1722318168.616299",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722318168616299"
+    },
+    {
+      "id": "K_RO_030",
+      "type": "spec",
+      "scope": "production",
+      "title": "2024 搬出入変更: 平台車15台パネ台車2台、外注2名",
+      "content": "木村:「搬出入を平台車15台、パネ台車2台に変更。外注作業員も2名に減らす」",
+      "furniture_id": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "posted_by": "木村　玲大",
+      "date": "2024-07-25",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1721875073.355969",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721875073355969"
+    },
+    {
+      "id": "K_RO_031",
+      "type": "spec",
+      "scope": "design",
+      "title": "うねうねベンチ設計コンセプト（秋吉のような曲げ合板）",
+      "content": "沼田:「①の減額案そのままでいくならお山感無くなってしまうので秋吉さんのようなウネウネの道を曲げ合板で作るとかの方がよさそうですね」",
+      "furniture_id": "ununune-bench",
+      "posted_by": "沼田 汐里",
+      "date": "2024-06-17",
+      "channel_id": "C05AYV4KG3E",
+      "message_ts": "1718610386.652729",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718610386652729"
+    }
+  ],
+
+  "photos": [
+    {
+      "message_ts": "1690986419.410849",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2023-08-02",
+      "description": "2023 MOKU MOKU KIDS TOWN 完成写真 (RAKUTEN-1 ~ RAKUTEN-1-48) 48枚の大量プロフェッショナル撮影写真。タウンユニット什器の設置状態。",
+      "furniture": "town-unit-sq900",
+      "files": "RAKUTEN-1.jpg ~ RAKUTEN-1-48.jpg",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1690986419410849"
+    },
+    {
+      "message_ts": "1691193211.383089",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2023-08-05",
+      "description": "2023 子ども落書き状態の写真（すごいことになっている）。クーピーによる什器への落書き。",
+      "furniture": "town-unit-sq900",
+      "files": "IMG_2710.jpg, IMG_2709.jpg, IMG_2708.jpg",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691193211383089"
+    },
+    {
+      "message_ts": "1690885086.104499",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2023-08-01",
+      "description": "2023 設置完了写真",
+      "furniture": "town-unit-sq900",
+      "files": "IMG_2620.jpg",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1690885086104499"
+    },
+    {
+      "message_ts": "1690881506.317749",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2023-08-01",
+      "description": "2023 設置中の写真",
+      "furniture": "town-unit-sq900",
+      "files": "IMG_2621.jpg, IMG_2617.jpg",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1690881506317749"
+    },
+    {
+      "message_ts": "1693986539.797729",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2023-09-06",
+      "description": "2023 tohaからの楽天映像（動画）。VUILD楽天ブースのプロモーション動画。",
+      "furniture": "town-unit-sq900",
+      "files": "VUILD楽天ブース_2.mp4",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1693986539797729"
+    },
+    {
+      "message_ts": "1717410946.560409",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2024-06-03",
+      "description": "2024 デザイン検討中の参考写真（2023年什器の現場写真）",
+      "furniture": "town-unit-sq900",
+      "files": "IMG_0761.jpg ~ IMG_0751.jpg (8枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717410946560409"
+    },
+    {
+      "message_ts": "1722337261.703479",
+      "posted_by": "黒部駿人 (U9UBC4K6K)",
+      "date": "2024-07-30",
+      "description": "2024 設置後の写真リクエスト「おつかれでしたー設置の写真他にある？」",
+      "furniture": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "files": "(写真リクエスト、沼田の返信に写真多数)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722337261703479"
+    },
+    {
+      "message_ts": "1722342310.937839",
+      "posted_by": "沼田 汐里 (U02SRECJ3LJ)",
+      "date": "2024-07-30",
+      "description": "2024 設置完了写真（沼田）。30枚近い大量の現場写真。",
+      "furniture": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "files": "IMG_2807 ~ IMG_2833 (30枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722342310937839"
+    },
+    {
+      "message_ts": "1722926086.916879",
+      "posted_by": "長尾和樹 (U027FCZUC1K)",
+      "date": "2024-08-06",
+      "description": "2024 撤収後の写真",
+      "furniture": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "files": "IMG_4236.jpg ~ IMG_4239.jpg (4枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722926086916879"
+    },
+    {
+      "message_ts": "1722772174.527829",
+      "posted_by": "長尾和樹 (U027FCZUC1K)",
+      "date": "2024-08-04",
+      "description": "2024 搬出完了・海老名工場到着の写真",
+      "furniture": ["circle-bench-l", "circle-bench-s", "ununune-bench", "chabudai"],
+      "files": "IMG_3833.jpg ~ IMG_3835.jpg",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722772174527829"
+    },
+    {
+      "message_ts": "1721816622.998859",
+      "posted_by": "長尾和樹 (U027FCZUC1K)",
+      "date": "2024-07-24",
+      "description": "2024 サークルベンチ仮組み完了写真（10枚）。ボルト入れて仮組。強度もあっていい感じ。",
+      "furniture": "circle-bench-l",
+      "files": "IMG_3701.jpg ~ IMG_3712.jpg (10枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721816622998859"
+    },
+    {
+      "message_ts": "1691637403.312559",
+      "posted_by": "金子俊耶 (U01HQHXLZJA)",
+      "date": "2023-08-10",
+      "description": "2023 落書き除去の塗装テスト写真（5枚）。ウレタンスプレー塗装テスト結果。",
+      "furniture": "town-unit-sq900",
+      "files": "DSC_2264.JPG ~ DSC_2260.JPG (5枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691637403312559"
+    },
+    {
+      "message_ts": "1691396485.832409",
+      "posted_by": "金子俊耶 (U01HQHXLZJA)",
+      "date": "2023-08-07",
+      "description": "2023 120番サンダー研磨後の状態写真。落書きがまだ残っている状態。",
+      "furniture": "town-unit-sq900",
+      "files": "DSC_2231.JPG, DSC_2232.JPG",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1691396485832409"
+    },
+    {
+      "message_ts": "1689752698.818879",
+      "posted_by": "木村　玲大 (U01B694CBAL)",
+      "date": "2023-07-19",
+      "description": "2023 鑢組製作確認写真。360円弧ユニット10台（7枚）",
+      "furniture": "town-unit-sq900",
+      "files": "IMG_2523.jpg ~ IMG_2518.jpg (7枚)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1689752698818879"
+    }
+  ],
+
+  "cost_estimate_documents": [
+    {
+      "message_ts": "1717589644.568859",
+      "date": "2024-06-05",
+      "posted_by": "木村　玲大",
+      "description": "2024 正式見積書PDF: 【御見積】240605_VUILD.pdf",
+      "files": "【御見積】240605_VUILD.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717589644568859"
+    },
+    {
+      "message_ts": "1717586092.480169",
+      "date": "2024-06-05",
+      "posted_by": "沼田 汐里",
+      "description": "2024 提案書付き見積PDF: RAKUTEN OPTIMISM 2024 キッズスペースのご提案_アイテム見積.pdf",
+      "files": "RAKUTEN OPTIMISM 2024 キッズスペースのご提案_アイテム見積.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717586092480169"
+    },
+    {
+      "message_ts": "1717487539.635949",
+      "date": "2024-06-04",
+      "posted_by": "沼田 汐里",
+      "description": "2024 見積PDF: 0604_楽天OPTIMIZM2024_お見積り.pdf",
+      "files": "0604_楽天OPTIMIZM2024_お見積り.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717487539635949"
+    },
+    {
+      "message_ts": "1717489978.173719",
+      "date": "2024-06-04",
+      "posted_by": "沼田 汐里",
+      "description": "2024 見積スプレッドシート: 楽天OPTIMIZM2024_お見積り (Google Sheets)",
+      "files": "楽天OPTIMIZM2024_お見積り",
+      "url": "https://docs.google.com/spreadsheets/d/1JPPcZ7RsKp15HiicV5D7LPj4n2zcIqDiwpURrv9xA1g/edit#gid=815279354",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1717489978173719"
+    },
+    {
+      "message_ts": "1718695355.196649",
+      "date": "2024-06-18",
+      "posted_by": "木村　玲大",
+      "description": "2024 見積書①②パターンPDF (スレッド内)",
+      "files": "【御見積】①パターン (1).pdf, 【御見積】②パターン (1).pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718695355196649"
+    },
+    {
+      "message_ts": "1718356432.122249",
+      "date": "2024-06-14",
+      "posted_by": "木村　玲大",
+      "description": "2024 輸送費内訳の見積清書。10t1台+2t1台往復272,950円、搬入資材費66,220円、搬入・手元作業員172,700円。",
+      "files": "(image.png x2)",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1718356432122249"
+    },
+    {
+      "message_ts": "1721615424.263979",
+      "date": "2024-07-22",
+      "posted_by": "黒部駿人",
+      "description": "2024 最新見積書PDF: 【御見積】0721_楽天optimism2024.pdf",
+      "files": "【御見積】0721_楽天optimism2024.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1721615424263979"
+    },
+    {
+      "message_ts": "1722238399.813369",
+      "date": "2024-07-29",
+      "posted_by": "沼田 汐里",
+      "description": "2024 ワークショップ備品費用スプレッドシート",
+      "files": "楽天OPTIMIZM2024_お見積り",
+      "url": "https://docs.google.com/spreadsheets/d/1JPPcZ7RsKp15HiicV5D7LPj4n2zcIqDiwpURrv9xA1g/edit?gid=985923086#gid=985923086",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722238399813369"
+    },
+    {
+      "message_ts": "1722822010.354249",
+      "date": "2024-08-05",
+      "posted_by": "木村　玲大",
+      "description": "2024 請求書・検収書PDF",
+      "files": "【検収書】楽天optimism2024_VUILD.pdf, 【請求書】楽天optimism2024_VUILD.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1722822010354249"
+    },
+    {
+      "message_ts": "1723019281.069229",
+      "date": "2024-08-07",
+      "posted_by": "木村　玲大",
+      "description": "2024 検収書PDF (楽天返送分)",
+      "files": "VUILD様_検収書_0807.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1723019281069229"
+    },
+    {
+      "message_ts": "1692608184.118119",
+      "date": "2023-08-21",
+      "posted_by": "黒部駿人",
+      "description": "2023 什器レンタル見積書PDF: 楽天株式会社御中お見積書.pdf",
+      "files": "楽天株式会社御中お見積書.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1692608184118119"
+    },
+    {
+      "message_ts": "1692609101.353399",
+      "date": "2023-08-21",
+      "posted_by": "黒部駿人",
+      "description": "2023 検収書・請求書: MOKUMOKUTOWN",
+      "files": "60606185 (2).pdf, 60606185.pdf, acceptance_certificate_60606185.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1692609101353399"
+    },
+    {
+      "message_ts": "1694400925.242279",
+      "date": "2023-09-11",
+      "posted_by": "黒部駿人",
+      "description": "2023 MOKUMOKUTOWN請求書PDF",
+      "files": "VUILD株式会社御中_MOKUMOKUTOWN請求書.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1694400925242279"
+    },
+    {
+      "message_ts": "1689937163.416229",
+      "date": "2023-07-21",
+      "posted_by": "木村　玲大",
+      "description": "2023 鑢組請求書 + 椚戸材木店見積書",
+      "files": "20230619_7611150_VUILD株式会社御中_ユニット家具_御見積書.pdf, 512_請求書_230720.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1689937163416229"
+    },
+    {
+      "message_ts": "1690190283.840929",
+      "date": "2023-07-24",
+      "posted_by": "JUN UTSUNOMIYA",
+      "description": "2023 楽天からの注文書PDF",
+      "files": "S000270933-1.pdf",
+      "slack_url": "https://vuild.slack.com/archives/C05AYV4KG3E/p1690190283840929"
+    }
+  ]
+}
