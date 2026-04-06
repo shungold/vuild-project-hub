@@ -90,6 +90,9 @@
       </div>
 
       <div id="furn-tags" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+      <div style="margin-top:12px">
+        <button id="export-edits-btn" style="display:none;font-size:11px;color:var(--color-secondary);background:var(--color-surface);border:1px solid var(--color-border);padding:4px 12px;border-radius:4px;cursor:pointer" onclick="(function(){const k=localStorage.getItem('vuild_edits_furniture_'+location.pathname.split('/').filter(Boolean).pop());if(!k||k==='{}'){alert('編集なし');return;}const b=new Blob([k],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='edits_'+location.pathname.split('/').filter(Boolean).pop()+'.json';a.click()})()">📤 編集内容をエクスポート</button>
+      </div>
     </div>
   </div>
 </div>
@@ -211,9 +214,17 @@ async function init() {
     </div>`;
     document.getElementById('photo-thumbs').innerHTML = thumbsHtml;
 
-    // --- Description ---
+    // --- Description (editable) ---
     document.getElementById('furn-description').textContent =
       item.description || '';
+
+    // Make name, sub, description editable
+    setTimeout(() => {
+      editableText('furn-name', 'name', item.name);
+      editableText('furn-description', 'description', item.description || '');
+      // Show export button if edits exist
+      if (Object.keys(savedEdits).length) document.getElementById('export-edits-btn').style.display = '';
+    }, 100);
 
     // --- Spec ---
     const specs = [
@@ -223,9 +234,42 @@ async function init() {
       ['仕上げ', item.specs?.finish],
       ['備考', item.specs?.note]
     ].filter(([,v]) => v);
-    document.getElementById('furn-spec-body').innerHTML = specs.map(([l,v]) =>
-      `<div class="spec-row"><span class="spec-label">${esc(l)}</span><span class="spec-value">${esc(v)}</span></div>`
-    ).join('');
+    // Inline edit helper
+    const editKey = `vuild_edits_furniture_${furnitureId}`;
+    const savedEdits = JSON.parse(localStorage.getItem(editKey) || '{}');
+    function applyEdit(field, val) { savedEdits[field] = val; localStorage.setItem(editKey, JSON.stringify(savedEdits)); }
+    function getVal(field, orig) { return savedEdits[field] !== undefined ? savedEdits[field] : orig; }
+    function editableRow(label, field, origVal) {
+      const val = getVal(field, origVal);
+      if (!val && !origVal) return '';
+      return `<div class="spec-row" style="cursor:pointer" onclick="this.querySelector('.ev').focus()" title="クリックして編集">
+        <span class="spec-label">${esc(label)}</span>
+        <span class="spec-value ev" contenteditable="true" style="outline:none;min-width:60px" onblur="(function(el){const k='${field}';const v=el.textContent.trim();const edits=JSON.parse(localStorage.getItem('${editKey}')||'{}');edits[k]=v;localStorage.setItem('${editKey}',JSON.stringify(edits));el.style.background='';el.title='保存済み'})(this)" onfocus="this.style.background='#fff8e1'">${esc(val || '')}</span>
+      </div>`;
+    }
+    function editableText(id, field, origVal) {
+      const val = getVal(field, origVal);
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = val || '';
+        el.setAttribute('contenteditable', 'true');
+        el.style.cursor = 'text';
+        el.style.outline = 'none';
+        el.addEventListener('focus', () => el.style.background = '#fff8e1');
+        el.addEventListener('blur', () => { applyEdit(field, el.textContent.trim()); el.style.background = ''; });
+      }
+    }
+
+    const specFields = [
+      ['寸法', 'dimensions', item.dimensions],
+      ['重量', 'weight_kg', item.weight_kg ? item.weight_kg + ' kg' : null],
+      ['素材', 'specs.material', item.specs?.material],
+      ['仕上げ', 'specs.finish', item.specs?.finish],
+      ['備考', 'specs.note', item.specs?.note]
+    ];
+    document.getElementById('furn-spec-body').innerHTML = specFields.map(([l,f,v]) =>
+      (v || savedEdits[f]) ? editableRow(l, f, v) : ''
+    ).join('') + `<div style="margin-top:8px"><button onclick="const f=prompt('フィールド名');if(!f)return;const row=document.createElement('div');row.innerHTML='${`<div class=&quot;spec-row&quot;><span class=&quot;spec-label&quot;></span><span class=&quot;spec-value&quot; contenteditable=&quot;true&quot;></span></div>`.replace(/'/g,"\\'")}';document.getElementById('furn-spec-body').insertBefore(row.firstChild,this.parentElement);this.parentElement.previousElementSibling.querySelector('.spec-label').textContent=f" style="font-size:11px;color:var(--color-tertiary);background:none;border:1px dashed var(--color-border);padding:3px 10px;border-radius:4px;cursor:pointer">+ 項目追加</button></div>`;
 
     if (item.series) {
       const badge = document.getElementById('furn-series-badge');
@@ -315,7 +359,7 @@ async function init() {
         </div>
         <div id="bom-result"></div>`;
 
-      // cost_breakdown（見積ベース）を見積タブに表示
+      // cost_breakdown（見積ベース）を見積タブに表示 — 編集可能
       const existingBreakdown = item.cost_breakdown || {};
       if (Object.keys(existingBreakdown).length) {
         const sourceLabel = item.cost_source === 'auto' ? '自動取得' : item.cost_source === 'manual' ? (item.cost_edited_by || '手入力') : '見積ベース';
@@ -323,7 +367,7 @@ async function init() {
         estHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
         for (const [k, v] of Object.entries(existingBreakdown)) {
           const displayVal = (typeof v === 'number') ? formatPrice(v) : esc(String(v));
-          estHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${displayVal}</span></div>`;
+          estHtml += editableRow(k, 'cost.' + k, String(v));
         }
         estHtml += '</div></div>';
       }
