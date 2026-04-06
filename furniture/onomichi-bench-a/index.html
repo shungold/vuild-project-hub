@@ -241,7 +241,6 @@ async function init() {
     function getVal(field, orig) { return savedEdits[field] !== undefined ? savedEdits[field] : orig; }
     function editableRow(label, field, origVal) {
       const val = getVal(field, origVal);
-      if (!val && !origVal) return '';
       return `<div class="spec-row" style="cursor:pointer" onclick="this.querySelector('.ev').focus()" title="クリックして編集">
         <span class="spec-label">${esc(label)}</span>
         <span class="spec-value ev" contenteditable="true" style="outline:none;min-width:60px" onblur="(function(el){const k='${field}';const v=el.textContent.trim();const edits=JSON.parse(localStorage.getItem('${editKey}')||'{}');edits[k]=v;localStorage.setItem('${editKey}',JSON.stringify(edits));el.style.background='';el.title='保存済み'})(this)" onfocus="this.style.background='#fff8e1'">${esc(val || '')}</span>
@@ -261,14 +260,14 @@ async function init() {
     }
 
     const specFields = [
-      ['寸法', 'dimensions', item.dimensions],
-      ['重量', 'weight_kg', item.weight_kg ? item.weight_kg + ' kg' : null],
-      ['素材', 'specs.material', item.specs?.material],
-      ['仕上げ', 'specs.finish', item.specs?.finish],
-      ['備考', 'specs.note', item.specs?.note]
+      ['寸法', 'dimensions', item.dimensions, true],
+      ['重量', 'weight_kg', item.weight_kg ? item.weight_kg + ' kg' : null, false],
+      ['素材', 'specs.material', item.specs?.material, true],
+      ['仕上げ', 'specs.finish', item.specs?.finish, true],
+      ['備考', 'specs.note', item.specs?.note, false]
     ];
-    document.getElementById('furn-spec-body').innerHTML = specFields.map(([l,f,v]) =>
-      (v || savedEdits[f]) ? editableRow(l, f, v) : ''
+    document.getElementById('furn-spec-body').innerHTML = specFields.map(([l,f,v,alwaysShow]) =>
+      (v || savedEdits[f] || alwaysShow) ? editableRow(l, f, v) : ''
     ).join('') + `<div style="margin-top:8px"><button onclick="const f=prompt('フィールド名');if(!f)return;const row=document.createElement('div');row.innerHTML='${`<div class=&quot;spec-row&quot;><span class=&quot;spec-label&quot;></span><span class=&quot;spec-value&quot; contenteditable=&quot;true&quot;></span></div>`.replace(/'/g,"\\'")}';document.getElementById('furn-spec-body').insertBefore(row.firstChild,this.parentElement);this.parentElement.previousElementSibling.querySelector('.spec-label').textContent=f" style="font-size:11px;color:var(--color-tertiary);background:none;border:1px dashed var(--color-border);padding:3px 10px;border-radius:4px;cursor:pointer">+ 項目追加</button></div>`;
 
     if (item.series) {
