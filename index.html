@@ -196,14 +196,17 @@ async function renderFurniture() {
   for (const [groupName, items] of Object.entries(groups)) {
     html += `<h2 class="sub-title">${esc(groupName)}</h2>`;
     html += `<div class="card-grid material-grid">`;
-    html += items.map(f => `
+    html += items.map(f => {
+      const isLarge = ['キッチン','造作','屋台','小屋','大型什器','キッチンユニット'].some(k => (f.category||'').includes(k));
+      const thumbSrc = isLarge
+        ? (f.gallery_photos && f.gallery_photos[0]) || (f.hero_photos && f.hero_photos[0])
+        : (f.hero_photos && f.hero_photos[0]) || (f.gallery_photos && f.gallery_photos[0]);
+      return `
       <a href="furniture/${f.id}/index.html" class="card material-card" style="text-decoration:none">
         <div class="card-thumb-sm">
-          ${(f.hero_photos && f.hero_photos[0])
-            ? `<img src="${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'">`
-            : (f.gallery_photos && f.gallery_photos[0])
-              ? `<img src="${f.gallery_photos[0]}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'">`
-              : `<div class="thumb-placeholder-sm">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`}
+          ${thumbSrc
+            ? `<img src="${thumbSrc}" alt="${esc(f.name)}" loading="lazy" onerror="this.style.display='none'">`
+            : `<div class="thumb-placeholder-sm">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`}
         </div>
         <div class="card-body">
           <h3>${esc(f.name)}</h3>
@@ -214,7 +217,8 @@ async function renderFurniture() {
               ? '<div class="card-cost" style="color:var(--color-secondary)">' + esc(Object.values(f.cost_breakdown).find(v => /万|円/.test(v)) || '要見積') + ' <span style="font-size:10px;color:var(--color-tertiary)">見積ベース</span></div>'
               : '<div class="card-cost" style="color:var(--color-tertiary)">コスト未取得</div>'}
         </div>
-      </a>`).join('');
+      </a>`;
+    }).join('');
     html += `</div>`;
   }
 

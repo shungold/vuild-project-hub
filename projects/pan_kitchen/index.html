@@ -287,8 +287,12 @@ async function init() {
       if (!items.length) return;
       document.getElementById('panel-furniture').innerHTML =
         '<div class="detail-furniture-grid">' + items.map(f => {
-          const thumb = (f.hero_photos && f.hero_photos[0])
-            ? `<img src="${B}${f.hero_photos[0]}" alt="${esc(f.name)}" loading="lazy">`
+          const isLarge = ['キッチン','造作','屋台','小屋','大型什器','キッチンユニット'].some(k => (f.category||'').includes(k));
+          const thumbSrc = isLarge
+            ? (f.gallery_photos && f.gallery_photos[0]) || (f.hero_photos && f.hero_photos[0])
+            : (f.hero_photos && f.hero_photos[0]) || (f.gallery_photos && f.gallery_photos[0]);
+          const thumb = thumbSrc
+            ? `<img src="${B}${thumbSrc}" alt="${esc(f.name)}" loading="lazy">`
             : `<div style="font-size:24px;color:var(--color-tertiary)">${esc(f.name_en ? f.name_en[0] : f.name[0])}</div>`;
           return `<a href="${B}furniture/${f.id}/index.html" class="furniture-link-card">
             <div class="flc-thumb">${thumb}</div>
