@@ -363,10 +363,13 @@ async function init() {
       const hasManual = manualItems.length || Object.keys(existingBreakdown).length;
 
       if (hasManual) {
-        actHtml += '<h3 class="sub-title">その他コスト</h3>';
+        const sourceLabel = item.cost_source === 'auto' ? '自動取得' : item.cost_source === 'manual' ? (item.cost_edited_by || '手入力') : '見積ベース';
+        actHtml += `<h3 class="sub-title">コスト内訳 <span style="font-size:11px;color:var(--color-tertiary);font-weight:400;margin-left:8px">${sourceLabel}</span></h3>`;
         actHtml += '<div class="spec-card" style="max-width:500px;margin-bottom:16px"><div class="spec-card-body">';
         for (const [k, v] of Object.entries(existingBreakdown)) {
-          actHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${formatPrice(v)}</span></div>`;
+          // Handle both numeric and string values
+          const displayVal = (typeof v === 'number') ? formatPrice(v) : esc(String(v));
+          actHtml += `<div class="spec-row"><span class="spec-label">${esc(k)}</span><span class="spec-value">${displayVal}</span></div>`;
         }
         manualItems.forEach(ci => {
           actHtml += `<div class="spec-row"><span class="spec-label">${esc(ci.name)} <span style="font-size:10px;color:var(--color-tertiary)">${esc(ci.category)}</span></span><span class="spec-value">${formatPrice(ci.amount)}</span></div>`;
@@ -374,14 +377,22 @@ async function init() {
         actHtml += '</div></div>';
       }
 
-      // 原価合計
-      const hwTotal = hwItems.reduce((s, m) => s + (m.price || 0) * (m.quantity || 1), 0);
-      const breakdownTotal = Object.values(existingBreakdown).reduce((s, v) => s + (v || 0), 0);
-      const manualTotal = manualItems.reduce((s, ci) => s + (ci.amount || 0), 0);
-      const grandTotal = hwTotal + breakdownTotal + manualTotal;
-      if (grandTotal) {
+      // production_cost or estimate fallback
+      if (item.production_cost) {
         actHtml += `<div class="spec-card" style="max-width:500px;margin-bottom:16px;background:var(--color-bg)"><div class="spec-card-body">
-          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">原価合計</span><span class="spec-value">${formatPrice(grandTotal)}</span></div>
+          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">原価合計（実績）</span><span class="spec-value">${formatPrice(item.production_cost)}</span></div>
+        </div></div>`;
+      } else if (Object.keys(existingBreakdown).length) {
+        actHtml += `<div style="padding:8px 12px;background:#fff8e1;border:1px solid #ffe082;border-radius:6px;font-size:12px;color:#f57f17;max-width:500px;margin-bottom:16px">⚠ 実績値未入力 — 上記は見積ベースです</div>`;
+      }
+
+      // 金物コスト積み上げ（数値のみ）
+      const hwTotal = hwItems.reduce((s, m) => s + (m.price || 0) * (m.quantity || 1), 0);
+      const manualTotal = manualItems.reduce((s, ci) => s + (ci.amount || 0), 0);
+      const numericTotal = hwTotal + manualTotal;
+      if (numericTotal) {
+        actHtml += `<div class="spec-card" style="max-width:500px;margin-bottom:16px;background:var(--color-bg)"><div class="spec-card-body">
+          <div class="spec-row" style="font-weight:700;font-size:16px"><span class="spec-label">金物+手動合計</span><span class="spec-value">${formatPrice(numericTotal)}</span></div>
         </div></div>`;
       }
 
