@@ -399,23 +399,20 @@
       "name_en": "6F Built-in Kitchen",
       "series": "pan門真新棟シリーズ",
       "category": "キッチン",
-      "description": "6階コの字型キッチンカウンター。半分固定・半分可動式。テクスチャパネル仕上げ。シンク付き。",
+      "description": "6階壁面造作キッチン。ステンレス天板+タイル壁面。冷蔵庫・食洗機・オーブン組込み。レースウェイ照明付き。4ユニット構成。",
       "dimensions": null,
       "weight_kg": null,
       "model_url": null,
       "hero_photos": [],
       "gallery_photos": [
-        "photos/furniture/pan-kitchen-6f/panasonic-14.jpg",
-        "photos/furniture/pan-kitchen-6f/panasonic-21.jpg",
-        "photos/furniture/pan-kitchen-6f/panasonic-22.jpg",
-        "photos/furniture/pan-kitchen-6f/IMG_0634.jpg",
-        "photos/furniture/pan-kitchen-6f/IMG_0633.jpg"
+        "photos/furniture/pan-kitchen-6f/panasonic-11.jpg",
+        "photos/furniture/pan-kitchen-6f/panasonic-4.jpg"
       ],
       "photo_pins": [],
       "specs": {
-        "material": "合板 + テクスチャパネル仕上げ",
-        "finish": "塗装仕上げ",
-        "note": "コの字型、半固定半可動"
+        "material": "ステンレス天板 + タイル壁面",
+        "finish": "ステンレス + タイル",
+        "note": "4ユニット構成、冷蔵庫・食洗機・オーブン組込"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -438,23 +435,20 @@
       "name_en": "7F Built-in Kitchen",
       "series": "pan門真新棟シリーズ",
       "category": "キッチン",
-      "description": "7階固定造作キッチン。ステンレス天板+タイル壁面。冷蔵庫・食洗機・オーブン組込み。レースウェイ照明付き。4ユニット構成。",
+      "description": "7階テクスチャパネルカウンター。シンク付き。芝キューブと同エリアに配置。",
       "dimensions": null,
       "weight_kg": null,
       "model_url": null,
       "hero_photos": [],
       "gallery_photos": [
-        "photos/furniture/pan-kitchen-7f/panasonic-10.jpg",
-        "photos/furniture/pan-kitchen-7f/panasonic-11.jpg",
-        "photos/furniture/pan-kitchen-7f/panasonic-4.jpg",
-        "photos/furniture/pan-kitchen-7f/IMG_0681.jpg",
-        "photos/furniture/pan-kitchen-7f/IMG_0680.jpg"
+        "photos/furniture/pan-kitchen-7f/panasonic-21.jpg",
+        "photos/furniture/pan-kitchen-7f/panasonic-22.jpg"
       ],
       "photo_pins": [],
       "specs": {
-        "material": "ステンレス天板 + タイル壁面",
-        "finish": "ステンレス + タイル",
-        "note": "4ユニット構成、冷蔵庫・食洗機・オーブン組込"
+        "material": "合板 + テクスチャパネル仕上げ",
+        "finish": "塗装仕上げ",
+        "note": "シンク付きカウンター"
       },
       "hardware_ids": [],
       "production_cost": null,
@@ -478,17 +472,16 @@
       "name_en": "Mobile Kitchen Unit Type A",
       "series": "pan門真新棟シリーズ",
       "category": "キッチンユニット",
-      "description": "7F用モバイルキッチンユニットtypeA。キャスター付き可動式。合板CNC加工。穴あきパネル+引き出し収納。",
+      "description": "6F用モバイルキッチンユニットtypeA。キャスター付き可動式。合板CNC加工。穴あきパネル+引き出し収納。",
       "dimensions": null,
       "weight_kg": null,
       "model_url": null,
       "hero_photos": [],
       "gallery_photos": [
         "photos/furniture/pan-mobile-kitchen/panasonic-9.jpg",
-        "photos/furniture/pan-mobile-kitchen/panasonic-25.jpg",
-        "photos/furniture/pan-mobile-kitchen/panasonic-26.jpg",
         "photos/furniture/pan-mobile-kitchen/panasonic-2.jpg",
-        "photos/furniture/pan-mobile-kitchen/panasonic-3.jpg"
+        "photos/furniture/pan-mobile-kitchen/panasonic-5.jpg",
+        "photos/furniture/pan-mobile-kitchen/panasonic-8.jpg"
       ],
       "photo_pins": [],
       "specs": {
@@ -518,7 +511,7 @@
       "name_en": "Mobile Kitchen Unit Type B",
       "series": "pan門真新棟シリーズ",
       "category": "キッチンユニット",
-      "description": "7F用モバイルキッチンユニットtypeB。オーバル天板型。キャスター付き。",
+      "description": "6F用モバイルキッチンユニットtypeB。オーバル天板型。キャスター付き。",
       "dimensions": null,
       "weight_kg": null,
       "model_url": null,
@@ -552,7 +545,7 @@
       "name_en": "Mobile Kitchen Unit Type C",
       "series": "pan門真新棟シリーズ",
       "category": "キッチンユニット",
-      "description": "7F用モバイルキッチンユニットtypeC。アイランド型。キャスター付き。",
+      "description": "6F用モバイルキッチンユニットtypeC。アイランド型。キャスター付き。",
       "dimensions": null,
       "weight_kg": null,
       "model_url": null,

@@ -211,11 +211,11 @@
       ],
       "gallery_photos": [
         "photos/projects/pan_kitchen/panasonic-2.jpg",
-        "photos/projects/pan_kitchen/panasonic-10.jpg",
-        "photos/projects/pan_kitchen/panasonic-7.jpg",
+        "photos/projects/pan_kitchen/panasonic-11.jpg",
         "photos/projects/pan_kitchen/panasonic-21.jpg",
-        "photos/projects/pan_kitchen/panasonic-12.jpg",
-        "photos/projects/pan_kitchen/panasonic-25.jpg"
+        "photos/projects/pan_kitchen/panasonic-16.jpg",
+        "photos/projects/pan_kitchen/panasonic-25.jpg",
+        "photos/projects/pan_kitchen/IMG_5407.jpg"
       ],
       "photo_pins": [
         {
@@ -225,14 +225,6 @@
           "type": "furniture",
           "id": "pan-mobile-kitchen-a",
           "label": "MKU typeA"
-        },
-        {
-          "photo_index": 0,
-          "x": 60,
-          "y": 60,
-          "type": "furniture",
-          "id": "pan-mobile-kitchen-b",
-          "label": "MKU typeB"
         },
         {
           "photo_index": 0,
@@ -247,32 +239,24 @@
           "x": 50,
           "y": 50,
           "type": "furniture",
-          "id": "pan-kitchen-7f",
-          "label": "7F造作キッチン"
-        },
-        {
-          "photo_index": 4,
-          "x": 45,
-          "y": 55,
-          "type": "furniture",
           "id": "pan-kitchen-6f",
           "label": "6F造作キッチン"
         },
         {
-          "photo_index": 5,
+          "photo_index": 3,
+          "x": 45,
+          "y": 55,
+          "type": "furniture",
+          "id": "pan-kitchen-7f",
+          "label": "7Fカウンター"
+        },
+        {
+          "photo_index": 4,
           "x": 45,
           "y": 50,
           "type": "furniture",
           "id": "pan-shiba-2ren",
           "label": "芝キューブ"
-        },
-        {
-          "photo_index": 6,
-          "x": 50,
-          "y": 55,
-          "type": "furniture",
-          "id": "pan-mobile-kitchen-a",
-          "label": "MKU使用中"
         }
       ],
       "team": [
