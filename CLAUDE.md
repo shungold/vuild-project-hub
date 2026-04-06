@@ -755,7 +755,11 @@ WSが検出された場合、以下の分析を構造分析レポートに含め
   - Phase B: 判定不能＋上位候補をDL → Claude画像認識でfurniture照合
   - Phase C: グルーピング → スコアリング（横長/黒部/リアクション） → 枚数上限 → ユーザー確認
   - 確認後: DL → 圧縮(max 1600px, quality 80) → パス登録
-- [ ] 案件レベル情報: projects.json更新（体制/コスト/タグ）
+- [ ] チーム抽出: `users.info` APIで投稿者のreal_nameを取得 → 投稿数上位をteam[]に登録（5.1「チーム」参照）
+- [ ] ドキュメント分類: Slackのファイル（PDF/Excel/スプシ）を type別に分類（estimate/drawing/fabrication/reference）→ documents[]に登録
+- [ ] **見積PDF/Excel分析**: 見積・図面・加工依頼書をDL → Read tool/pdfplumberで中身を読み取り → コスト時系列整理（5.1「時系列分析ルール」参照）
+- [ ] コスト更新: PDF内訳からfurniture別cost_breakdownを正確に設定 + 案件cost_overviewに最新見積合計を登録
+- [ ] 案件レベル情報: projects.json更新（コスト/タグ）
 - [ ] ドキュメント生成: 製作ドキュメント(draft) + 案件ドキュメント(draft)
 - [ ] 完了判定: 案件のstatus確認
   - completed → 製作ドキュメント + 案件ドキュメントを必ず生成（5.1「完了判定ルール」に従う）
