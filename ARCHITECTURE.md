@@ -83,7 +83,7 @@ VUILDlibrary/                          ← Git管理（GitHub Pages公開）
 
 ### 主要フィールド概要
 
-- **projects.json**: id, name, pid, hero_photos[], gallery_photos[], furniture_ids[], material_ids[], cost_overview, years[]（年次タブ対応）
+- **projects.json**: id, name, pid, hero_photos[], gallery_photos[], furniture_ids[], material_ids[], cost_overview, related_projects[]（年度違いは別案件+related_projectsで紐づけ。years[]は使わない）
 - **furniture.json**: id, name, series, hero_photos[], gallery_photos[], specs, hardware_ids[], production_cost, cost_breakdown, documents[], tags[]
 - **materials.json**: materials[]（採用）+ candidates[]（検討中）
 - **knowledge.json**: scope("design"/"production")で表示先決定 + production_documents[] + project_documents[]

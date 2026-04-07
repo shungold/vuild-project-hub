@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VUILD Project Hub — Scan Flow Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --bg: #fafaf8; --surface: #ffffff; --surface-2: #f5f4f0;
+    --text: #111; --text2: #666; --text3: #999;
+    --border: #e8e6e1; --green: #2d5a27; --green-light: #e8f2e6;
+    --blue: #2563eb; --blue-light: #eff6ff;
+    --orange: #c2410c; --orange-light: #fff7ed;
+    --red: #b91c1c; --red-light: #fef2f2;
+    --purple: #7c3aed; --purple-light: #f5f3ff;
+    --radius: 8px; --radius-lg: 16px;
+  }
+  body {
+    font-family: 'Inter','Noto Sans JP',-apple-system,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+  }
+  .header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+    border-bottom: 1px solid #f0eee9; padding: 0 48px; height: 64px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .header .logo { font-size: 11px; letter-spacing: 4px; font-weight: 600; color: var(--text3); text-transform: uppercase; }
+  .header .divider { width: 1px; height: 20px; background: var(--border); }
+  .header .title { font-size: 15px; font-weight: 600; }
+  .header .back { font-size: 13px; color: var(--text3); text-decoration: none; margin-left: auto; }
+  .header .back:hover { color: var(--text); }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 48px 80px; }
+
+  h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 8px; }
+  h1 + .subtitle { font-size: 14px; color: var(--text3); margin-bottom: 40px; }
+  h2 {
+    font-size: 18px; font-weight: 700; letter-spacing: -0.3px;
+    margin: 56px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--text);
+  }
+  h3 { font-size: 15px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+  h4 { font-size: 13px; font-weight: 700; margin: 20px 0 8px; color: var(--text2); }
+  p { margin-bottom: 12px; font-size: 14px; }
+
+  /* Flow overview */
+  .flow-overview {
+    display: flex; gap: 0; align-items: stretch; margin: 24px 0 32px;
+    flex-wrap: wrap;
+  }
+  .flow-step {
+    flex: 1; min-width: 140px; padding: 16px; background: var(--surface);
+    border: 1px solid var(--border); text-align: center; position: relative;
+  }
+  .flow-step:first-child { border-radius: var(--radius-lg) 0 0 var(--radius-lg); }
+  .flow-step:last-child { border-radius: 0 var(--radius-lg) var(--radius-lg) 0; }
+  .flow-step .step-num { font-size: 11px; font-weight: 700; color: var(--green); text-transform: uppercase; letter-spacing: 1px; }
+  .flow-step .step-title { font-size: 13px; font-weight: 600; margin-top: 4px; }
+  .flow-step .step-gate { font-size: 10px; color: var(--orange); font-weight: 600; margin-top: 4px; }
+  .flow-step.active { background: var(--green-light); border-color: var(--green); }
+  .flow-arrow { display: flex; align-items: center; font-size: 18px; color: var(--text3); padding: 0 4px; }
+
+  /* Tables */
+  table {
+    width: 100%; border-collapse: collapse; margin-bottom: 20px;
+    font-size: 13px; background: var(--surface);
+    border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  th {
+    background: var(--text); color: #fff; padding: 10px 16px;
+    text-align: left; font-weight: 500; font-size: 12px;
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid #f0eee9; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  /* Cards */
+  .rule-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 16px;
+  }
+  .rule-card h4 { margin: 0 0 8px; font-size: 14px; color: var(--text); }
+  .rule-card p { margin: 0; font-size: 13px; color: var(--text2); }
+  .rule-card .ref { font-size: 11px; color: var(--text3); margin-top: 8px; }
+
+  /* Pattern badges */
+  .badge {
+    display: inline-block; padding: 2px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; margin-right: 4px;
+  }
+  .badge-a { background: var(--green-light); color: var(--green); }
+  .badge-b { background: var(--blue-light); color: var(--blue); }
+  .badge-c { background: var(--orange-light); color: var(--orange); }
+  .badge-d { background: var(--purple-light); color: var(--purple); }
+  .badge-e { background: var(--red-light); color: var(--red); }
+
+  /* Callout boxes */
+  .callout {
+    border-radius: var(--radius); padding: 16px 20px; margin-bottom: 20px;
+    font-size: 13px;
+  }
+  .callout-green { background: var(--green-light); border-left: 3px solid var(--green); }
+  .callout-orange { background: var(--orange-light); border-left: 3px solid var(--orange); }
+  .callout-blue { background: var(--blue-light); border-left: 3px solid var(--blue); }
+  .callout strong { display: block; margin-bottom: 4px; }
+
+  /* Flow diagram */
+  .flow-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 24px;
+    font-family: 'Consolas','SF Mono',monospace; font-size: 13px; line-height: 2.2;
+    margin-bottom: 24px; color: var(--text2);
+  }
+  .flow-box strong { color: var(--text); }
+
+  /* Check items */
+  .check-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;
+  }
+  .check-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+  }
+  .check-item .check-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .check-item .check-desc { font-size: 12px; color: var(--text2); }
+  .check-item .check-example { font-size: 11px; color: var(--text3); margin-top: 6px; font-style: italic; }
+
+  /* Matrix table */
+  .matrix { font-size: 12px; }
+  .matrix td { text-align: center; padding: 8px 12px; }
+  .matrix td:first-child { text-align: left; font-weight: 600; }
+  .status-ok { color: var(--green); font-weight: 700; }
+  .status-warn { color: var(--orange); font-weight: 700; }
+  .status-ng { color: var(--red); font-weight: 700; }
+
+  /* TOC */
+  .toc { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 32px; }
+  .toc h3 { margin: 0 0 12px; font-size: 13px; }
+  .toc ul { list-style: none; padding: 0; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { font-size: 13px; color: var(--text2); text-decoration: none; }
+  .toc a:hover { color: var(--green); }
+  .toc .indent { padding-left: 16px; }
+
+  ul, ol { margin: 0 0 16px 20px; font-size: 13px; }
+  li { margin-bottom: 4px; }
+  code {
+    background: var(--surface-2); padding: 1px 6px; border-radius: 3px;
+    font-family: 'Consolas',monospace; font-size: 12px;
+  }
+
+  @media (max-width: 700px) {
+    .container { padding: 24px 20px 60px; }
+    .header { padding: 0 20px; }
+    .check-grid { grid-template-columns: 1fr; }
+    .flow-overview { flex-direction: column; }
+    .flow-step:first-child, .flow-step:last-child { border-radius: var(--radius); }
+    .flow-arrow { justify-content: center; transform: rotate(90deg); padding: 4px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="logo">VUILD</span>
+  <span class="divider"></span>
+  <span class="title">Scan Flow Guide</span>
+  <a href="index.html" class="back">Portal</a>
+</div>
+
+<div class="container">
+
+<h1>Scan Flow Guide</h1>
+<p class="subtitle">VUILDlibrary Slack Scan Framework v2 &mdash; 2026-04-07</p>
+
+<div class="callout callout-green">
+  <strong>Rule Source</strong>
+  All rules are defined in <code>CLAUDE.md</code> Section 5.1&ndash;5.4. This page is a visual reference.
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h3>Contents</h3>
+  <ul>
+    <li><a href="#modes">3 Scan Modes</a></li>
+    <li><a href="#overview">Initial Scan: 5-Step Overview</a></li>
+    <li><a href="#step1">Step 1: Structure Analysis</a></li>
+    <li class="indent"><a href="#patterns">Pattern Detection (A&ndash;E)</a></li>
+    <li><a href="#step2">Step 2: Data Generation</a></li>
+    <li class="indent"><a href="#knowledge">Knowledge / Hardware / Specs / Cost / Docs / Photos</a></li>
+    <li><a href="#step3">Step 3: Cross-Check</a></li>
+    <li class="indent"><a href="#checks">4 Checks: Contamination / Consistency / Gaps / Overview</a></li>
+    <li><a href="#step4">Step 4: Page Generation & Deploy</a></li>
+    <li><a href="#step5">Step 5: Confirmation</a></li>
+    <li><a href="#diff-scan">Diff Scan / Item Search</a></li>
+    <li><a href="#reference">Quick Reference Tables</a></li>
+  </ul>
+</div>
+
+<!-- 3 MODES -->
+<h2 id="modes">3 Scan Modes</h2>
+<table>
+  <tr><th>Mode</th><th>Trigger</th><th>Content</th></tr>
+  <tr><td>Initial Scan</td><td><code>初回スキャン {チャンネルID}</code></td><td>Full channel read &rarr; 5-step process</td></tr>
+  <tr><td>Diff Scan</td><td><code>Slackスキャンして</code></td><td>Active channels, new messages only</td></tr>
+  <tr><td>Item Search</td><td><code>{アイテム名}をスキャンして</code></td><td>Cross-channel search &rarr; diff proposal</td></tr>
+</table>
+
+<!-- OVERVIEW -->
+<h2 id="overview">Initial Scan: 5-Step Overview</h2>
+
+<div class="flow-overview">
+  <div class="flow-step active">
+    <div class="step-num">Step 1</div>
+    <div class="step-title">Structure Analysis</div>
+    <div class="step-gate">User Confirmation Gate</div>
+  </div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-step">
+    <div class="step-num">Step 2</div>
+    <div class="step-title">Data Generation</div>
+    <div class="step-gate">Photo / Pin Confirmation</div>
+  </div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-step active">
+    <div class="step-num">Step 3</div>
+    <div class="step-title">Cross-Check</div>
+    <div class="step-gate">User Confirmation Gate</div>
+  </div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-step">
+    <div class="step-num">Step 4</div>
+    <div class="step-title">Page Gen & Deploy</div>
+    <div class="step-gate">&nbsp;</div>
+  </div>
+  <div class="flow-arrow">&rarr;</div>
+  <div class="flow-step">
+    <div class="step-num">Step 5</div>
+    <div class="step-title">WEB Confirmation</div>
+    <div class="step-gate">&nbsp;</div>
+  </div>
+</div>
+
+<!-- STEP 1 -->
+<h2 id="step1">Step 1: Structure Analysis</h2>
+<p>Read all channel messages + all thread replies. Analyze the channel composition and detect patterns.</p>
+
+<div class="callout callout-orange">
+  <strong>Rules applied at this step</strong>
+  Channel Name Rule (use Slack channel name as-is) / Scan Target Range (messages + all threads) / Team Extraction (users.info API, VUILD vs subcontractor)
+</div>
+
+<h3 id="patterns">5 Detection Axes &rarr; Patterns</h3>
+
+<table>
+  <tr><th>Axis</th><th>Options</th><th>Triggers</th></tr>
+  <tr><td>Furniture count</td><td>Single / Multiple</td><td><span class="badge badge-b">B</span> Complex furniture composition rules</td></tr>
+  <tr><td>Area composition</td><td>Single / Multi-floor</td><td><span class="badge badge-b">B</span> Area &times; Furniture mapping</td></tr>
+  <tr><td>Construction work</td><td>None / Mixed</td><td><span class="badge badge-c">C</span> Furniture vs construction routing</td></tr>
+  <tr><td>WS events</td><td>None / Present</td><td><span class="badge badge-d">D</span> WS event analysis</td></tr>
+  <tr><td>Year / Related</td><td>Single / Multi-year</td><td><span class="badge badge-e">E</span> Separate projects + related_projects</td></tr>
+</table>
+
+<h4>Pattern A: Simple &mdash; No additional processing</h4>
+<p><span class="badge badge-a">A</span> Few furniture, single area, no construction, no WS. Straight to Step 2.</p>
+
+<h4>Pattern B: Multi-Area</h4>
+<p><span class="badge badge-b">B</span> Create Area &times; Furniture Map. Referenced by ALL subsequent steps (photo classification, specs, pins).</p>
+<div class="rule-card">
+  <h4>Area Mapping Rules</h4>
+  <p>Explicitly map which furniture goes to which area/floor. User must confirm. Complex furniture splits by floor / type / block count.</p>
+  <p>Existing furniture detection: search furniture.json &rarr; confirm with user if same or new.</p>
+  <div class="ref">CLAUDE.md: Area Mapping / Complex Furniture / Existing Furniture Detection</div>
+</div>
+
+<h4>Pattern C: Construction Mixed</h4>
+<p><span class="badge badge-c">C</span> Route information: VUILD-made &amp; movable &rarr; furniture / wall/floor/ceiling-fixed &rarr; project page.</p>
+
+<h4>Pattern D: WS Events</h4>
+<p><span class="badge badge-d">D</span> Detect WS events, analyze participants/date/furniture. Distinguish WS photos vs production knowledge vs post-completion.</p>
+<div class="rule-card">
+  <h4>WS Photo Rules</h4>
+  <p>Participant working = WS photo (max 5/event). Craftsman working = production knowledge. Don't judge by filename alone.</p>
+  <div class="ref">CLAUDE.md: WS Event Management</div>
+</div>
+
+<h4>Pattern E: Multi-Year / Related</h4>
+<p><span class="badge badge-e">E</span> Always separate projects. No year tabs. Link via <code>related_projects</code> with relation type (ws/year/phase/related).</p>
+
+<div class="callout callout-orange">
+  <strong>User Confirmation Gate</strong>
+  Present structure analysis report. Wait for user confirmation/corrections before proceeding.
+</div>
+
+<!-- STEP 2 -->
+<h2 id="step2">Step 2: Data Generation</h2>
+<p>Distribute messages, photos, and files to the correct furniture/project, always referencing Step 1's pattern and area map.</p>
+
+<h3 id="knowledge">2-1. Knowledge Collection</h3>
+<table>
+  <tr><th>Rule</th><th>Content</th></tr>
+  <tr><td>Stamp mapping</td><td>:memo: &rarr; progress / :warning: &rarr; trouble / :bulb: &rarr; howto / :triangular_flag_on_post: &rarr; spec</td></tr>
+  <tr><td>Auto-classify (no stamp)</td><td>AI keyword matching (2+ matches). source: "ai_auto". Skip &lt;30 chars, bot messages</td></tr>
+  <tr><td>Scope routing</td><td><strong>production</strong> (reusable across projects) &rarr; furniture page / <strong>design</strong> (project-specific) &rarr; project page</td></tr>
+  <tr><td><span class="badge badge-b">B</span> Area check</td><td>Cross-reference with area map to identify which area the info belongs to</td></tr>
+</table>
+
+<h3>2-2. Hardware Detection</h3>
+<table>
+  <tr><th>Rule</th><th>Content</th></tr>
+  <tr><td>EC link detection</td><td>monotaro/amazon/sugatsune etc. &rarr; scrape &rarr; candidates</td></tr>
+  <tr><td>Text name detection</td><td>Hardware keyword &rarr; register without URL + placeholder</td></tr>
+  <tr><td>Furniture linking</td><td>Message context + parent thread theme. Unknown &rarr; project level</td></tr>
+  <tr><td>Stamp processing</td><td>:white_check_mark: &rarr; adopted / :mag: &rarr; pending / :x: &rarr; dismissed / :moneybag: &rarr; ordered</td></tr>
+  <tr><td>Data protection</td><td>Never overwrite existing URL/price/product_code. Duplicate check by product_url</td></tr>
+</table>
+
+<h3>2-3. Furniture Specs</h3>
+<table>
+  <tr><th>Rule</th><th>Content</th></tr>
+  <tr><td>Source priority</td><td>1. Slack messages &rarr; 2. Estimate PDF &rarr; 3. Fabrication docs &rarr; 4. Knowledge</td></tr>
+  <tr><td>Precision standard</td><td>material: type+thickness+part / finish: per-area spec / note: subcontractor+person</td></tr>
+  <tr><td><span class="badge badge-b">B</span> Area check</td><td>Mandatory cross-reference: which area's finish info is this?</td></tr>
+</table>
+
+<h3>2-4. Cost Analysis</h3>
+<table>
+  <tr><th>Rule</th><th>Content</th></tr>
+  <tr><td>Auto-extraction</td><td>Detect price patterns in Slack (X{amount}) &rarr; classify by furniture name co-occurrence</td></tr>
+  <tr><td>Manual priority</td><td>Never overwrite manual values</td></tr>
+  <tr><td>Timeline analysis</td><td>Sort chronologically &rarr; classify source &rarr; track changes &rarr; use latest/final value</td></tr>
+  <tr><td>Routing</td><td>Per-furniture cost &rarr; cost_breakdown / Project total &rarr; cost_overview</td></tr>
+</table>
+
+<h3>2-5. Document Classification</h3>
+<table>
+  <tr><th>Type</th><th>Display Tab</th><th>Routing Priority</th></tr>
+  <tr><td>estimate / invoice</td><td>Estimate tab</td><td rowspan="3">1. Furniture name in filename &rarr; that furniture<br>2. Part name &rarr; that furniture<br>3. Drawing keyword &rarr; that furniture<br>4. Project-wide keyword &rarr; project<br>5. Unknown &rarr; project (default)</td></tr>
+  <tr><td>drawing / fabrication</td><td>Drawing tab</td></tr>
+  <tr><td>reference / contract / schedule</td><td>Document tab</td></tr>
+</table>
+
+<h3>2-6. Photo Selection (3 Phases)</h3>
+
+<h4>Phase A: Text Signal Classification</h4>
+<div class="rule-card">
+  <h4>Signal Priority</h4>
+  <p>Message text (highest) &gt; Thread parent (high) &gt; Time cluster (high) &gt; Nearby 5 messages (mid) &gt; Poster pattern (mid) &gt; Timestamp (mid)</p>
+  <p>Batch posts (3+ photos, no text): send ALL to Phase B. Judge each photo individually.</p>
+</div>
+
+<h4>Phase B: Image Recognition</h4>
+<div class="rule-card">
+  <h4>Target &amp; Rules</h4>
+  <p>Top 10 per group + undetermined + batch photos. Match against Step 1 furniture features.</p>
+  <p><span class="badge badge-b">B</span> Area map: subject must be &gt;50% area or center. Background = NG. Multi-furniture panorama = project only.</p>
+  <p><span class="badge badge-d">D</span> WS photos: participant working = WS tab. Craftsman = production. Don't judge by filename.</p>
+  <p>ViewCapture hero check: 3D perspective = OK / CAM path, 2D drawing, nesting = NG</p>
+</div>
+
+<h4>Phase C: Scoring &amp; User Confirmation</h4>
+<table>
+  <tr><th>Rule</th><th>Content</th></tr>
+  <tr><td>Scoring</td><td>Landscape +10 / Kurobe +15 / Reactions / Image size</td></tr>
+  <tr><td>Limits</td><td>Project: max 7 / Furniture: max 7 / WS: max 5 per event</td></tr>
+  <tr><td>Project page</td><td>Wide-angle only. No detail shots. At least 1 per area (<span class="badge badge-b">B</span>)</td></tr>
+  <tr><td>Hero photos</td><td>Rhino axonometric &gt; ViewCapture (3D) &gt; empty. Never use completion photos for hero</td></tr>
+  <tr><td>Thumbnail</td><td>Large furniture &rarr; gallery_photos[0] / Small furniture &rarr; hero_photos[0]</td></tr>
+  <tr><td>Compression</td><td>max 1600px / JPEG q80 / Skip if &le;1600px &amp; &lt;500KB</td></tr>
+</table>
+
+<!-- STEP 3 -->
+<h2 id="step3">Step 3: Cross-Check</h2>
+<p>After distributing all data, open each furniture's "room" and verify holistically. Catch contamination, contradictions, and gaps that per-item classification misses.</p>
+
+<h3 id="checks">4 Checks</h3>
+
+<div class="check-grid">
+  <div class="check-item">
+    <div class="check-title">Check 1: Contamination</div>
+    <div class="check-desc">Does every item in this room actually belong here?</div>
+    <div class="check-example">Example: 6F paint info found in 7F kitchen's room &rarr; move to 6F</div>
+  </div>
+  <div class="check-item">
+    <div class="check-title">Check 2: Consistency</div>
+    <div class="check-desc">Do specs, knowledge, photos, and costs agree with each other?</div>
+    <div class="check-example">Example: specs say "hinoki plywood" but knowledge says "lauan" &rarr; ask user</div>
+  </div>
+  <div class="check-item">
+    <div class="check-title">Check 3: Gaps</div>
+    <div class="check-desc">Is any furniture missing data that should exist?</div>
+    <div class="check-example">Example: furniture has photos but zero knowledge/cost &rarr; check project room</div>
+  </div>
+  <div class="check-item">
+    <div class="check-title">Check 4: Project Overview</div>
+    <div class="check-desc">Is the project balanced? Do costs add up?</div>
+    <div class="check-example">Example: furniture total &ne; project total &rarr; routing error possible</div>
+  </div>
+</div>
+
+<h4>Completeness Matrix Example</h4>
+<table class="matrix">
+  <tr><th>Furniture</th><th>Specs</th><th>Photos</th><th>Knowledge</th><th>Hardware</th><th>Cost</th><th>3D Model</th></tr>
+  <tr><td>7F Kitchen</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+  <tr><td>MKU type A</td><td class="status-warn">Conflict</td><td class="status-ok">OK</td><td class="status-warn">Few</td><td class="status-ok">OK</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
+  <tr><td>MKU type B</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
+  <tr><td>Shiba Cube</td><td class="status-warn">Conflict</td><td class="status-ok">OK</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
+</table>
+
+<div class="callout callout-orange">
+  <strong>User Confirmation Gate</strong>
+  Present: Contamination fixes (auto-propose) / Contradictions (ask user) / Gaps (report) / Scope corrections.
+  Then: Completion check &rarr; Generate documents if status=completed.
+</div>
+
+<!-- STEP 4 -->
+<h2 id="step4">Step 4: Page Generation &amp; Deploy</h2>
+<table>
+  <tr><th>Process</th><th>Rule</th></tr>
+  <tr><td>Create folders</td><td>New furniture/project folder + copy detail-template.html</td></tr>
+  <tr><td>Register scan state</td><td>Add channel to scan_state.json with last_scanned_ts</td></tr>
+  <tr><td>Portal sync</td><td>Update index.html stats (hardware/knowledge/bom/updated)</td></tr>
+  <tr><td>Template deploy</td><td>If template changed: copy to all pages before commit</td></tr>
+  <tr><td>git push</td><td>commit &amp; push (GitHub Pages reflects in 1-2 min)</td></tr>
+</table>
+
+<!-- STEP 5 -->
+<h2 id="step5">Step 5: WEB Confirmation</h2>
+<p>Present the WEB URL to the user for final review.</p>
+
+<!-- DIFF SCAN -->
+<h2 id="diff-scan">Diff Scan / Item Search</h2>
+
+<h3>Diff Scan (<code>Slackスキャンして</code>)</h3>
+<table>
+  <tr><th>Item</th><th>Content</th></tr>
+  <tr><td>Target</td><td>Active channels in scan_state.json only</td></tr>
+  <tr><td>Retrieval</td><td>Slack API <code>oldest</code> param &rarr; new messages after last_scanned_ts</td></tr>
+  <tr><td>Auto-skip</td><td>completed + 30 days since last scan &rarr; skip (explicit request overrides)</td></tr>
+  <tr><td>Processing</td><td>Apply 5.1 routing rules &rarr; present diff &rarr; user confirms &rarr; apply</td></tr>
+  <tr><td>Completed projects</td><td>New knowledge added &rarr; regenerate docs / fill placeholders</td></tr>
+</table>
+
+<h3>Item Search (<code>{name}をスキャンして</code>)</h3>
+<table>
+  <tr><th>Step</th><th>Content</th></tr>
+  <tr><td>1</td><td>Cross-channel search via <code>slack_search_public</code></td></tr>
+  <tr><td>2</td><td>Categorize hits: already scanned / unregistered</td></tr>
+  <tr><td>3</td><td>Unregistered &rarr; offer initial scan</td></tr>
+  <tr><td>4</td><td>Registered &rarr; diff detection against furniture.json</td></tr>
+  <tr><td>5</td><td>Present diff &rarr; user confirms &rarr; apply to WEB</td></tr>
+</table>
+
+<!-- REFERENCE -->
+<h2 id="reference">Quick Reference Tables</h2>
+
+<h3>Stamp Mapping</h3>
+<table>
+  <tr><th>Stamp</th><th>Action</th></tr>
+  <tr><td>:white_check_mark:</td><td>Register to hardwareCatalog (adopted)</td></tr>
+  <tr><td>:mag:</td><td>candidatesData status:"pending"</td></tr>
+  <tr><td>:x:</td><td>status:"dismissed"</td></tr>
+  <tr><td>:moneybag:</td><td>ordered: true</td></tr>
+  <tr><td>:memo:</td><td>knowledge type:"progress"</td></tr>
+  <tr><td>:warning:</td><td>knowledge type:"trouble"</td></tr>
+  <tr><td>:bulb:</td><td>knowledge type:"howto"</td></tr>
+  <tr><td>:triangular_flag_on_post:</td><td>knowledge type:"spec"</td></tr>
+</table>
+
+<h3>Photo Routing</h3>
+<table>
+  <tr><th>Subject</th><th>Destination</th><th>Limit</th></tr>
+  <tr><td>Space overview (wide)</td><td>Project hero/gallery</td><td>max 7</td></tr>
+  <tr><td>Furniture as subject</td><td>Furniture gallery</td><td>max 7</td></tr>
+  <tr><td>Detail (hardware, joints)</td><td>Furniture only (project NG)</td><td>in gallery</td></tr>
+  <tr><td>Construction work</td><td>Project or exclude</td><td>&mdash;</td></tr>
+  <tr><td>In-progress / factory</td><td>Exclude</td><td>&mdash;</td></tr>
+  <tr><td>WS activity photos</td><td>Project WS tab (exception)</td><td>max 5/event</td></tr>
+</table>
+
+<h3>Knowledge Scope</h3>
+<table>
+  <tr><th>Scope</th><th>Display</th><th>Criteria</th></tr>
+  <tr><td>production</td><td>Furniture page</td><td>Reusable across projects (fabrication, assembly, finish)</td></tr>
+  <tr><td>design</td><td>Project page</td><td>Project-specific (client requirements, budget, site conditions)</td></tr>
+</table>
+
+<h3>User Confirmation Gates</h3>
+<table>
+  <tr><th>Timing</th><th>Content</th></tr>
+  <tr><td>After Step 1</td><td>Structure analysis report (patterns, furniture list, team, WS)</td></tr>
+  <tr><td>Step 2 Phase C</td><td>Photo list (grouped, scored)</td></tr>
+  <tr><td>Step 2 Pins</td><td>Pin candidate list</td></tr>
+  <tr><td>After Step 3</td><td>Cross-check results (contamination, contradictions, gaps, scope)</td></tr>
+  <tr><td>Step 5</td><td>WEB final review</td></tr>
+</table>
+
+<div class="callout callout-green" style="margin-top:48px;">
+  <strong>Framework Change Safety</strong>
+  When rules need to change based on user feedback, ALWAYS display the full framework (CLAUDE.md 5.1&ndash;5.4), show the specific change, and get user confirmation before saving. Never change rules silently.
+</div>
+
+</div><!-- .container -->
+
+</body>
+</html>

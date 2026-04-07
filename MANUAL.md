@@ -5,13 +5,18 @@ https://shungold.github.io/vuild-project-hub/
 
 ## ファイルの場所
 ```
-G:\マイドライブ\Claude_Projects\fixture-drawing-previewer\
-├── index.html                              ← ポータル（案件リスト + 全金物）
-├── candidates.json                         ← Slack候補データ
-└── projects\
-    └── hitonomori_wallshelf\
-        ├── index.html                      ← 案件詳細ページ
-        └── candidates.json
+G:\マイドライブ\Claude_Projects\VUILDlibrary\
+├── index.html                              ← ポータル（案件リスト + 全金物 + furniture）
+├── data/
+│   ├── projects.json                       ← 案件データ
+│   ├── furniture.json                      ← furnitureデータ
+│   ├── materials.json                      ← 金物（採用+候補）
+│   ├── knowledge.json                      ← ナレッジ
+│   └── scan_state.json                     ← スキャン状態管理
+├── projects/
+│   └── {project_id}/index.html             ← 案件詳細ページ
+└── furniture/
+    └── {furniture_id}/index.html           ← furniture詳細ページ
 ```
 
 ---
@@ -26,7 +31,9 @@ G:\マイドライブ\Claude_Projects\fixture-drawing-previewer\
 ### Slack連携
 | 言うこと | 何が起きるか |
 |---------|------------|
-| 「Slackスキャンして」 | Slackから金物候補+ナレッジを収集 → candidates.json更新 |
+| 「Slackスキャンして」 | 登録済みチャンネルの新着を収集 → 金物・ナレッジ・写真を更新 |
+| 「初回スキャン {チャンネルID}」 | 新チャンネルを全量読み → 構造分析 → データ生成 → WEB掲載 |
+| 「{アイテム名}をスキャンして」 | Slack横断検索 → 登録済みとの差分を提案 |
 | 「金物スレ立てて #チャンネル名」 | チャンネルに🔩金物選定スレッド＋📚ナレッジルールを投稿 |
 
 ### UI・機能の変更
@@ -130,15 +137,17 @@ G:\マイドライブ\Claude_Projects\fixture-drawing-previewer\
 ## データの流れ
 
 ```
-Slackで商品リンク投稿
-  ↓ 「Slackスキャンして」
-candidates.json に候補追加
-  ↓ WEBで「採用する」
-hardware.json に正式登録
-  ↓ 
-BOM・図面に自動反映
+新チャンネルを発見
+  ↓ 「初回スキャン {チャンネルID}」
+Step 1: 構造分析 → ユーザー確認
+Step 2: データ生成（ナレッジ/金物/写真/コスト/ドキュメント）
+Step 3: クロスチェック → ユーザー確認
+Step 4: ページ生成 → git push
+Step 5: WEB確認
+  ↓
+以降は「Slackスキャンして」で差分更新
   ↓ 「GitHubにpushして」
-公開サイトに反映
+公開サイトに反映（1-2分）
 ```
 
 ---
