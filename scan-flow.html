@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VUILD Project Hub — Scan Flow Guide</title>
+<title>VUILD Project Hub — スキャンフローガイド</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
   *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -167,340 +167,340 @@
 <div class="header">
   <span class="logo">VUILD</span>
   <span class="divider"></span>
-  <span class="title">Scan Flow Guide</span>
-  <a href="index.html" class="back">Portal</a>
+  <span class="title">スキャンフローガイド</span>
+  <a href="index.html" class="back">ポータルに戻る</a>
 </div>
 
 <div class="container">
 
-<h1>Scan Flow Guide</h1>
-<p class="subtitle">VUILDlibrary Slack Scan Framework v2 &mdash; 2026-04-07</p>
+<h1>スキャンフローガイド</h1>
+<p class="subtitle">VUILDlibrary Slackスキャンフレームワーク v2 &mdash; 2026-04-07</p>
 
 <div class="callout callout-green">
-  <strong>Rule Source</strong>
-  All rules are defined in <code>CLAUDE.md</code> Section 5.1&ndash;5.4. This page is a visual reference.
+  <strong>ルール原本</strong>
+  全ルールは <code>CLAUDE.md</code> セクション5.1〜5.4に定義。このページは視覚的な参照用まとめです。
 </div>
 
 <!-- TOC -->
 <div class="toc">
-  <h3>Contents</h3>
+  <h3>目次</h3>
   <ul>
-    <li><a href="#modes">3 Scan Modes</a></li>
-    <li><a href="#overview">Initial Scan: 5-Step Overview</a></li>
-    <li><a href="#step1">Step 1: Structure Analysis</a></li>
-    <li class="indent"><a href="#patterns">Pattern Detection (A&ndash;E)</a></li>
-    <li><a href="#step2">Step 2: Data Generation</a></li>
-    <li class="indent"><a href="#knowledge">Knowledge / Hardware / Specs / Cost / Docs / Photos</a></li>
-    <li><a href="#step3">Step 3: Cross-Check</a></li>
-    <li class="indent"><a href="#checks">4 Checks: Contamination / Consistency / Gaps / Overview</a></li>
-    <li><a href="#step4">Step 4: Page Generation & Deploy</a></li>
-    <li><a href="#step5">Step 5: Confirmation</a></li>
-    <li><a href="#diff-scan">Diff Scan / Item Search</a></li>
-    <li><a href="#reference">Quick Reference Tables</a></li>
+    <li><a href="#modes">3つのスキャンモード</a></li>
+    <li><a href="#overview">初回スキャン: 5ステップ概要</a></li>
+    <li><a href="#step1">Step 1: 構造分析</a></li>
+    <li class="indent"><a href="#patterns">パターン判定（A〜E）</a></li>
+    <li><a href="#step2">Step 2: データ生成</a></li>
+    <li class="indent"><a href="#knowledge">ナレッジ / 金物 / スペック / コスト / ドキュメント / 写真</a></li>
+    <li><a href="#step3">Step 3: クロスチェック</a></li>
+    <li class="indent"><a href="#checks">4つのチェック: 混入 / 整合性 / 欠落 / 案件俯瞰</a></li>
+    <li><a href="#step4">Step 4: ページ生成 &amp; デプロイ</a></li>
+    <li><a href="#step5">Step 5: WEB確認</a></li>
+    <li><a href="#diff-scan">差分スキャン / アイテム検索</a></li>
+    <li><a href="#reference">早見表</a></li>
   </ul>
 </div>
 
 <!-- 3 MODES -->
-<h2 id="modes">3 Scan Modes</h2>
+<h2 id="modes">3つのスキャンモード</h2>
 <table>
-  <tr><th>Mode</th><th>Trigger</th><th>Content</th></tr>
-  <tr><td>Initial Scan</td><td><code>初回スキャン {チャンネルID}</code></td><td>Full channel read &rarr; 5-step process</td></tr>
-  <tr><td>Diff Scan</td><td><code>Slackスキャンして</code></td><td>Active channels, new messages only</td></tr>
-  <tr><td>Item Search</td><td><code>{アイテム名}をスキャンして</code></td><td>Cross-channel search &rarr; diff proposal</td></tr>
+  <tr><th>モード</th><th>トリガー</th><th>内容</th></tr>
+  <tr><td>初回スキャン</td><td><code>初回スキャン {チャンネルID}</code></td><td>チャンネル全量読み &rarr; 5ステップで完全処理</td></tr>
+  <tr><td>差分スキャン</td><td><code>Slackスキャンして</code></td><td>登録済みチャンネルの新着メッセージのみ</td></tr>
+  <tr><td>アイテム検索</td><td><code>{アイテム名}をスキャンして</code></td><td>Slack横断検索 &rarr; 差分提案</td></tr>
 </table>
 
 <!-- OVERVIEW -->
-<h2 id="overview">Initial Scan: 5-Step Overview</h2>
+<h2 id="overview">初回スキャン: 5ステップ概要</h2>
 
 <div class="flow-overview">
   <div class="flow-step active">
     <div class="step-num">Step 1</div>
-    <div class="step-title">Structure Analysis</div>
-    <div class="step-gate">User Confirmation Gate</div>
+    <div class="step-title">構造分析</div>
+    <div class="step-gate">確認ゲート</div>
   </div>
   <div class="flow-arrow">&rarr;</div>
   <div class="flow-step">
     <div class="step-num">Step 2</div>
-    <div class="step-title">Data Generation</div>
-    <div class="step-gate">Photo / Pin Confirmation</div>
+    <div class="step-title">データ生成</div>
+    <div class="step-gate">写真・ピン確認</div>
   </div>
   <div class="flow-arrow">&rarr;</div>
   <div class="flow-step active">
     <div class="step-num">Step 3</div>
-    <div class="step-title">Cross-Check</div>
-    <div class="step-gate">User Confirmation Gate</div>
+    <div class="step-title">クロスチェック</div>
+    <div class="step-gate">確認ゲート</div>
   </div>
   <div class="flow-arrow">&rarr;</div>
   <div class="flow-step">
     <div class="step-num">Step 4</div>
-    <div class="step-title">Page Gen & Deploy</div>
+    <div class="step-title">ページ生成・デプロイ</div>
     <div class="step-gate">&nbsp;</div>
   </div>
   <div class="flow-arrow">&rarr;</div>
   <div class="flow-step">
     <div class="step-num">Step 5</div>
-    <div class="step-title">WEB Confirmation</div>
+    <div class="step-title">WEB確認</div>
     <div class="step-gate">&nbsp;</div>
   </div>
 </div>
 
 <!-- STEP 1 -->
-<h2 id="step1">Step 1: Structure Analysis</h2>
-<p>Read all channel messages + all thread replies. Analyze the channel composition and detect patterns.</p>
+<h2 id="step1">Step 1: 構造分析</h2>
+<p>チャンネルの全メッセージ + 全スレッド返信を読み込み、案件の構成を分析する。ここで判定したパターンが以降の全Stepに影響する。</p>
 
 <div class="callout callout-orange">
-  <strong>Rules applied at this step</strong>
-  Channel Name Rule (use Slack channel name as-is) / Scan Target Range (messages + all threads) / Team Extraction (users.info API, VUILD vs subcontractor)
+  <strong>このステップで適用されるルール</strong>
+  案件名ルール（チャンネル名をそのまま使用）/ スキャン対象範囲（本文+全スレッド）/ チーム抽出（users.info API、VUILDメンバー vs 外注先を区別）
 </div>
 
-<h3 id="patterns">5 Detection Axes &rarr; Patterns</h3>
+<h3 id="patterns">5つの判定軸 &rarr; パターン</h3>
 
 <table>
-  <tr><th>Axis</th><th>Options</th><th>Triggers</th></tr>
-  <tr><td>Furniture count</td><td>Single / Multiple</td><td><span class="badge badge-b">B</span> Complex furniture composition rules</td></tr>
-  <tr><td>Area composition</td><td>Single / Multi-floor</td><td><span class="badge badge-b">B</span> Area &times; Furniture mapping</td></tr>
-  <tr><td>Construction work</td><td>None / Mixed</td><td><span class="badge badge-c">C</span> Furniture vs construction routing</td></tr>
-  <tr><td>WS events</td><td>None / Present</td><td><span class="badge badge-d">D</span> WS event analysis</td></tr>
-  <tr><td>Year / Related</td><td>Single / Multi-year</td><td><span class="badge badge-e">E</span> Separate projects + related_projects</td></tr>
+  <tr><th>判定軸</th><th>選択肢</th><th>発動するルール</th></tr>
+  <tr><td>furniture数</td><td>単数 / 複数</td><td><span class="badge badge-b">B</span> 複合furniture構成の整理ルール</td></tr>
+  <tr><td>エリア構成</td><td>単一 / 複数フロア</td><td><span class="badge badge-b">B</span> エリア &times; furnitureマッピング</td></tr>
+  <tr><td>建築工事の混在</td><td>なし / あり</td><td><span class="badge badge-c">C</span> furniture vs 建築の振り分け</td></tr>
+  <tr><td>WSイベント</td><td>なし / あり</td><td><span class="badge badge-d">D</span> WSイベント分析</td></tr>
+  <tr><td>年次/関連案件</td><td>単発 / 複数年</td><td><span class="badge badge-e">E</span> 別案件分離 + related_projects</td></tr>
 </table>
 
-<h4>Pattern A: Simple &mdash; No additional processing</h4>
-<p><span class="badge badge-a">A</span> Few furniture, single area, no construction, no WS. Straight to Step 2.</p>
+<h4>パターンA: シンプル &mdash; 追加処理なし</h4>
+<p><span class="badge badge-a">A</span> furniture少数・単一エリア・建築なし・WSなし。ストレートにStep 2へ。</p>
 
-<h4>Pattern B: Multi-Area</h4>
-<p><span class="badge badge-b">B</span> Create Area &times; Furniture Map. Referenced by ALL subsequent steps (photo classification, specs, pins).</p>
+<h4>パターンB: 複数エリア</h4>
+<p><span class="badge badge-b">B</span> エリア &times; furnitureマッピングを作成。以降の全Step（写真分類・specs・ピン配置）で参照。</p>
 <div class="rule-card">
-  <h4>Area Mapping Rules</h4>
-  <p>Explicitly map which furniture goes to which area/floor. User must confirm. Complex furniture splits by floor / type / block count.</p>
-  <p>Existing furniture detection: search furniture.json &rarr; confirm with user if same or new.</p>
-  <div class="ref">CLAUDE.md: Area Mapping / Complex Furniture / Existing Furniture Detection</div>
+  <h4>エリアマッピングルール</h4>
+  <p>各エリア（フロア/ゾーン）にどのfurnitureが配置されるか明示的に整理。ユーザー確認必須。階層/タイプ/連数で分割。</p>
+  <p>既存furniture同一判定: furniture.jsonを検索 &rarr; 「既存と同一か？」をユーザーに確認。</p>
+  <div class="ref">CLAUDE.md: エリアマッピング / 複合furniture / 既存furniture同一判定</div>
 </div>
 
-<h4>Pattern C: Construction Mixed</h4>
-<p><span class="badge badge-c">C</span> Route information: VUILD-made &amp; movable &rarr; furniture / wall/floor/ceiling-fixed &rarr; project page.</p>
+<h4>パターンC: 建築工事混在</h4>
+<p><span class="badge badge-c">C</span> VUILDが製作・移動可能 &rarr; furniture / 壁床天井固定・工務店施工 &rarr; 案件ページ。</p>
 
-<h4>Pattern D: WS Events</h4>
-<p><span class="badge badge-d">D</span> Detect WS events, analyze participants/date/furniture. Distinguish WS photos vs production knowledge vs post-completion.</p>
+<h4>パターンD: WSイベントあり</h4>
+<p><span class="badge badge-d">D</span> WSイベントを検出し、参加者・日付・対象furnitureを分析。WS写真 vs 製作ナレッジ vs 竣工写真を区別。</p>
 <div class="rule-card">
-  <h4>WS Photo Rules</h4>
-  <p>Participant working = WS photo (max 5/event). Craftsman working = production knowledge. Don't judge by filename alone.</p>
-  <div class="ref">CLAUDE.md: WS Event Management</div>
+  <h4>WS写真ルール</h4>
+  <p>参加者が作業 = WS写真（各イベントmax 5枚）。職人の製作作業 = productionナレッジ。ファイル名だけでWS判定しない。</p>
+  <div class="ref">CLAUDE.md: WSイベント管理</div>
 </div>
 
-<h4>Pattern E: Multi-Year / Related</h4>
-<p><span class="badge badge-e">E</span> Always separate projects. No year tabs. Link via <code>related_projects</code> with relation type (ws/year/phase/related).</p>
+<h4>パターンE: 複数年/関連案件</h4>
+<p><span class="badge badge-e">E</span> 常に別案件として登録。年次タブは使わない。<code>related_projects</code> で紐づけ（relation: ws/year/phase/related）。</p>
 
 <div class="callout callout-orange">
-  <strong>User Confirmation Gate</strong>
-  Present structure analysis report. Wait for user confirmation/corrections before proceeding.
+  <strong>確認ゲート</strong>
+  構造分析レポートをユーザーに提示。確認・補足・修正を受けてから次へ進む。
 </div>
 
 <!-- STEP 2 -->
-<h2 id="step2">Step 2: Data Generation</h2>
-<p>Distribute messages, photos, and files to the correct furniture/project, always referencing Step 1's pattern and area map.</p>
+<h2 id="step2">Step 2: データ生成</h2>
+<p>メッセージ・写真・ファイルを正しいfurniture/案件に振り分ける。常にStep 1のパターンとエリアマップを参照しながら実行。</p>
 
-<h3 id="knowledge">2-1. Knowledge Collection</h3>
+<h3 id="knowledge">2-1. ナレッジ収集</h3>
 <table>
-  <tr><th>Rule</th><th>Content</th></tr>
-  <tr><td>Stamp mapping</td><td>:memo: &rarr; progress / :warning: &rarr; trouble / :bulb: &rarr; howto / :triangular_flag_on_post: &rarr; spec</td></tr>
-  <tr><td>Auto-classify (no stamp)</td><td>AI keyword matching (2+ matches). source: "ai_auto". Skip &lt;30 chars, bot messages</td></tr>
-  <tr><td>Scope routing</td><td><strong>production</strong> (reusable across projects) &rarr; furniture page / <strong>design</strong> (project-specific) &rarr; project page</td></tr>
-  <tr><td><span class="badge badge-b">B</span> Area check</td><td>Cross-reference with area map to identify which area the info belongs to</td></tr>
+  <tr><th>ルール</th><th>内容</th></tr>
+  <tr><td>スタンプマッピング</td><td>📝 &rarr; progress / ⚠️ &rarr; trouble / 💡 &rarr; howto / 🚩 &rarr; spec</td></tr>
+  <tr><td>自動分類（スタンプなし）</td><td>AIキーワードマッチング（2つ以上一致）。source: "ai_auto"。30文字未満・botはスキップ</td></tr>
+  <tr><td>scope振り分け</td><td><strong>production</strong>（他案件で再利用可能）&rarr; furnitureページ / <strong>design</strong>（案件固有）&rarr; 案件ページ</td></tr>
+  <tr><td><span class="badge badge-b">B</span> エリア照合</td><td>エリアマップと照合して、どのエリアの情報か特定する</td></tr>
 </table>
 
-<h3>2-2. Hardware Detection</h3>
+<h3>2-2. 金物検出</h3>
 <table>
-  <tr><th>Rule</th><th>Content</th></tr>
-  <tr><td>EC link detection</td><td>monotaro/amazon/sugatsune etc. &rarr; scrape &rarr; candidates</td></tr>
-  <tr><td>Text name detection</td><td>Hardware keyword &rarr; register without URL + placeholder</td></tr>
-  <tr><td>Furniture linking</td><td>Message context + parent thread theme. Unknown &rarr; project level</td></tr>
-  <tr><td>Stamp processing</td><td>:white_check_mark: &rarr; adopted / :mag: &rarr; pending / :x: &rarr; dismissed / :moneybag: &rarr; ordered</td></tr>
-  <tr><td>Data protection</td><td>Never overwrite existing URL/price/product_code. Duplicate check by product_url</td></tr>
+  <tr><th>ルール</th><th>内容</th></tr>
+  <tr><td>ECリンク検出</td><td>monotaro/amazon/sugatsune等のURL &rarr; スクレイピング &rarr; candidates登録</td></tr>
+  <tr><td>テキスト名検出</td><td>金物名キーワード &rarr; URL/品番なしで候補登録 + プレースホルダー</td></tr>
+  <tr><td>furniture紐づけ</td><td>メッセージ文脈 + 親スレッドテーマで推定。不明 &rarr; 案件レベル</td></tr>
+  <tr><td>スタンプ処理</td><td>✅ &rarr; 採用 / 🔍 &rarr; 検討中 / ❌ &rarr; 却下 / 💰 &rarr; 発注済み</td></tr>
+  <tr><td>データ保護</td><td>登録済みのURL/価格/品番は上書きしない。product_urlで重複チェック</td></tr>
 </table>
 
-<h3>2-3. Furniture Specs</h3>
+<h3>2-3. furnitureスペック</h3>
 <table>
-  <tr><th>Rule</th><th>Content</th></tr>
-  <tr><td>Source priority</td><td>1. Slack messages &rarr; 2. Estimate PDF &rarr; 3. Fabrication docs &rarr; 4. Knowledge</td></tr>
-  <tr><td>Precision standard</td><td>material: type+thickness+part / finish: per-area spec / note: subcontractor+person</td></tr>
-  <tr><td><span class="badge badge-b">B</span> Area check</td><td>Mandatory cross-reference: which area's finish info is this?</td></tr>
+  <tr><th>ルール</th><th>内容</th></tr>
+  <tr><td>情報源の優先順</td><td>1. Slackメッセージ &rarr; 2. 見積PDF &rarr; 3. 加工依頼書・図面 &rarr; 4. ナレッジ</td></tr>
+  <tr><td>記述精度基準</td><td>material: 種類+厚み+部位 / finish: 部位別仕様 / note: 外注先・担当者</td></tr>
+  <tr><td><span class="badge badge-b">B</span> エリア照合</td><td>塗装情報のエリア特定が必須（例: 桜葉ステイン=7F、ウレタン=6F）</td></tr>
 </table>
 
-<h3>2-4. Cost Analysis</h3>
+<h3>2-4. コスト分析</h3>
 <table>
-  <tr><th>Rule</th><th>Content</th></tr>
-  <tr><td>Auto-extraction</td><td>Detect price patterns in Slack (X{amount}) &rarr; classify by furniture name co-occurrence</td></tr>
-  <tr><td>Manual priority</td><td>Never overwrite manual values</td></tr>
-  <tr><td>Timeline analysis</td><td>Sort chronologically &rarr; classify source &rarr; track changes &rarr; use latest/final value</td></tr>
-  <tr><td>Routing</td><td>Per-furniture cost &rarr; cost_breakdown / Project total &rarr; cost_overview</td></tr>
+  <tr><th>ルール</th><th>内容</th></tr>
+  <tr><td>自動抽出</td><td>Slack内の金額パターン（○万円、¥○○）を検出 &rarr; furniture名共起で分類</td></tr>
+  <tr><td>手動優先</td><td>手動入力値は上書きしない</td></tr>
+  <tr><td>時系列分析</td><td>時系列で並べ &rarr; 発信元分類 &rarr; 変遷追跡 &rarr; 最新/最終値をcost_breakdownに</td></tr>
+  <tr><td>振り分け</td><td>furniture単体コスト &rarr; cost_breakdown / 案件全体 &rarr; cost_overview</td></tr>
 </table>
 
-<h3>2-5. Document Classification</h3>
+<h3>2-5. ドキュメント分類</h3>
 <table>
-  <tr><th>Type</th><th>Display Tab</th><th>Routing Priority</th></tr>
-  <tr><td>estimate / invoice</td><td>Estimate tab</td><td rowspan="3">1. Furniture name in filename &rarr; that furniture<br>2. Part name &rarr; that furniture<br>3. Drawing keyword &rarr; that furniture<br>4. Project-wide keyword &rarr; project<br>5. Unknown &rarr; project (default)</td></tr>
-  <tr><td>drawing / fabrication</td><td>Drawing tab</td></tr>
-  <tr><td>reference / contract / schedule</td><td>Document tab</td></tr>
+  <tr><th>タイプ</th><th>表示タブ</th><th>振り分け優先順</th></tr>
+  <tr><td>estimate / invoice</td><td>見積タブ</td><td rowspan="3">1. ファイル名にfurniture名 &rarr; そのfurniture<br>2. 部品名 &rarr; 該当furniture<br>3. 図面キーワード &rarr; そのfurniture<br>4. 案件全体を示す語 &rarr; 案件<br>5. 判定不能 &rarr; 案件（デフォルト）</td></tr>
+  <tr><td>drawing / fabrication</td><td>図面タブ</td></tr>
+  <tr><td>reference / contract / schedule</td><td>ドキュメントタブ</td></tr>
 </table>
 
-<h3>2-6. Photo Selection (3 Phases)</h3>
+<h3>2-6. 写真選定（3フェーズ）</h3>
 
-<h4>Phase A: Text Signal Classification</h4>
+<h4>Phase A: テキストシグナルで一次分類</h4>
 <div class="rule-card">
-  <h4>Signal Priority</h4>
-  <p>Message text (highest) &gt; Thread parent (high) &gt; Time cluster (high) &gt; Nearby 5 messages (mid) &gt; Poster pattern (mid) &gt; Timestamp (mid)</p>
-  <p>Batch posts (3+ photos, no text): send ALL to Phase B. Judge each photo individually.</p>
+  <h4>シグナル優先度</h4>
+  <p>メッセージテキスト（最高）&gt; スレッド親（高）&gt; 時系列クラスタ（高）&gt; 前後5件（中）&gt; 投稿者パターン（中）&gt; タイムスタンプ（中）</p>
+  <p>バッチ投稿（3枚以上・テキストなし）: 全写真をPhase Bへ。1枚ずつ個別に判定する。</p>
 </div>
 
-<h4>Phase B: Image Recognition</h4>
+<h4>Phase B: 画像認識で二次分類</h4>
 <div class="rule-card">
-  <h4>Target &amp; Rules</h4>
-  <p>Top 10 per group + undetermined + batch photos. Match against Step 1 furniture features.</p>
-  <p><span class="badge badge-b">B</span> Area map: subject must be &gt;50% area or center. Background = NG. Multi-furniture panorama = project only.</p>
-  <p><span class="badge badge-d">D</span> WS photos: participant working = WS tab. Craftsman = production. Don't judge by filename.</p>
-  <p>ViewCapture hero check: 3D perspective = OK / CAM path, 2D drawing, nesting = NG</p>
+  <h4>対象 &amp; ルール</h4>
+  <p>各グループ上位10枚 + 判定不能 + バッチ写真。Step 1のfurniture特徴と照合。</p>
+  <p><span class="badge badge-b">B</span> エリアマップ: 主役（面積50%以上 or 中央）&rarr; OK / 背景 &rarr; NG / 複数furniture全景 &rarr; 案件のみ</p>
+  <p><span class="badge badge-d">D</span> WS写真: 参加者作業 &rarr; WSタブ / 職人作業 &rarr; productionナレッジ / ファイル名で判定しない</p>
+  <p>ViewCapture hero判定: 3Dパース &rarr; OK / CAMパス・2D図面・板取り図 &rarr; NG</p>
 </div>
 
-<h4>Phase C: Scoring &amp; User Confirmation</h4>
+<h4>Phase C: スコアリング &amp; ユーザー確認</h4>
 <table>
-  <tr><th>Rule</th><th>Content</th></tr>
-  <tr><td>Scoring</td><td>Landscape +10 / Kurobe +15 / Reactions / Image size</td></tr>
-  <tr><td>Limits</td><td>Project: max 7 / Furniture: max 7 / WS: max 5 per event</td></tr>
-  <tr><td>Project page</td><td>Wide-angle only. No detail shots. At least 1 per area (<span class="badge badge-b">B</span>)</td></tr>
-  <tr><td>Hero photos</td><td>Rhino axonometric &gt; ViewCapture (3D) &gt; empty. Never use completion photos for hero</td></tr>
-  <tr><td>Thumbnail</td><td>Large furniture &rarr; gallery_photos[0] / Small furniture &rarr; hero_photos[0]</td></tr>
-  <tr><td>Compression</td><td>max 1600px / JPEG q80 / Skip if &le;1600px &amp; &lt;500KB</td></tr>
+  <tr><th>ルール</th><th>内容</th></tr>
+  <tr><td>スコアリング</td><td>横長 +10 / 黒部 +15 / リアクション数 / 画像サイズ</td></tr>
+  <tr><td>枚数上限</td><td>案件: max 7枚 / furniture: max 7枚 / WS: max 5枚/イベント</td></tr>
+  <tr><td>案件ページ</td><td>空間を見渡せる引き画のみ。ディテールNG。各エリアから最低1枚（<span class="badge badge-b">B</span>）</td></tr>
+  <tr><td>hero_photos</td><td>Rhinoアクソメ &gt; ViewCapture（3D） &gt; 空欄。竣工写真はheroに使わない</td></tr>
+  <tr><td>サムネイル</td><td>大型什器 &rarr; gallery_photos[0] / 中小什器 &rarr; hero_photos[0]</td></tr>
+  <tr><td>圧縮</td><td>max 1600px / JPEG q80 / ≤1600px &amp; &lt;500KBならスキップ</td></tr>
 </table>
 
 <!-- STEP 3 -->
-<h2 id="step3">Step 3: Cross-Check</h2>
-<p>After distributing all data, open each furniture's "room" and verify holistically. Catch contamination, contradictions, and gaps that per-item classification misses.</p>
+<h2 id="step3">Step 3: クロスチェック</h2>
+<p>全データの振り分け後、各furnitureの「部屋」を開けて中身を俯瞰検証する。1件ずつの振り分けでは見逃す「混入・矛盾・欠落」をここで検出。</p>
 
-<h3 id="checks">4 Checks</h3>
+<h3 id="checks">4つのチェック</h3>
 
 <div class="check-grid">
   <div class="check-item">
-    <div class="check-title">Check 1: Contamination</div>
-    <div class="check-desc">Does every item in this room actually belong here?</div>
-    <div class="check-example">Example: 6F paint info found in 7F kitchen's room &rarr; move to 6F</div>
+    <div class="check-title">チェック1: 混入</div>
+    <div class="check-desc">この部屋の中身は全て正しいfurnitureのものか？</div>
+    <div class="check-example">例: 7Fキッチンの部屋に6Fの塗装情報 &rarr; 6Fに移動</div>
   </div>
   <div class="check-item">
-    <div class="check-title">Check 2: Consistency</div>
-    <div class="check-desc">Do specs, knowledge, photos, and costs agree with each other?</div>
-    <div class="check-example">Example: specs say "hinoki plywood" but knowledge says "lauan" &rarr; ask user</div>
+    <div class="check-title">チェック2: 整合性</div>
+    <div class="check-desc">specs・ナレッジ・写真・コストが互いに矛盾していないか？</div>
+    <div class="check-example">例: specsは「シナ合板」、ナレッジは「ラワン」 &rarr; ユーザーに確認</div>
   </div>
   <div class="check-item">
-    <div class="check-title">Check 3: Gaps</div>
-    <div class="check-desc">Is any furniture missing data that should exist?</div>
-    <div class="check-example">Example: furniture has photos but zero knowledge/cost &rarr; check project room</div>
+    <div class="check-title">チェック3: 欠落</div>
+    <div class="check-desc">あるべき情報が拾えていないfurnitureはないか？</div>
+    <div class="check-example">例: 写真はあるのにナレッジ/コストがゼロ &rarr; 案件の部屋を再確認</div>
   </div>
   <div class="check-item">
-    <div class="check-title">Check 4: Project Overview</div>
-    <div class="check-desc">Is the project balanced? Do costs add up?</div>
-    <div class="check-example">Example: furniture total &ne; project total &rarr; routing error possible</div>
+    <div class="check-title">チェック4: 案件俯瞰</div>
+    <div class="check-desc">案件全体のバランスは取れているか？コストは整合するか？</div>
+    <div class="check-example">例: furniture合計 ≠ 案件全体コスト &rarr; 振り分け漏れの可能性</div>
   </div>
 </div>
 
-<h4>Completeness Matrix Example</h4>
+<h4>充足度マトリクスの例</h4>
 <table class="matrix">
-  <tr><th>Furniture</th><th>Specs</th><th>Photos</th><th>Knowledge</th><th>Hardware</th><th>Cost</th><th>3D Model</th></tr>
-  <tr><td>7F Kitchen</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
-  <tr><td>MKU type A</td><td class="status-warn">Conflict</td><td class="status-ok">OK</td><td class="status-warn">Few</td><td class="status-ok">OK</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
-  <tr><td>MKU type B</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
-  <tr><td>Shiba Cube</td><td class="status-warn">Conflict</td><td class="status-ok">OK</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td><td class="status-ng">None</td></tr>
+  <tr><th>Furniture</th><th>スペック</th><th>写真</th><th>ナレッジ</th><th>金物</th><th>コスト</th><th>3Dモデル</th></tr>
+  <tr><td>7Fキッチン</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td><td class="status-ok">OK</td></tr>
+  <tr><td>MKU typeA</td><td class="status-warn">矛盾</td><td class="status-ok">OK</td><td class="status-warn">少</td><td class="status-ok">OK</td><td class="status-ng">なし</td><td class="status-ng">なし</td></tr>
+  <tr><td>MKU typeB</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td></tr>
+  <tr><td>芝キューブ</td><td class="status-warn">矛盾</td><td class="status-ok">OK</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td><td class="status-ng">なし</td></tr>
 </table>
 
 <div class="callout callout-orange">
-  <strong>User Confirmation Gate</strong>
-  Present: Contamination fixes (auto-propose) / Contradictions (ask user) / Gaps (report) / Scope corrections.
-  Then: Completion check &rarr; Generate documents if status=completed.
+  <strong>確認ゲート</strong>
+  混入（自動修正提案）/ 矛盾（ユーザーに確認）/ 欠落（報告）/ scope修正 を提示。
+  その後: 完了判定 &rarr; status=completedならドキュメント自動生成。
 </div>
 
 <!-- STEP 4 -->
-<h2 id="step4">Step 4: Page Generation &amp; Deploy</h2>
+<h2 id="step4">Step 4: ページ生成 &amp; デプロイ</h2>
 <table>
-  <tr><th>Process</th><th>Rule</th></tr>
-  <tr><td>Create folders</td><td>New furniture/project folder + copy detail-template.html</td></tr>
-  <tr><td>Register scan state</td><td>Add channel to scan_state.json with last_scanned_ts</td></tr>
-  <tr><td>Portal sync</td><td>Update index.html stats (hardware/knowledge/bom/updated)</td></tr>
-  <tr><td>Template deploy</td><td>If template changed: copy to all pages before commit</td></tr>
-  <tr><td>git push</td><td>commit &amp; push (GitHub Pages reflects in 1-2 min)</td></tr>
+  <tr><th>処理</th><th>ルール</th></tr>
+  <tr><td>フォルダ作成</td><td>新規furniture/案件フォルダ + detail-template.htmlコピー</td></tr>
+  <tr><td>スキャン状態登録</td><td>scan_state.jsonにチャンネル登録（last_scanned_ts記録）</td></tr>
+  <tr><td>ポータル同期</td><td>index.htmlのstats更新（hardware数/knowledge数/bom合計/更新日）</td></tr>
+  <tr><td>テンプレートデプロイ</td><td>テンプレート変更時は全ページにコピーしてからcommit</td></tr>
+  <tr><td>git push</td><td>commit &amp; push（1-2分でGitHub Pagesに反映）</td></tr>
 </table>
 
 <!-- STEP 5 -->
-<h2 id="step5">Step 5: WEB Confirmation</h2>
-<p>Present the WEB URL to the user for final review.</p>
+<h2 id="step5">Step 5: WEB確認</h2>
+<p>WEB URLをユーザーに提示して最終確認を依頼する。</p>
 
 <!-- DIFF SCAN -->
-<h2 id="diff-scan">Diff Scan / Item Search</h2>
+<h2 id="diff-scan">差分スキャン / アイテム検索</h2>
 
-<h3>Diff Scan (<code>Slackスキャンして</code>)</h3>
+<h3>差分スキャン（<code>Slackスキャンして</code>）</h3>
 <table>
-  <tr><th>Item</th><th>Content</th></tr>
-  <tr><td>Target</td><td>Active channels in scan_state.json only</td></tr>
-  <tr><td>Retrieval</td><td>Slack API <code>oldest</code> param &rarr; new messages after last_scanned_ts</td></tr>
-  <tr><td>Auto-skip</td><td>completed + 30 days since last scan &rarr; skip (explicit request overrides)</td></tr>
-  <tr><td>Processing</td><td>Apply 5.1 routing rules &rarr; present diff &rarr; user confirms &rarr; apply</td></tr>
-  <tr><td>Completed projects</td><td>New knowledge added &rarr; regenerate docs / fill placeholders</td></tr>
+  <tr><th>項目</th><th>内容</th></tr>
+  <tr><td>対象</td><td>scan_state.jsonのactiveチャンネルのみ</td></tr>
+  <tr><td>取得方法</td><td>Slack APIの <code>oldest</code> パラメータで last_scanned_ts 以降の新着のみ</td></tr>
+  <tr><td>自動スキップ</td><td>completed かつ 30日以上スキャンなし &rarr; スキップ（明示指定すれば読める）</td></tr>
+  <tr><td>処理</td><td>5.1振り分けルールで分類 &rarr; 差分をユーザーに提示 &rarr; 確認後反映</td></tr>
+  <tr><td>完了案件</td><td>新規ナレッジ追加 &rarr; ドキュメント再生成 / プレースホルダー埋め判定</td></tr>
 </table>
 
-<h3>Item Search (<code>{name}をスキャンして</code>)</h3>
+<h3>アイテム検索（<code>{アイテム名}をスキャンして</code>）</h3>
 <table>
-  <tr><th>Step</th><th>Content</th></tr>
-  <tr><td>1</td><td>Cross-channel search via <code>slack_search_public</code></td></tr>
-  <tr><td>2</td><td>Categorize hits: already scanned / unregistered</td></tr>
-  <tr><td>3</td><td>Unregistered &rarr; offer initial scan</td></tr>
-  <tr><td>4</td><td>Registered &rarr; diff detection against furniture.json</td></tr>
-  <tr><td>5</td><td>Present diff &rarr; user confirms &rarr; apply to WEB</td></tr>
+  <tr><th>手順</th><th>内容</th></tr>
+  <tr><td>1</td><td><code>slack_search_public</code> でアイテム名を横断検索</td></tr>
+  <tr><td>2</td><td>ヒットチャンネルをスキャン済み / 未登録に分類</td></tr>
+  <tr><td>3</td><td>未登録チャンネル &rarr; 初回スキャンに移行するか確認</td></tr>
+  <tr><td>4</td><td>登録済みチャンネル &rarr; furniture.jsonとの差分検出</td></tr>
+  <tr><td>5</td><td>差分をユーザーに提示 &rarr; 確認後WEBに反映</td></tr>
 </table>
 
 <!-- REFERENCE -->
-<h2 id="reference">Quick Reference Tables</h2>
+<h2 id="reference">早見表</h2>
 
-<h3>Stamp Mapping</h3>
+<h3>スタンプマッピング</h3>
 <table>
-  <tr><th>Stamp</th><th>Action</th></tr>
-  <tr><td>:white_check_mark:</td><td>Register to hardwareCatalog (adopted)</td></tr>
-  <tr><td>:mag:</td><td>candidatesData status:"pending"</td></tr>
-  <tr><td>:x:</td><td>status:"dismissed"</td></tr>
-  <tr><td>:moneybag:</td><td>ordered: true</td></tr>
-  <tr><td>:memo:</td><td>knowledge type:"progress"</td></tr>
-  <tr><td>:warning:</td><td>knowledge type:"trouble"</td></tr>
-  <tr><td>:bulb:</td><td>knowledge type:"howto"</td></tr>
-  <tr><td>:triangular_flag_on_post:</td><td>knowledge type:"spec"</td></tr>
+  <tr><th>スタンプ</th><th>動作</th></tr>
+  <tr><td>✅ white_check_mark</td><td>hardwareCatalogに登録（本採用）</td></tr>
+  <tr><td>🔍 mag</td><td>candidatesData status:"pending"（検討中）</td></tr>
+  <tr><td>❌ x</td><td>status:"dismissed"（却下）</td></tr>
+  <tr><td>💰 moneybag</td><td>ordered: true（発注済み）</td></tr>
+  <tr><td>📝 memo</td><td>knowledge type:"progress"（経過メモ）</td></tr>
+  <tr><td>⚠️ warning</td><td>knowledge type:"trouble"（トラブル）</td></tr>
+  <tr><td>💡 bulb</td><td>knowledge type:"howto"（ハウツー）</td></tr>
+  <tr><td>🚩 flag</td><td>knowledge type:"spec"（仕様決定）</td></tr>
 </table>
 
-<h3>Photo Routing</h3>
+<h3>写真の振り分け</h3>
 <table>
-  <tr><th>Subject</th><th>Destination</th><th>Limit</th></tr>
-  <tr><td>Space overview (wide)</td><td>Project hero/gallery</td><td>max 7</td></tr>
-  <tr><td>Furniture as subject</td><td>Furniture gallery</td><td>max 7</td></tr>
-  <tr><td>Detail (hardware, joints)</td><td>Furniture only (project NG)</td><td>in gallery</td></tr>
-  <tr><td>Construction work</td><td>Project or exclude</td><td>&mdash;</td></tr>
-  <tr><td>In-progress / factory</td><td>Exclude</td><td>&mdash;</td></tr>
-  <tr><td>WS activity photos</td><td>Project WS tab (exception)</td><td>max 5/event</td></tr>
+  <tr><th>被写体</th><th>行き先</th><th>上限</th></tr>
+  <tr><td>空間全体（引き画）</td><td>案件ページ hero/gallery</td><td>max 7枚</td></tr>
+  <tr><td>furnitureが主役</td><td>furnitureページ gallery</td><td>max 7枚</td></tr>
+  <tr><td>ディテール寄り（金物・接合部）</td><td>furnitureページのみ（案件NG）</td><td>galleryに含む</td></tr>
+  <tr><td>建築工事が主役</td><td>案件 or 載せない</td><td>&mdash;</td></tr>
+  <tr><td>施工中・加工中</td><td>載せない</td><td>&mdash;</td></tr>
+  <tr><td>WS作業写真</td><td>案件WSタブ（施工中ルールの例外）</td><td>max 5枚/イベント</td></tr>
 </table>
 
-<h3>Knowledge Scope</h3>
+<h3>ナレッジ scope</h3>
 <table>
-  <tr><th>Scope</th><th>Display</th><th>Criteria</th></tr>
-  <tr><td>production</td><td>Furniture page</td><td>Reusable across projects (fabrication, assembly, finish)</td></tr>
-  <tr><td>design</td><td>Project page</td><td>Project-specific (client requirements, budget, site conditions)</td></tr>
+  <tr><th>Scope</th><th>表示先</th><th>判断基準</th></tr>
+  <tr><td>production</td><td>furnitureページ</td><td>他案件で再利用可能な知見（加工・組立・塗装等）</td></tr>
+  <tr><td>design</td><td>案件ページ</td><td>この案件固有の話（クライアント要件・予算・現場条件等）</td></tr>
 </table>
 
-<h3>User Confirmation Gates</h3>
+<h3>ユーザー確認ゲート一覧</h3>
 <table>
-  <tr><th>Timing</th><th>Content</th></tr>
-  <tr><td>After Step 1</td><td>Structure analysis report (patterns, furniture list, team, WS)</td></tr>
-  <tr><td>Step 2 Phase C</td><td>Photo list (grouped, scored)</td></tr>
-  <tr><td>Step 2 Pins</td><td>Pin candidate list</td></tr>
-  <tr><td>After Step 3</td><td>Cross-check results (contamination, contradictions, gaps, scope)</td></tr>
-  <tr><td>Step 5</td><td>WEB final review</td></tr>
+  <tr><th>タイミング</th><th>確認内容</th></tr>
+  <tr><td>Step 1 完了後</td><td>構造分析レポート（パターン判定・furniture一覧・チーム・WS等）</td></tr>
+  <tr><td>Step 2 Phase C</td><td>写真リスト（グループ別・スコア順）</td></tr>
+  <tr><td>Step 2 ピン生成後</td><td>ピン候補リスト</td></tr>
+  <tr><td>Step 3 完了後</td><td>クロスチェック結果（混入・矛盾・欠落・scope修正）</td></tr>
+  <tr><td>Step 5</td><td>WEB最終確認</td></tr>
 </table>
 
 <div class="callout callout-green" style="margin-top:48px;">
-  <strong>Framework Change Safety</strong>
-  When rules need to change based on user feedback, ALWAYS display the full framework (CLAUDE.md 5.1&ndash;5.4), show the specific change, and get user confirmation before saving. Never change rules silently.
+  <strong>フレームワーク変更の安全弁</strong>
+  ユーザーからのフィードバックでルールに変更が必要な場合、必ず CLAUDE.md のフレームワーク全体（セクション5.1〜5.4）を表示し、変更箇所をユーザーに確認してから保存すること。勝手にルールを変えない。
 </div>
 
 </div><!-- .container -->
