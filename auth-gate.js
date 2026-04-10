@@ -3,7 +3,7 @@
  * <head> 内で読み込むこと。body を非表示にし、認証後に表示する。
  */
 (function () {
-  var PASS = 'vuild';
+  var PASS = 'vuild2026';
   var AUTH_KEY = 'vuild_hub_authed';
 
   // 認証済みならスキップ
